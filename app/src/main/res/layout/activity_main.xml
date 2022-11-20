@@ -18,21 +18,23 @@
 
     <LinearLayout
         android:id="@+id/bottom_panel"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="661dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/side_panel"
         android:layout_width="92dp"
-        android:layout_height="659dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        app:layout_constraintBottom_toTopOf="@+id/bottom_panel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </LinearLayout>
 

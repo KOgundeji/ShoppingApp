@@ -11,4 +11,6 @@
     <color name="yellow_shade">#715400</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <color name="background">@color/orange_tint_light</color>
 </resources>

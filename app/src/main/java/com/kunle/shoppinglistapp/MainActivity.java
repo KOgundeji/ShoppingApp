@@ -10,12 +10,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
+        super.onCreate(savedInstanceState);
 //        try {
-//            Thread.sleep(5000);
+//            Thread.sleep(3000);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 }

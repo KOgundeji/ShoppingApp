@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,5 +15,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:layout_width="411dp"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="661dp">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/side_panel"
+        android:layout_width="92dp"
+        android:layout_height="659dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

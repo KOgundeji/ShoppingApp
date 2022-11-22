@@ -22,4 +22,9 @@
         <item name="android:windowSplashscreenContent">@mipmap/splash_logo</item>
         <item name="android:windowSplashScreenAnimationDuration">5000</item>
     </style>
+
+    <style name="Theme.App.Checkbox" parent="Theme.MaterialComponents">
+        <item name="colorOnSurface">@color/base_orange</item>
+        <item name="colorSecondary">@color/orange_shade</item>
+    </style>
 </resources>

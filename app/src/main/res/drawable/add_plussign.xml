@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/drawable_plus"
+        android:drawable="@drawable/plus_sign"
+        android:width="@dimen/edit_pencil"
+        android:height="@dimen/edit_pencil" />
+
+</layer-list>

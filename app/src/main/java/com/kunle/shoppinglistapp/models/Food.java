@@ -5,7 +5,7 @@ import java.util.List;
 public class Food {
     private String name;
     private List<String> measurements;
-    private int quantity;
+    private int quantity, id;
 
     public Food() {
     }
@@ -37,5 +37,13 @@ public class Food {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

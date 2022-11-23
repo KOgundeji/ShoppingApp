@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:outlineProvider="bounds"
+    android:outlineProvider="none"
     android:paddingStart="10dp"
     android:paddingEnd="10dp">
 
@@ -12,41 +12,52 @@
         android:id="@+id/card_view_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="2dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="11dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="5dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:weightSum="20">
 
             <android.widget.CheckBox
                 android:id="@+id/checkBox"
                 style="@style/Theme.App.Checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/shoppingList_item"
-                android:layout_width="match_parent"
+                android:layout_width="35dp"
                 android:layout_height="wrap_content"
-                app:endIconCheckable="true"
-                app:endIconDrawable="@drawable/edit_pencil"
-                app:endIconMode="custom"
-                >
+                android:layout_gravity="center"
+                android:layout_weight="0"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:background="@color/white"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="0dp"
-                    />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/shoppingList_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:enabled="false"
+                android:includeFontPadding="false"
+                android:text="TEST"
+                android:textColor="@color/black"
+                android:textSize="@dimen/item_list_text_size"
+                android:textStyle="bold"
+                android:layout_weight="20"/>
+
+            <ImageView
+                android:id="@+id/shoppingList_edit"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/edit_pencil"
+                android:layout_weight="1"
+                />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

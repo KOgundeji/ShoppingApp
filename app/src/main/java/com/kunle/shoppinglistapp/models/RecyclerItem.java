@@ -1,20 +1,21 @@
 package com.kunle.shoppinglistapp.models;
 
-public class Item {
+public class RecyclerItem {
     public static final int FOOD = 1;
     public static final int MEAL = 2;
 
     private int listType, quantity, id;
-    private String name, measurement;
+    private String name, measurement, category;
 
-    public Item() {
+    public RecyclerItem() {
     }
 
-    public Item(int listType, int quantity, String name, String measurement) {
+    public RecyclerItem(int listType, int quantity, String name, String measurement, String category) {
         this.listType = listType;
         this.quantity = quantity;
         this.name = name;
         this.measurement = measurement;
+        this.category = category;
     }
 
     public int getListType() {
@@ -57,5 +58,11 @@ public class Item {
         this.id = id;
     }
 
+    public String getCategory() {
+        return category;
+    }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

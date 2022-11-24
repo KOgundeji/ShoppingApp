@@ -1,17 +1,15 @@
 package com.kunle.shoppinglistapp.util;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,33 +17,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.kunle.shoppinglistapp.R;
-import com.kunle.shoppinglistapp.models.Item;
+import com.kunle.shoppinglistapp.models.RecyclerItem;
 
 import java.util.ArrayList;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
-    ArrayList<Item> itemList;
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
-    public ListAdapter(ArrayList<Item> itemList) {
-        this.itemList = itemList;
+    private final Context context;
+    private final ArrayList<RecyclerItem> recyclerItemList;
+
+    public ItemAdapter(Context context, ArrayList<RecyclerItem> recyclerItemList) {
+        this.context = context;
+        this.recyclerItemList = recyclerItemList;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.inner_cardview,parent,false);
-        return new MyViewHolder(itemView);
+        return new ItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String name = itemList.get(position).getName();
-        String quantity = String.valueOf(itemList.get(position).getQuantity());
-        String measurement = itemList.get(position).getMeasurement();
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+        String name = recyclerItemList.get(position).getName();
+        String quantity = String.valueOf(recyclerItemList.get(position).getQuantity());
+        String measurement = recyclerItemList.get(position).getMeasurement();
         String parenthesis;
         if (measurement == "") {
             parenthesis = "(" + quantity + ")";
@@ -67,10 +66,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return recyclerItemList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class ItemViewHolder extends RecyclerView.ViewHolder{
 
         private final TextView item;
         private final CheckBox checkBox;
@@ -78,7 +77,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 //        private final TextInputLayout item_layout;
 
 
-        public MyViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             item = itemView.findViewById(R.id.shoppingList_item);
             checkBox = itemView.findViewById(R.id.checkBox);

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.kunle.shoppinglistapp.models.Food;
-import com.kunle.shoppinglistapp.models.Item;
+import com.kunle.shoppinglistapp.models.RecyclerItem;
 import com.kunle.shoppinglistapp.util.Util;
 
 import java.util.ArrayList;
@@ -57,14 +57,14 @@ public class FoodDatabaseHandler extends SQLiteOpenHelper {
 
     //CRUD = Create(Add), Read, Update, Delete
 
-    public void addItem(Item item) {
+    public void addItem(RecyclerItem recyclerItem) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         //create database row from Item instance
         ContentValues values = new ContentValues();
-        values.put(Util.FOOD_KEY_NAME, item.getName());
-        values.put(Util.FOOD_KEY_QUANTITY, item.getQuantity());
-        values.put(Util.FOOD_KEY_MEASUREMENT, item.getMeasurement());
+        values.put(Util.FOOD_KEY_NAME, recyclerItem.getName());
+        values.put(Util.FOOD_KEY_QUANTITY, recyclerItem.getQuantity());
+        values.put(Util.FOOD_KEY_MEASUREMENT, recyclerItem.getMeasurement());
 
         //insert database row into db
         db.insert(Util.TABLE_NAME_FOOD, null, values);

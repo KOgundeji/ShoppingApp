@@ -13,4 +13,6 @@
     <color name="black">#000000</color>
 
     <color name="background">@color/orange_tint_light</color>
+    <color name="category_background">@color/base_orange</color>
+    <color name="item_background">@color/white</color>
 </resources>

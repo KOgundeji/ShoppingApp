@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:autofillHints="@string/add_item_meal"
-        android:background="@color/orange_tint_light">
+        android:background="@color/background">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/innerRecycler"
+            android:id="@+id/outerRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"

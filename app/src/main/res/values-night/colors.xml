@@ -12,6 +12,8 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <color name="background">@color/orange_shade</color>
+    <color name="background">@color/black</color>
+    <color name="category_background">@color/orange_shade</color>
+    <color name="item_background">@color/base_orange</color>
 
 </resources>

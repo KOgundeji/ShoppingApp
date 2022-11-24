@@ -18,6 +18,7 @@ public class Util {
     public static final String ITEM_KEY_LIST_TYPE = "list_type";
     public static final String ITEM_KEY_QUANTITY = "quantity";
     public static final String ITEM_KEY_MEASUREMENT = "measurement";
+    public static final String ITEM_KEY_CATEGORY = "category";
 
     //Food table column names
     public static final String FOOD_KEY_ID = "id";

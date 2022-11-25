@@ -35,4 +35,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Checkbox" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/checkbox_checked</item>
+        <item name="colorControlActivated">@color/checkbox_resting</item>
+    </style>
+
 </resources>

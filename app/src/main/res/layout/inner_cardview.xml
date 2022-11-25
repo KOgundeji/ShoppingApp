@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:outlineProvider="none"
-    android:paddingStart="5dp"
-    android:paddingEnd="5dp">
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_item"
@@ -31,7 +31,8 @@
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0"/>
+                android:layout_weight="0"
+                android:theme="@style/Checkbox" />
 
 
             <TextView
@@ -39,22 +40,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="20"
                 android:background="@color/item_background"
                 android:includeFontPadding="false"
                 android:text="TEST"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/item_list_text_size"
-                android:textStyle="bold"
-                android:layout_weight="20"/>
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/shoppingList_edit"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/edit_pencil"
                 android:layout_weight="1"
-                />
+                android:clickable="true"
+                android:src="@drawable/edit_pencil" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

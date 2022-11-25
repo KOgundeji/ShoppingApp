@@ -123,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
     private void setExample() {
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 4, "Oranges",
                 "bunch","Fruit"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 4, "Pineapple",
-                "bunch","Fruit"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Pineapple",
+                "","Fruit"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Eggs",
                 "dozen","Dairy"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Cheese",
-                "dozen","Dairy"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 50, "Cheese",
+                "grams","Dairy"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 2, "Pasta",
                 "boxes","Bread/Grains"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Tissues",
@@ -137,6 +137,18 @@ public class MainActivity extends AppCompatActivity {
                 "","Produce"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Strawberries",
                 "carton","Fruit"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Light Bulb",
+                "","For the Home"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 5, "Oui Yogurts",
+                "","Dairy"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Ginger Ale",
+                "12-pack","Beverages"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Onions",
+                "","Produce"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 2, "Frozen Pizza",
+                "carton","Frozen Food"));
+        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Ketchup",
+                "bottle","Condiments"));
 
 
     }

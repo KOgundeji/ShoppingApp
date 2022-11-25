@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
@@ -26,6 +27,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     private final Context context;
     private final ArrayList<RecyclerItem> recyclerItemList;
+
 
     public ItemAdapter(Context context, ArrayList<RecyclerItem> recyclerItemList) {
         this.context = context;
@@ -42,6 +44,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+        int textColor = ContextCompat.getColor(context,R.color.text_color);
         String name = recyclerItemList.get(position).getName();
         String quantity = String.valueOf(recyclerItemList.get(position).getQuantity());
         String measurement = recyclerItemList.get(position).getMeasurement();
@@ -74,14 +77,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         private final TextView item;
         private final CheckBox checkBox;
         private final ImageView clickable_pencil;
-        private final color textColor;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             item = itemView.findViewById(R.id.shoppingList_item);
             checkBox = itemView.findViewById(R.id.checkBox);
             clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
-            textColor = itemView.findViewById(R.color.text_color);
 
 
             checkBox.setOnClickListener(new View.OnClickListener() {
@@ -101,11 +102,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }
 
         private void toggle(View view) {
-            view.setBackgroundColor(Color.YELLOW);
         }
 
         private void edit(View view) {
-            view.setBackgroundColor(Color.DKGRAY);
         }
     }
 }

@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="base_orange">#F27405</color>
-    <color name="orange_tint_dark">#F29E55</color>
-    <color name="orange_tint_light">#F2E5DA</color>
-    <color name="orange_tone_saturated">#7B5B3E</color>
-    <color name="orange_tone_gray">#837C75</color>
-    <color name="orange_shade">#401E00</color>
-    <color name="base_yellow">#F5B904</color>
-    <color name="yellow_tint">#F5D062</color>
-    <color name="yellow_shade">#715400</color>
+    <color name="DM_base_orange">#D96804</color>
+    <color name="DM_orange_tint_light">#F2E6DB</color>
+    <color name="DM_backdrop_orange_gray">#856C56</color>
+    <color name="DM_base_yellow">#DBA810</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="DM_dark_gray">#212121</color>
+    <color name="DM_darkish_gray">#5B5752</color>
 
     <color name="background">@color/black</color>
-    <color name="category_background">@color/orange_shade</color>
-    <color name="item_background">@color/base_orange</color>
+    <color name="category_background">@color/DM_backdrop_orange_gray</color>
+    <color name="item_background">@color/DM_dark_gray</color>
+    <color name="text_color">@color/DM_base_orange</color>
 
 </resources>

@@ -74,14 +74,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         private final TextView item;
         private final CheckBox checkBox;
         private final ImageView clickable_pencil;
-//        private final TextInputLayout item_layout;
-
+        private final color textColor;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             item = itemView.findViewById(R.id.shoppingList_item);
             checkBox = itemView.findViewById(R.id.checkBox);
             clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
+            textColor = itemView.findViewById(R.color.text_color);
+
 
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override

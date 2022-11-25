@@ -3,19 +3,24 @@
     <item
         android:id="@+id/grocery_list"
         android:title="@string/grocery_list"
-        android:icon="@drawable/plus_sign"/>
+        android:icon="@drawable/list_icon"
+        android:onClick="toGrocerylist"/>
 
     <item
         android:id="@+id/nav_meals"
         android:title="@string/meals"
-        android:icon="@drawable/edit_pencil"
+        android:icon="@drawable/turkey_icon_pic"
         android:onClick="toMealPage"/>
 
     <item
         android:id="@+id/nav_plan"
-        android:title="@string/meal_planning" />
+        android:title="@string/meal_planning"
+        android:icon="@drawable/calendar_icon"
+        android:onClick="toMealPage"/>
 
     <item
         android:id="@+id/nav_settings"
-        android:title="@string/settings" />
+        android:title="@string/settings"
+        android:icon="@drawable/gear_icon"
+        android:onClick="toMealPage"/>
 </menu>

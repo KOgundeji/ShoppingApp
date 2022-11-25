@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
+import com.google.android.material.navigation.NavigationBarItemView;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.RecyclerCategory;
 import com.kunle.shoppinglistapp.models.RecyclerItem;
@@ -48,16 +50,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initialize();
-        setExample();
-        setAdapter(setRecyclerCategoryList());
-//        wait(3000);
-
         left_nav = findViewById(R.id.my_drawer_layout);
         actionBar = new ActionBarDrawerToggle(this, left_nav, R.string.nav_open, R.string.nav_close);
         left_nav.addDrawerListener(actionBar);
         actionBar.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initialize();
+        setExample();
+        setAdapter(setRecyclerCategoryList());
 
     }
 
@@ -68,14 +69,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void wait(int milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void initialize() {
@@ -166,7 +159,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toMealPage(MenuItem item) {
+        Log.d("OnCLick Test", "Here!");
         Intent intent = new Intent(this, MealListActivity.class);
+        startActivity(intent);
+    }
+
+    public void toGrocerylist(MenuItem item) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

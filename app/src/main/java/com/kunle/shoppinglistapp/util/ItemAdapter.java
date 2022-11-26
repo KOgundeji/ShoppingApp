@@ -49,7 +49,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         String quantity = String.valueOf(recyclerItemList.get(position).getQuantity());
         String measurement = recyclerItemList.get(position).getMeasurement();
         String parenthesis;
-        if (measurement == "") {
+        if (measurement.equals("")) {
             parenthesis = "(" + quantity + ")";
         } else {
             parenthesis = "(" + quantity + " " + measurement + ")";

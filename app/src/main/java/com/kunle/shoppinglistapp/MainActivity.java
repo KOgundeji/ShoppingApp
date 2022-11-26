@@ -1,9 +1,10 @@
 package com.kunle.shoppinglistapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,13 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
-import com.google.android.material.navigation.NavigationBarItemView;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.RecyclerCategory;
 import com.kunle.shoppinglistapp.models.RecyclerItem;
@@ -30,8 +29,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout left_nav;
-    private ActionBarDrawerToggle actionBar;
+    private DrawerLayout drawer;
     private AutoCompleteTextView add_item;
     private ImageView addButton;
     private RecyclerView outerRecycler;
@@ -50,28 +48,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        left_nav = findViewById(R.id.my_drawer_layout);
-        actionBar = new ActionBarDrawerToggle(this, left_nav, R.string.nav_open, R.string.nav_close);
-        left_nav.addDrawerListener(actionBar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.my_drawer_layout);
+        ActionBarDrawerToggle actionBar = new ActionBarDrawerToggle(this, drawer, R.string.nav_open, R.string.nav_close);
+        drawer.addDrawerListener(actionBar);
         actionBar.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        initialize();
+//        initNavDrawer();
+        initVariables();
         setExample();
         setAdapter(setRecyclerCategoryList());
-
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (actionBar.onOptionsItemSelected(item)) {
-            return true;
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
-        return super.onOptionsItemSelected(item);
+
     }
 
-    private void initialize() {
+    private void initVariables() {
         add_item = findViewById(R.id.add_item_meal);
         addButton = findViewById(R.id.add_button);
         outerRecycler = findViewById(R.id.outerRecycler);
@@ -83,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
         init_categoryList(categoryList);
     }
 
+    private void initNavDrawer() {
+
+    }
+
     private ArrayList<RecyclerCategory> setRecyclerCategoryList() {
 
         for (RecyclerItem item : recyclerItemList) {
@@ -90,22 +96,21 @@ public class MainActivity extends AppCompatActivity {
             if (categoryMap.get(category) != null) {
                 ArrayList<RecyclerItem> itemList = categoryMap.get(category);
                 itemList.add(item);
-                categoryMap.replace(category,itemList);
+                categoryMap.replace(category, itemList);
             } else {
                 ArrayList<RecyclerItem> itemList = new ArrayList<>();
                 itemList.add(item);
-                categoryMap.put(category,itemList);
+                categoryMap.put(category, itemList);
             }
         }
 
         for (String category : categoryMap.keySet()) {
-            RecyclerCategory cat = new RecyclerCategory(category,categoryMap.get(category));
+            RecyclerCategory cat = new RecyclerCategory(category, categoryMap.get(category));
             recyclerCategories.add(cat);
         }
 
         return recyclerCategories;
     }
-
 
 
     public void setAddItemListener(View view) {
@@ -122,33 +127,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void setExample() {
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 4, "Oranges",
-                "bunch","Fruit"));
+                "bunch", "Fruit"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Pineapple",
-                "","Fruit"));
+                "", "Fruit"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Eggs",
-                "dozen","Dairy"));
+                "dozen", "Dairy"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 50, "Cheese",
-                "grams","Dairy"));
+                "grams", "Dairy"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 2, "Pasta",
-                "boxes","Bread/Grains"));
+                "boxes", "Bread/Grains"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Tissues",
-                "box","For the Home"));
+                "box", "For the Home"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Potatoes",
-                "","Produce"));
+                "", "Produce"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Strawberries",
-                "carton","Fruit"));
+                "carton", "Fruit"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Light Bulb",
-                "","For the Home"));
+                "", "For the Home"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 5, "Oui Yogurts",
-                "","Dairy"));
+                "", "Dairy"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Ginger Ale",
-                "12-pack","Beverages"));
+                "12-pack", "Beverages"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Onions",
-                "","Produce"));
+                "", "Produce"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 2, "Frozen Pizza",
-                "carton","Frozen Food"));
+                "carton", "Frozen Food"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Ketchup",
-                "bottle","Condiments"));
+                "bottle", "Condiments"));
 
 
     }
@@ -170,14 +175,19 @@ public class MainActivity extends AppCompatActivity {
         categoryList.add("Toiletries");
     }
 
-    public void toMealPage(MenuItem item) {
-        Log.d("OnCLick Test", "Here!");
-        Intent intent = new Intent(this, MealListActivity.class);
-        startActivity(intent);
+    public void changeActivity(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.nav_grocery_list:
+                intent = new Intent(getApplication(), MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_meals:
+                intent = new Intent(getApplication(), MealListActivity.class);
+                startActivity(intent);
+                break;
+            default:
+        }
     }
 
-    public void toGrocerylist(MenuItem item) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
 }

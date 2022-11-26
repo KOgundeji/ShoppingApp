@@ -32,6 +32,7 @@ public class MealListActivity extends AppCompatActivity {
     private Toolbar meal_toolbar;
     private RecyclerView mealRecyclerView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +41,6 @@ public class MealListActivity extends AppCompatActivity {
         meal_toolbar = findViewById(R.id.meal_toolbar);
         mealList = new ArrayList<>();
         foodList = new ArrayList<>();
-//
-//        left_nav = findViewById(R.id.my_drawer_layout);
-//        actionBar = new ActionBarDrawerToggle(this, left_nav, R.string.nav_open, R.string.nav_close);
-//        left_nav.addDrawerListener(actionBar);
-//        actionBar.syncState();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         foodList.add(new Food());
         foodList.add(new Food());

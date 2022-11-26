@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+        <item
+            android:id="@+id/nav_grocery_list"
+            android:icon="@drawable/list_icon"
+            android:onClick="changeActivity"
+            android:title="@string/grocery_list" />
+
+        <item
+            android:id="@+id/nav_meals"
+            android:icon="@drawable/turkey_icon_pic"
+            android:onClick="changeActivity"
+            android:title="@string/meals" />
+
+        <item
+            android:id="@+id/nav_plan"
+            android:icon="@drawable/calendar_icon"
+            android:onClick="changeActivity"
+            android:title="@string/meal_planning" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/gear_icon"
+            android:onClick="changeActivity"
+            android:title="@string/settings" />
+
+</menu>

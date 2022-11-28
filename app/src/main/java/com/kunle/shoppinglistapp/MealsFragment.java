@@ -2,26 +2,34 @@ package com.kunle.shoppinglistapp;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kunle.shoppinglistapp.databinding.FragmentMealsBinding;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
-import com.kunle.shoppinglistapp.util.MealAdapter;
+import com.kunle.shoppinglistapp.adapters.MealAdapter;
+import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MealsFragment extends Fragment {
 
+    private FragmentMealsBinding bind;
+    private ShoppingViewModel shoppingViewModel;
     private ArrayList<Food> foodList;
     private ArrayList<Meal> mealList;
     private MealAdapter mealAdapter;
-    private RecyclerView mealRecyclerView;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -54,8 +62,19 @@ public class MealsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_meals, container, false);
-        mealRecyclerView = view.findViewById(R.id.meal_recyclerView);
+        bind = FragmentMealsBinding.inflate(inflater, container, false);
+
+        //----------------------------------------------//
+        shoppingViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
+                .create(ShoppingViewModel.class);
+        shoppingViewModel.getAllMeals().observe(this.getViewLifecycleOwner(), new Observer<List<Meal>>() {
+            @Override
+            public void onChanged(List<Meal> meals) {
+                Log.d("TAG", "onChanged: " + meals.get(0).getName()); //there's nothing there yet
+            }
+        });
+        //----------------------------------------------//
+
         mealList = new ArrayList<>();
         foodList = new ArrayList<>();
 
@@ -63,19 +82,23 @@ public class MealsFragment extends Fragment {
         foodList.add(new Food());
         foodList.add(new Food());
 
-        mealList.add(new Meal("Pumpkin Pie",foodList));
+        mealList.add(new Meal("Pumpkin Pie", foodList));
         setAdapter(mealList);
-        return view;
+        return bind.getRoot();
     }
 
     private void setAdapter(ArrayList<Meal> mealList) {
         mealAdapter = new MealAdapter(this.getContext(), mealList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
-        mealRecyclerView.setLayoutManager(manager);
-        mealRecyclerView.setAdapter(mealAdapter);
+        bind.mealRecyclerView.setLayoutManager(manager);
+        bind.mealRecyclerView.setAdapter(mealAdapter);
     }
 
-    public void setAddItemListener(View view) {
+    private void setAddItemListener(View view) {
         view.setBackgroundColor(Color.GREEN);
+    }
+
+    public void onMealOptionSelect() {
+
     }
 }

@@ -1,16 +1,32 @@
 package com.kunle.shoppinglistapp.models;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity(tableName = "food_table")
 public class Food {
+
+    @PrimaryKey(autoGenerate = true)
+ //automatically created, don't need to declare it
+    private int id;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "measurementList")
     private List<String> measurements;
-    private int quantity, id;
+
+    @ColumnInfo(name = "quantity")
+    private int quantity;
 
     public Food() {
     }
 
-    public Food(String name, List<String> measurements) {
+    public Food(@NonNull String name, List<String> measurements) {
         this.name = name;
         this.measurements = measurements;
     }

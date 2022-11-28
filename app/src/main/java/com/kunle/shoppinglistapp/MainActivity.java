@@ -12,13 +12,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.kunle.shoppinglistapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding bind;
     private BottomNavigationView bottomNav;
 
 
@@ -26,11 +29,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        bottomNav = findViewById(R.id.bottom_navigation);
-        changeFragment(new GroceryListFragment());
+        bind = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(bind.getRoot());
 
-        bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        changeFragment(new GroceryListFragment());
+        setTitle("Grocery List");
+
+        bind.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 changeActivity(item);
@@ -44,9 +49,15 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.nav_grocery_list:
                 changeFragment(new GroceryListFragment());
+                setTitle("Grocery List");
                 break;
             case R.id.nav_meals:
                 changeFragment(new MealsFragment());
+                setTitle("Meals");
+                break;
+            case R.id.nav_settings:
+                changeFragment(new SettingsFragment());
+                setTitle("Settings");
                 break;
             default:
         }

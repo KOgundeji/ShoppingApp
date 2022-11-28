@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".SettingsFragment">
+
+        <TextView
+            android:id="@+id/general_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:text="General"
+            android:textColor="@color/DM_base_orange"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/DarkModeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/settings_text_margin_start"
+            android:layout_marginTop="10dp"
+            android:text="Dark Mode"
+            android:textColor="@color/written_text_color"
+            android:textSize="@dimen/settings_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/darkModeCheck"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/general_label" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/darkModeCheck"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:theme="@style/Checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/DarkModeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/general_label" />
+
+        <TextView
+            android:id="@+id/screenOnLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/settings_text_margin_start"
+            android:layout_marginTop="@dimen/settings_distance_from_other_text"
+            android:text="Keep Screen on"
+            android:textColor="@color/written_text_color"
+            android:textSize="@dimen/settings_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/screenOnCheck"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DarkModeLabel" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/screenOnCheck"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/settings_distance_from_other_text"
+            android:layout_marginEnd="30dp"
+            android:theme="@style/Checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/screenOnLabel"
+            app:layout_constraintTop_toBottomOf="@+id/DarkModeLabel" />
+
+        <TextView
+            android:id="@+id/increaseTextSizeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/settings_text_margin_start"
+            android:layout_marginTop="@dimen/settings_distance_from_other_text"
+            android:text="Larger text size"
+            android:textColor="@color/written_text_color"
+            android:textSize="@dimen/settings_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/increaseTextSizeCheck"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/screenOnLabel" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/increaseTextSizeCheck"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/settings_distance_from_other_text"
+            android:layout_marginEnd="30dp"
+            android:theme="@style/Checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/increaseTextSizeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/screenOnLabel" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="About"
+                android:textColor="@color/DM_base_orange"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_text_margin_start"
+                android:text="Created by Kunle Ogundeji"
+                android:textColor="@color/written_text_color"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_text_margin_start"
+                android:text="Sun King Studios"
+                android:textColor="@color/written_text_color"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_text_margin_start"
+                android:text="Version 1.0.0"
+                android:textColor="@color/written_text_color"
+                android:textSize="14sp"
+                 />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,12 +1,7 @@
-package com.kunle.shoppinglistapp.util;
+package com.kunle.shoppinglistapp.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.Meal;
-import com.kunle.shoppinglistapp.models.RecyclerItem;
 
 import java.util.ArrayList;
 

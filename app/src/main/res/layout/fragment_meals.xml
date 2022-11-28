@@ -1,23 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:outlineProvider="none"
-    android:paddingStart="5dp"
-    android:paddingEnd="5dp"
-    android:background="@color/background"
     tools:context=".MealsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/meal_recyclerView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/background"
+        android:outlineProvider="none"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/button_linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:background="@color/category_background"
+                android:onClick="onMealOptionSelect"
+                android:text="@string/add"
+                android:textAllCaps="false"
+                android:textSize="@dimen/button_text_size"
+                android:textColor="@color/written_text_color" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginStart="10dp"
+                android:background="@color/category_background"
+                android:onClick="onMealOptionSelect"
+                android:text="@string/delete"
+                android:textSize="@dimen/button_text_size"
+                android:textAllCaps="false"
+                android:textColor="@color/written_text_color" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/meal_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_linearLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

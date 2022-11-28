@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 
+import com.kunle.shoppinglistapp.databinding.FragmentGroceryListBinding;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.RecyclerCategory;
 import com.kunle.shoppinglistapp.models.RecyclerItem;
-import com.kunle.shoppinglistapp.util.CategoryAdapter;
+import com.kunle.shoppinglistapp.adapters.CategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +24,9 @@ import java.util.Map;
 
 public class GroceryListFragment extends Fragment {
 
-    private AutoCompleteTextView add_item;
-    private ImageView addButton;
-    private RecyclerView outerRecycler;
+//    private AutoCompleteTextView add_item;
+//    private ImageView addButton;
+//    private RecyclerView outerRecycler;
     private CategoryAdapter categoryAdapter;
     private Map<String, ArrayList<RecyclerItem>> categoryMap;
     private ArrayList<RecyclerItem> recyclerItemList;
@@ -35,6 +34,7 @@ public class GroceryListFragment extends Fragment {
     private ArrayList<String> categoryList;
     private ArrayList<Food> foodList;
     private ArrayList<Meal> mealList;
+    private FragmentGroceryListBinding bind;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -67,14 +67,11 @@ public class GroceryListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_grocery_list, container, false);
-        add_item = view.findViewById(R.id.add_item_meal);
-        addButton = view.findViewById(R.id.add_button);
-        outerRecycler = view.findViewById(R.id.outerRecycler);
+        bind = FragmentGroceryListBinding.inflate(inflater,container,false);
         initVariables();
         setExample();
         setAdapter(setRecyclerCategoryList());
-        return view;
+        return bind.getRoot();
     }
 
     private void initVariables() {
@@ -119,8 +116,8 @@ public class GroceryListFragment extends Fragment {
     private void setAdapter(ArrayList<RecyclerCategory> categories) {
         categoryAdapter = new CategoryAdapter(this.getContext(), categories);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
-        outerRecycler.setLayoutManager(manager);
-        outerRecycler.setAdapter(categoryAdapter);
+        bind.outerRecycler.setLayoutManager(manager);
+        bind.outerRecycler.setAdapter(categoryAdapter);
     }
 
     private void setExample() {

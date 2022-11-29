@@ -121,6 +121,7 @@ public class GroceryListFragment extends Fragment {
     }
 
     private void setExample() {
+
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 4, "Oranges",
                 "bunch", "Fruit"));
         recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Pineapple",

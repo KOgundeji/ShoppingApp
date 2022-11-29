@@ -2,47 +2,45 @@ package com.kunle.shoppinglistapp.util;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
+
 import androidx.room.Database;
-import androidx.room.DatabaseConfiguration;
-import androidx.room.InvalidationTracker;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.room.TypeConverters;
 
 import com.kunle.shoppinglistapp.data.FoodDao;
 import com.kunle.shoppinglistapp.data.MealDao;
+import com.kunle.shoppinglistapp.data.MealWithIngredientsDao;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //This is creating the actual RoomDatabase, which is comprised of the Entities, DAO, and SQLite to form our main database
 
 @Database(entities = {Food.class, Meal.class}, version = 1, exportSchema = false)
-public abstract class ShoppingRoomDatabase extends RoomDatabase {
+@TypeConverters({Converters.class})
+public abstract class ShoppingRoomDB extends RoomDatabase {
 
     public abstract FoodDao foodDao();
-
     public abstract MealDao mealDao();
+    public abstract MealWithIngredientsDao mealWithIngredientsDao();
 
     public static final int NUMBER_OF_THREADS = 4; //not sure why we chose this #
 
-    private static volatile ShoppingRoomDatabase INSTANCE;
+    private static volatile ShoppingRoomDB INSTANCE;
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     //the executor is going to write things into the database, but not through the main thread
     //this will create a new thread for us to use
 
-    public static ShoppingRoomDatabase getDatabase(final Context context) {
+    public static ShoppingRoomDB getDatabase(final Context context) {
         if (context == null) {
-            synchronized (ShoppingRoomDatabase.class) {
+            synchronized (ShoppingRoomDB.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    ShoppingRoomDatabase.class, "shopping_database")
+                                    ShoppingRoomDB.class, "shopping_database")
 //                            .addCallback(sRoomDatabaseCallback) //may just delete this part
                             .build();
                 }

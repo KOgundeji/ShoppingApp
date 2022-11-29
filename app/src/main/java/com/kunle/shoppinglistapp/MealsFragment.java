@@ -82,7 +82,7 @@ public class MealsFragment extends Fragment {
         foodList.add(new Food());
         foodList.add(new Food());
 
-        mealList.add(new Meal("Pumpkin Pie", foodList));
+        mealList.add(new Meal("Pumpkin Pie"));
         setAdapter(mealList);
         return bind.getRoot();
     }

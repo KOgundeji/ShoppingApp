@@ -3,7 +3,11 @@ package com.kunle.shoppinglistapp.models;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.kunle.shoppinglistapp.util.Converters;
 
 import java.util.ArrayList;
 
@@ -11,28 +15,18 @@ import java.util.ArrayList;
 public class Meal {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    public long mealId;
 
     @ColumnInfo(name = "name")
-    private String name;
+    public String name;
 
-    @ColumnInfo(name = "ingredientList")
-    private ArrayList<Food> ingredients;
 
+    @Ignore
     public Meal() {
     }
 
-    public Meal(@NonNull String name, ArrayList<Food> ingredients) {
+    public Meal(@NonNull String name) {
         this.name = name;
-        this.ingredients = ingredients;
-    }
-
-    public ArrayList<Food> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(ArrayList<Food> ingredients) {
-        this.ingredients = ingredients;
     }
 
     public String getName() {
@@ -41,5 +35,13 @@ public class Meal {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(long mealId) {
+        this.mealId = mealId;
     }
 }

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.data.ShoppingRepository;
 
 import java.util.List;
@@ -14,21 +15,27 @@ import java.util.List;
 //holds all of the data needed for the UI
 public class ShoppingViewModel extends AndroidViewModel {
 
-    public static ShoppingRepository respository;
-    public final LiveData<List<Meal>> allMeals;
+    public static ShoppingRepository repository;
+    public final LiveData<List<MealWithIngredients>> allMeals;
 
     public ShoppingViewModel(@NonNull Application application) {
         super(application);
-        respository = new ShoppingRepository(application);
-        allMeals = respository.getAllData();
+        repository = new ShoppingRepository(application);
+        allMeals = repository.getAllMealsWithIngredients();
     }
 
-    public LiveData<List<Meal>> getAllMeals() {
+    public LiveData<List<MealWithIngredients>> getAllMeals() {
         return allMeals;
     }
 
-    public static void insert(Meal meal) {
-        respository.insert(meal);
+    public static void insertMeal(Meal meal) {
+        repository.insertMeal(meal);
     }
+
+    public static void deleteMeal(Meal meal) {
+        repository.deleteMeal(meal);
+    }
+
+
 }
 

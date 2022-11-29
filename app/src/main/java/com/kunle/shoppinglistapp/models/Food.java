@@ -3,32 +3,29 @@ package com.kunle.shoppinglistapp.models;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
 
 @Entity(tableName = "food_table")
 public class Food {
 
     @PrimaryKey(autoGenerate = true)
  //automatically created, don't need to declare it
-    private int id;
+    public long foodId;
 
     @ColumnInfo(name = "name")
-    private String name;
-
-    @ColumnInfo(name = "measurementList")
-    private List<String> measurements;
+    public String name;
 
     @ColumnInfo(name = "quantity")
-    private int quantity;
+    public int quantity;
 
+    @Ignore
     public Food() {
     }
 
-    public Food(@NonNull String name, List<String> measurements) {
+    public Food(@NonNull String name) {
         this.name = name;
-        this.measurements = measurements;
     }
 
     public String getName() {
@@ -39,14 +36,6 @@ public class Food {
         this.name = name;
     }
 
-    public List<String> getMeasurements() {
-        return measurements;
-    }
-
-    public void setMeasurements(List<String> measurements) {
-        this.measurements = measurements;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -55,11 +44,11 @@ public class Food {
         this.quantity = quantity;
     }
 
-    public int getId() {
-        return id;
+    public long getFoodId() {
+        return foodId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFoodId(long foodId) {
+        this.foodId = foodId;
     }
 }

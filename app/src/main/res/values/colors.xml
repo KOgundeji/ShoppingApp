@@ -12,16 +12,16 @@
     <color name="white">#FFFFFF</color>
 
     <!--    Dark Mode Colors-->
-    <color name="black">#000000</color>
-    <color name="DM_dark_gray">#212121</color>
-    <color name="DM_darkish_gray">#5B5752</color>
-    <color name="DM_base_orange">#D96804</color>
+    <color name="DM_base_orange">#BF5C04</color>
     <color name="DM_orange_tint_light">#F2E6DB</color>
     <color name="DM_backdrop_orange_gray">#856C56</color>
     <color name="DM_base_yellow">#DBA810</color>
+    <color name="black">#000000</color>
+    <color name="DM_dark_gray">#212121</color>
+    <color name="DM_darkish_gray">#333333</color>
 
     <color name="background">@color/orange_tint_light</color>
-    <color name="category_background">@color/base_orange</color>
+    <color name="category_background">@color/DM_base_orange</color>
     <color name="item_background">@color/white</color>
     <color name="text_color">@color/orange_shade</color>
     <color name="written_text_color">@color/black</color>

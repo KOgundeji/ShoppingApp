@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.kunle.shoppinglistapp.databinding.ActivityMainBinding;
+import com.kunle.shoppinglistapp.models.Food;
+import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         changeFragment(new GroceryListFragment());
         setTitle("Grocery List");
+
 
         bind.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

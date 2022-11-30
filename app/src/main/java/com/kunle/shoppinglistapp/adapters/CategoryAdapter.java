@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
-import com.kunle.shoppinglistapp.models.RecyclerCategory;
+import com.kunle.shoppinglistapp.models.FoodCategory;
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private final Context context;
-    private final ArrayList<RecyclerCategory> categoryList;
+    private final ArrayList<FoodCategory> categoryandItemList;
 
-    public CategoryAdapter(Context context, ArrayList<RecyclerCategory> categoryList) {
+    public CategoryAdapter(Context context, ArrayList<FoodCategory> categoryandItemList) {
         this.context = context;
-        this.categoryList = categoryList;
+        this.categoryandItemList = categoryandItemList;
     }
 
     @NonNull
@@ -35,7 +35,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.CategoryViewHolder holder, int position) {
-        RecyclerCategory category = categoryList.get(position);
+        FoodCategory category = categoryandItemList.get(position);
         holder.category.setText(category.getCategoryName());
 
         ItemAdapter itemAdapter = new ItemAdapter(context,category.getItemList());
@@ -45,7 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public int getItemCount() {
-        return categoryList.size();
+        return categoryandItemList.size();
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {

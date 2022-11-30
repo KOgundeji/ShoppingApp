@@ -1,5 +1,6 @@
 package com.kunle.shoppinglistapp.models;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
 @Entity(primaryKeys = {"mealId","foodId"})

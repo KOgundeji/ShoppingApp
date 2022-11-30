@@ -12,6 +12,7 @@ import androidx.room.Update;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.util.Converters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,16 +22,16 @@ public interface MealDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMeal(Meal meal);
 
-    @Delete
-    void deleteMeal(Meal meal);
-
-    @Query("DELETE FROM meal_table")
-    void deleteAllMeals();
-
     @Update
     void updateMeal(Meal meal);
 
-    @Query("SELECT * FROM meal_table")
+    @Delete
+    void deleteMeal(Meal meal);
+
+    @Query("DELETE FROM MEAL_TABLE")
+    void deleteAllMeals();
+
+    @Query("SELECT * FROM MEAL_TABLE")
     LiveData<List<Meal>> getAllMeals();
 
 

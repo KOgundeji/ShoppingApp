@@ -8,6 +8,7 @@ import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.MealFoodCrossRef;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MealWithIngredients {

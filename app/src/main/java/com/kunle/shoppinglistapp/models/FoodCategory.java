@@ -2,12 +2,12 @@ package com.kunle.shoppinglistapp.models;
 
 import java.util.ArrayList;
 
-public class RecyclerCategory {
+public class FoodCategory {
 
     private final String categoryName;
-    private final ArrayList<RecyclerItem> itemList;
+    private final ArrayList<Food> itemList;
 
-    public RecyclerCategory(String categoryName, ArrayList<RecyclerItem> itemList) {
+    public FoodCategory(String categoryName, ArrayList<Food> itemList) {
         this.categoryName = categoryName;
         this.itemList = itemList;
     }
@@ -16,7 +16,7 @@ public class RecyclerCategory {
         return categoryName;
     }
 
-    public ArrayList<RecyclerItem> getItemList() {
+    public ArrayList<Food> getItemList() {
         return itemList;
     }
 }

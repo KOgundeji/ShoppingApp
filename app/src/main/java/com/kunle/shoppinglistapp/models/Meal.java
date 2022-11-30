@@ -1,31 +1,24 @@
 package com.kunle.shoppinglistapp.models;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.kunle.shoppinglistapp.util.Converters;
-
-import java.util.ArrayList;
 
 @Entity(tableName = "meal_table")
 public class Meal {
 
     @PrimaryKey(autoGenerate = true)
-    public long mealId;
+    private long mealId;
 
     @ColumnInfo(name = "name")
-    public String name;
-
+    private String name;
 
     @Ignore
     public Meal() {
     }
 
-    public Meal(@NonNull String name) {
+    public Meal(String name) {
         this.name = name;
     }
 

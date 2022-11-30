@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,24 +15,28 @@ import android.view.ViewGroup;
 
 import com.kunle.shoppinglistapp.databinding.FragmentGroceryListBinding;
 import com.kunle.shoppinglistapp.models.Food;
+import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
-import com.kunle.shoppinglistapp.models.RecyclerCategory;
-import com.kunle.shoppinglistapp.models.RecyclerItem;
+import com.kunle.shoppinglistapp.models.FoodCategory;
 import com.kunle.shoppinglistapp.adapters.CategoryAdapter;
+import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GroceryListFragment extends Fragment {
 
-//    private AutoCompleteTextView add_item;
+    //    private AutoCompleteTextView add_item;
 //    private ImageView addButton;
 //    private RecyclerView outerRecycler;
+    private ShoppingViewModel viewModel;
     private CategoryAdapter categoryAdapter;
-    private Map<String, ArrayList<RecyclerItem>> categoryMap;
-    private ArrayList<RecyclerItem> recyclerItemList;
-    private ArrayList<RecyclerCategory> recyclerCategories;
+    private Map<String, ArrayList<Food>> categoryMap;
+    private ArrayList<Food> foodItemList;
+    private LiveData<List<GroceryList>> groceryList;
+    private ArrayList<FoodCategory> recyclerCategories;
     private ArrayList<String> categoryList;
     private ArrayList<Food> foodList;
     private ArrayList<Meal> mealList;
@@ -62,20 +68,36 @@ public class GroceryListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        bind = FragmentGroceryListBinding.inflate(inflater,container,false);
+        bind = FragmentGroceryListBinding.inflate(inflater, container, false);
         initVariables();
         setExample();
-        setAdapter(setRecyclerCategoryList());
+        setAdapter(seperateFoodintoCategories());
+
+        viewModel = new ViewModelProvider.AndroidViewModelFactory(this.getActivity().getApplication())
+                .create(ShoppingViewModel.class);
+//
+//        viewModel.getAllMeals().observe(this.getViewLifecycleOwner(), new Observer<List<Meal>>() {
+//            @Override
+//            public void onChanged(List<Meal> meals) {
+//
+//            }
+//        });
+        Food new1 = new Food("Oranges", 4, "bunches", "Fruit");
+        ShoppingViewModel.insertFood(new1);
+
+
         return bind.getRoot();
     }
 
     private void initVariables() {
-        recyclerItemList = new ArrayList<>();
+        ShoppingViewModel viewModel = new ShoppingViewModel(this.requireActivity().getApplication());
+        foodItemList = viewModel.getAllFood();
         recyclerCategories = new ArrayList<>();
 
         categoryMap = new HashMap<>();
@@ -84,23 +106,23 @@ public class GroceryListFragment extends Fragment {
     }
 
 
-    private ArrayList<RecyclerCategory> setRecyclerCategoryList() {
+    private ArrayList<FoodCategory> seperateFoodintoCategories() {
 
-        for (RecyclerItem item : recyclerItemList) {
+        for (Food item : foodItemList) {
             String category = item.getCategory();
             if (categoryMap.get(category) != null) {
-                ArrayList<RecyclerItem> itemList = categoryMap.get(category);
+                ArrayList<Food> itemList = categoryMap.get(category);
                 itemList.add(item);
                 categoryMap.replace(category, itemList);
             } else {
-                ArrayList<RecyclerItem> itemList = new ArrayList<>();
+                ArrayList<Food> itemList = new ArrayList<>();
                 itemList.add(item);
                 categoryMap.put(category, itemList);
             }
         }
 
         for (String category : categoryMap.keySet()) {
-            RecyclerCategory cat = new RecyclerCategory(category, categoryMap.get(category));
+            FoodCategory cat = new FoodCategory(category, categoryMap.get(category));
             recyclerCategories.add(cat);
         }
 
@@ -113,7 +135,7 @@ public class GroceryListFragment extends Fragment {
     }
 
 
-    private void setAdapter(ArrayList<RecyclerCategory> categories) {
+    private void setAdapter(ArrayList<FoodCategory> categories) {
         categoryAdapter = new CategoryAdapter(this.getContext(), categories);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
         bind.outerRecycler.setLayoutManager(manager);
@@ -121,36 +143,21 @@ public class GroceryListFragment extends Fragment {
     }
 
     private void setExample() {
-
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 4, "Oranges",
-                "bunch", "Fruit"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Pineapple",
-                "", "Fruit"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Eggs",
-                "dozen", "Dairy"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 50, "Cheese",
-                "grams", "Dairy"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 2, "Pasta",
-                "boxes", "Bread/Grains"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Tissues",
-                "box", "For the Home"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Potatoes",
-                "", "Produce"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Strawberries",
-                "carton", "Fruit"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Light Bulb",
-                "", "For the Home"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 5, "Oui Yogurts",
-                "", "Dairy"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Ginger Ale",
-                "12-pack", "Beverages"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 3, "Onions",
-                "", "Produce"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 2, "Frozen Pizza",
-                "carton", "Frozen Food"));
-        recyclerItemList.add(new RecyclerItem(RecyclerItem.FOOD, 1, "Ketchup",
-                "bottle", "Condiments"));
-
+        ShoppingViewModel.insertFood(new Food("Oranges", 4, "bunches", "Fruit"));
+        ShoppingViewModel.insertFood(new Food("Pineapple", 3, "", "Fruit"));
+        ShoppingViewModel.insertFood(new Food("Eggs", 1, "dozen", "Dairy"));
+        ShoppingViewModel.insertFood(new Food("Cheese", 50, "grams", "Dairy"));
+        ShoppingViewModel.insertFood(new Food("Pasta", 2, "boxes", "Bread/Grains"));
+        ShoppingViewModel.insertFood(new Food("Tissues", 1, "box", "For the Home"));
+        ShoppingViewModel.insertFood(new Food("Potatoes", 3, "", "Produce"));
+//        foodItemList.add(new Food("Strawberries", 1, "carton", "Fruit"));
+//        foodItemList.add(new Food("Light Bulb", 1, "", "For the Home"));
+//        foodItemList.add(new Food("Oui Yogurts", 5, "", "Dairy"));
+//        foodItemList.add(new Food("Ginger Ale", 1, "12-pack", "Beverages"));
+//        foodItemList.add(new Food("Onions", 3, "", "Produce"));
+//        foodItemList.add(new Food("Frozen Pizza", 2, "box", "Frozen Food"));
+//        foodItemList.add(new Food("Ketchup", 1, "bottle", "Condiments"));
+//        foodItemList.add(new Food("Oranges", 12, "bunches", "Fruit"));
 
     }
 
@@ -169,5 +176,7 @@ public class GroceryListFragment extends Fragment {
         categoryList.add("Canned Goods");
         categoryList.add("For the Home");
         categoryList.add("Toiletries");
+        categoryList.add("Meals included above");
     }
+
 }

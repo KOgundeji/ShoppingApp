@@ -16,22 +16,24 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
-import com.kunle.shoppinglistapp.models.RecyclerItem;
+import com.kunle.shoppinglistapp.data.ShoppingRepository;
+import com.kunle.shoppinglistapp.models.Food;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
     private final Context context;
-    private final ArrayList<RecyclerItem> recyclerItemList;
+    private ArrayList<Food> foodList;
 
-
-    public ItemAdapter(Context context, ArrayList<RecyclerItem> recyclerItemList) {
+    public ItemAdapter(Context context, ArrayList<Food> itemListforEachCategory) {
         this.context = context;
-        this.recyclerItemList = recyclerItemList;
+        this.foodList = itemListforEachCategory;
     }
 
     @NonNull
@@ -45,9 +47,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         int textColor = ContextCompat.getColor(context,R.color.text_color);
-        String name = recyclerItemList.get(position).getName();
-        String quantity = String.valueOf(recyclerItemList.get(position).getQuantity());
-        String measurement = recyclerItemList.get(position).getMeasurement();
+        String name = foodList.get(position).getName();
+        String quantity = String.valueOf(foodList.get(position).getQuantity());
+        String measurement = foodList.get(position).getMeasurement();
         String parenthesis;
         if (measurement.equals("")) {
             parenthesis = "(" + quantity + ")";
@@ -69,7 +71,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public int getItemCount() {
-        return recyclerItemList.size();
+        return foodList.size();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{

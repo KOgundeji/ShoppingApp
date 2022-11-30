@@ -1,6 +1,7 @@
 package com.kunle.shoppinglistapp.util;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
@@ -15,47 +16,47 @@ import java.util.List;
 public class Converters {
 
     @TypeConverter
-    public String fromFoodArrayList(List<Food> foods) {
+    public String fromFoodArrayList(ArrayList<Food> foods) {
         if (foods == null) {
             return null;
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Food>>() {
+        Type type = new TypeToken<ArrayList<Food>>() {
         }.getType();
         String json = gson.toJson(foods,type);
         return json;
     }
 
     @TypeConverter
-    public List<Food> toFoodArrayList(String foodString) {
+    public ArrayList<Food> toFoodArrayList(String foodString) {
         if (foodString == null) {
             return null;
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Food>>() {}.getType();
-        List<Food> foodArrayList = gson.fromJson(foodString,type);
+        Type type = new TypeToken<ArrayList<Food>>() {}.getType();
+        ArrayList<Food> foodArrayList = gson.fromJson(foodString,type);
         return foodArrayList;
     }
 
     @TypeConverter
-    public String fromMealArrayList(List<Meal> meals) {
+    public String fromMealArrayList(ArrayList<Meal> meals) {
         if (meals == null) {
             return null;
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Meal>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Meal>>() {}.getType();
         String json = gson.toJson(meals,type);
         return json;
     }
 
     @TypeConverter
-    public List<Meal> toMealArrayList(String mealString) {
+    public ArrayList<Meal> toMealArrayList(String mealString) {
         if (mealString == null) {
             return null;
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Meal>>() {}.getType();
-        List<Meal> mealArrayList = gson.fromJson(mealString,type);
+        Type type = new TypeToken<ArrayList<Meal>>() {}.getType();
+        ArrayList<Meal> mealArrayList = gson.fromJson(mealString,type);
         return mealArrayList;
     }
 }

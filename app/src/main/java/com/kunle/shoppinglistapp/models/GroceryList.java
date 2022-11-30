@@ -5,8 +5,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "food_table")
-public class Food {
+
+//this is a table for the Grocery List. This table is temporary, while the Food model is permanent for future list building
+@Entity(tableName = "temp_grocery_list")
+public class GroceryList {
 
     //automatically created, don't need to declare it
     @PrimaryKey(autoGenerate = true)
@@ -24,22 +26,22 @@ public class Food {
 
 
     @Ignore
-    public Food() {
+    public GroceryList() {
     }
 
     @Ignore
-    public Food(String name) {
+    public GroceryList(String name) {
         this();
         this.name = name;
     }
 
     //this is for whole Meals that are being included in the main grocery list
     @Ignore
-    public Food(String name, int quantity) {
+    public GroceryList(String name, int quantity) {
         this(name,quantity,"","Meals included above");
     }
 
-    public Food(String name, int quantity, String measurement, String category) {
+    public GroceryList(String name, int quantity, String measurement, String category) {
         this(name);
         this.quantity = quantity;
         this.measurement = measurement;

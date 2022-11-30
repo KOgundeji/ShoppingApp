@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,14 +64,9 @@ public class MealsFragment extends Fragment {
         bind = FragmentMealsBinding.inflate(inflater, container, false);
 
         //----------------------------------------------//
-        shoppingViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
-                .create(ShoppingViewModel.class);
-        shoppingViewModel.getAllMeals().observe(this.getViewLifecycleOwner(), new Observer<List<Meal>>() {
-            @Override
-            public void onChanged(List<Meal> meals) {
-                Log.d("TAG", "onChanged: " + meals.get(0).getName()); //there's nothing there yet
-            }
-        });
+//        shoppingViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
+//                .create(ShoppingViewModel.class);
+
         //----------------------------------------------//
 
         mealList = new ArrayList<>();

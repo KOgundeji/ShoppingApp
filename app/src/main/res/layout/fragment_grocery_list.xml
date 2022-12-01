@@ -39,8 +39,8 @@
                 android:layout_width="@dimen/add_plus"
                 android:layout_height="@dimen/add_plus"
                 android:clickable="true"
-                android:onClick="setAddItemListener"
-                android:src="@drawable/add_plussign" />
+                android:src="@drawable/add_circle"
+                app:tint="@color/add_icon" />
 
         </LinearLayout>
 

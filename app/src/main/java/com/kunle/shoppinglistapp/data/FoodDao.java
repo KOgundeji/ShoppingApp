@@ -33,6 +33,6 @@ public interface FoodDao {
     void deleteAllFood();
 
     @Query("SELECT * FROM FOOD_TABLE")
-    List<Food> getAllFood();
+    LiveData<List<Food>> getAllFood();
 
 }

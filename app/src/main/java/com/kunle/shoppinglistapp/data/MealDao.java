@@ -17,7 +17,6 @@ import java.util.List;
 
 
 @Dao
-@TypeConverters({Converters.class})
 public interface MealDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMeal(Meal meal);

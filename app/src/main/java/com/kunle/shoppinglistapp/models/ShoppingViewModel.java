@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.data.ShoppingRepository;
@@ -17,9 +18,9 @@ import java.util.List;
 public class ShoppingViewModel extends AndroidViewModel {
 
     private static ShoppingRepository repository;
-    private final ArrayList<MealWithIngredients> allMealsWithIngredients;
+    private final LiveData<List<MealWithIngredients>> allMealsWithIngredients;
     private final LiveData<List<Meal>> allMeals;
-    private final ArrayList<Food> allFood;
+    private final LiveData<List<Food>> allFood;
     private final LiveData<List<GroceryList>> allGroceries;
 
     public ShoppingViewModel(@NonNull Application application) {
@@ -31,7 +32,10 @@ public class ShoppingViewModel extends AndroidViewModel {
         allGroceries = repository.getAllGroceries();
     }
 
-    public ArrayList<MealWithIngredients> getAllMealsWithIngredients() {
+
+    //ALL QUERIES NEED AN OBJECT!!! Therefore they can't be static
+
+    public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
         return allMealsWithIngredients;
     }
 
@@ -39,13 +43,22 @@ public class ShoppingViewModel extends AndroidViewModel {
         return allMeals;
     }
 
-    public ArrayList<Food> getAllFood() {
+    public LiveData<List<Food>> getAllFood() {
         return allFood;
     }
 
     public LiveData<List<GroceryList>> getAllGroceries() {
         return allGroceries;
     }
+
+    public void deleteAllFood() {
+        repository.deleteAllFood();
+    }
+
+    public void deleteAllGroceries() {
+        repository.deleteAllGroceries();
+    }
+
 
     public static void insertMeal(Meal meal) {
         repository.insertMeal(meal);
@@ -59,6 +72,7 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteMeal(meal);
     }
 
+
     public static void insertFood(Food food) {
         repository.insertFood(food);
     }
@@ -71,20 +85,20 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteFood(food);
     }
 
-    public static void insertGroceries(GroceryList item) {
+
+
+    public static void insertGrocery(GroceryList item) {
         repository.insertGroceries(item);
     }
 
-    public static void updateGroceries(GroceryList item) {
+    public static void updateGrocery(GroceryList item) {
         repository.updateGroceries(item);
     }
 
-    public static void deleteGroceries(GroceryList item) {
+    public static void deleteGrocery(GroceryList item) {
         repository.deleteGroceries(item);
     }
 
-    public static void deleteAllGroceries() {
-        repository.deleteAllGroceries();
-    }
+
 }
 

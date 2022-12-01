@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,24 +17,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
-import com.kunle.shoppinglistapp.data.ShoppingRepository;
-import com.kunle.shoppinglistapp.models.Food;
+import com.kunle.shoppinglistapp.models.GroceryList;
+import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
     private final Context context;
-    private ArrayList<Food> foodList;
+    private ArrayList<GroceryList> groceryList;
 
-    public ItemAdapter(Context context, ArrayList<Food> itemListforEachCategory) {
+    public ItemAdapter(Context context, ArrayList<GroceryList> itemListforEachCategory) {
         this.context = context;
-        this.foodList = itemListforEachCategory;
+        this.groceryList = itemListforEachCategory;
     }
 
     @NonNull
@@ -47,9 +46,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         int textColor = ContextCompat.getColor(context,R.color.text_color);
-        String name = foodList.get(position).getName();
-        String quantity = String.valueOf(foodList.get(position).getQuantity());
-        String measurement = foodList.get(position).getMeasurement();
+        String name = groceryList.get(position).getName();
+        String quantity = String.valueOf(groceryList.get(position).getQuantity());
+        String measurement = groceryList.get(position).getMeasurement();
         String parenthesis;
         if (measurement.equals("")) {
             parenthesis = "(" + quantity + ")";
@@ -71,7 +70,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public int getItemCount() {
-        return foodList.size();
+        return groceryList.size();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{
@@ -87,10 +86,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
 
 
+//            item.setOnLongClickListener();
+
+
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    toggle(view);
+                    ShoppingViewModel.deleteGrocery(groceryList.get(getAdapterPosition()));
+                    Log.d("OnClickTest", "ID: " + groceryList.get(getAdapterPosition()).getFoodId());
                 }
             });
 
@@ -101,9 +104,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 }
             });
 
-        }
-
-        private void toggle(View view) {
         }
 
         private void edit(View view) {

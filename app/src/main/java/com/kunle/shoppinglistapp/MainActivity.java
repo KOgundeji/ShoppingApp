@@ -21,6 +21,8 @@ import com.kunle.shoppinglistapp.databinding.ActivityMainBinding;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding bind;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
+//        File databaseDir = new File(getApplicationContext().getApplicationInfo().dataDir + "/databases");
+//        new File(databaseDir,"shopping_database.db").delete();
         super.onCreate(savedInstanceState);
         bind = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(bind.getRoot());

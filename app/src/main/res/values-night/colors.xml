@@ -17,5 +17,7 @@
     <color name="category_text_color">@color/DM_orange_tint_light</color>
     <color name="checkbox_resting">@color/DM_orange_tint_light</color>
     <color name="checkbox_checked">@color/DM_orange_tint_light</color>
+    <color name="add_icon">@color/DM_darkish_gray</color>
+    <color name="pencil_icon">@color/black</color>
 
 </resources>

@@ -56,7 +56,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:src="@drawable/edit_pencil" />
+                android:layout_gravity="center"
+                android:src="@drawable/edit"
+                app:tint="@color/pencil_icon" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

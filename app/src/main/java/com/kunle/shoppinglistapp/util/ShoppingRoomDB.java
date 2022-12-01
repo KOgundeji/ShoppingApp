@@ -3,10 +3,13 @@ package com.kunle.shoppinglistapp.util;
 import android.content.Context;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kunle.shoppinglistapp.data.FoodDao;
 import com.kunle.shoppinglistapp.data.GroceryListDao;
@@ -17,12 +20,13 @@ import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.MealFoodCrossRef;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //This is creating the actual RoomDatabase, which is comprised of the Entities, DAO, and SQLite to form our main database
 
-@Database(entities = {Food.class, Meal.class, MealFoodCrossRef.class, GroceryList.class}, version = 2, exportSchema = false)
+@Database(entities = {Food.class, Meal.class, MealFoodCrossRef.class, GroceryList.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class ShoppingRoomDB extends RoomDatabase {
 
@@ -46,13 +50,22 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     ShoppingRoomDB.class, "shopping_database")
 //                            .addCallback(sRoomDatabaseCallback) //may just delete this part
-                            .fallbackToDestructiveMigration()
+//                            .allowMainThreadQueries()
+//                            .fallbackToDestructiveMigration()
+//                            .addMigrations(MIGRATION)
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
+
+//    static final Migration MIGRATION = new Migration(1,2) {
+//        @Override
+//        public void migrate(@NonNull SupportSQLiteDatabase database) {
+//
+//        }
+//    };
 
 //    //I think the only reason this is here is to create something when the database first runs
 //    private static final RoomDatabase.Callback sRoomDatabaseCallback =

@@ -1,8 +1,10 @@
 package com.kunle.shoppinglistapp.data;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.GroceryList;
@@ -20,9 +22,9 @@ public class ShoppingRepository {
     private FoodDao foodDao;
     private MealWithIngredientsDao mealWithIngredientsDao;
     private GroceryListDao groceryDao;
-    private ArrayList<MealWithIngredients> allMealsWithIngredients;
+    private LiveData<List<MealWithIngredients>> allMealsWithIngredients;
     private LiveData<List<Meal>> allMeals;
-    private ArrayList<Food> allFood;
+    private LiveData<List<Food>> allFood;
     private LiveData<List<GroceryList>> allGroceries;
 
     public ShoppingRepository(Application application) {
@@ -32,13 +34,13 @@ public class ShoppingRepository {
         mealWithIngredientsDao = db.mealWithIngredientsDao();
         groceryDao = db.groceryListDao();
 
-        allMealsWithIngredients = new ArrayList<MealWithIngredients> (mealWithIngredientsDao.getAllMeals());
+        allMealsWithIngredients = mealWithIngredientsDao.getAllMeals();
         allMeals = mealDao.getAllMeals();
-        allFood = new ArrayList<Food>(foodDao.getAllFood());
+        allFood = foodDao.getAllFood();
         allGroceries = groceryDao.getAllGroceries();
     }
 
-    public ArrayList<MealWithIngredients> getAllMealsWithIngredients() {
+    public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
         return allMealsWithIngredients;
     }
 
@@ -46,7 +48,7 @@ public class ShoppingRepository {
         return allMeals;
     }
 
-    public ArrayList<Food> getAllFood() {
+    public LiveData<List<Food>> getAllFood() {
         return allFood;
     }
 
@@ -79,6 +81,10 @@ public class ShoppingRepository {
 
     public void deleteFood(Food food) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteFood(food));
+    }
+
+    public void deleteAllFood() {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteAllFood());
     }
 
     public void insertGroceries(GroceryList item) {

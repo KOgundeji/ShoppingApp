@@ -21,12 +21,14 @@
     <color name="DM_darkish_gray">#333333</color>
 
     <color name="background">@color/orange_tint_light</color>
-    <color name="category_background">@color/DM_base_orange</color>
+    <color name="category_background">@color/base_orange</color>
     <color name="item_background">@color/white</color>
     <color name="text_color">@color/orange_shade</color>
     <color name="written_text_color">@color/black</color>
     <color name="category_text_color">@color/orange_tint_light</color>
     <color name="checkbox_resting">@color/orange_shade</color>
     <color name="checkbox_checked">@color/orange_shade</color>
+    <color name="add_icon">@color/base_orange</color>
+    <color name="pencil_icon">@color/orange_shade</color>
 
 </resources>

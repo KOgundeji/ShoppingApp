@@ -22,6 +22,8 @@ public class ShoppingViewModel extends AndroidViewModel {
     private final LiveData<List<Meal>> allMeals;
     private final LiveData<List<Food>> allFood;
     private final LiveData<List<GroceryList>> allGroceries;
+    private final LiveData<List<Settings>> allSettings;
+
 
     public ShoppingViewModel(@NonNull Application application) {
         super(application);
@@ -30,6 +32,7 @@ public class ShoppingViewModel extends AndroidViewModel {
         allMeals = repository.getAllMeals();
         allFood = repository.getAllFood();
         allGroceries = repository.getAllGroceries();
+        allSettings = repository.getAllSettings();
     }
 
 
@@ -51,6 +54,10 @@ public class ShoppingViewModel extends AndroidViewModel {
         return allGroceries;
     }
 
+    public LiveData<List<Settings>> getAllSettings() {
+        return allSettings;
+    }
+
     public void deleteAllFood() {
         repository.deleteAllFood();
     }
@@ -59,6 +66,17 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteAllGroceries();
     }
 
+    public void deleteAllSettings() {
+        repository.deleteAllSettings();
+    }
+
+    public boolean checkSettingsExist(String name) {
+        return repository.checkSettingsExists(name);
+    }
+
+    public boolean checkSetting(String name) {
+        return repository.checkSetting(name);
+    }
 
     public static void insertMeal(Meal meal) {
         repository.insertMeal(meal);
@@ -99,6 +117,18 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteGroceries(item);
     }
 
+
+    public static void insertSettings(Settings settings) {
+        repository.insertSetting(settings);
+    }
+
+    public static void updateSettings(Settings settings) {
+        repository.updateSetting(settings);
+    }
+
+    public static void deleteSettings(Settings settings) {
+        repository.deleteSetting(settings);
+    }
 
 }
 

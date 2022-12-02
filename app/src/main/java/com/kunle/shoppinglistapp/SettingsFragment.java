@@ -11,8 +11,12 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.kunle.shoppinglistapp.databinding.FragmentSettingsBinding;
+import com.kunle.shoppinglistapp.models.Settings;
+import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 public class SettingsFragment extends Fragment {
+
+    private ShoppingViewModel viewModel;
 
     private FragmentSettingsBinding bind;
     private static final String ARG_PARAM1 = "param1";
@@ -46,11 +50,19 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         bind = FragmentSettingsBinding.inflate(inflater, container, false);
+        viewModel = new ShoppingViewModel(this.getActivity().getApplication());
 
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
+        boolean dark_mode_flag = false;
+
         if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
             bind.darkModeCheck.setChecked(true);
+            dark_mode_flag = true;
+        }
+
+        if (!viewModel.checkSettingsExist("dark_mode")) {
+            ShoppingViewModel.insertSettings(new Settings("remove_categories", dark_mode_flag));
         }
 
         setSettingsOnClickListeners();
@@ -61,10 +73,13 @@ public class SettingsFragment extends Fragment {
         bind.darkModeCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bind.darkModeCheck.isChecked()) {
+                //dark_mode in Settings table
+                if (bind.darkModeCheck.isChecked()) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    ShoppingViewModel.updateSettings(new Settings("dark_mode",true));
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    ShoppingViewModel.updateSettings(new Settings("dark_mode",false));
                 }
             }
         });
@@ -72,10 +87,27 @@ public class SettingsFragment extends Fragment {
         bind.screenOnCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bind.screenOnCheck.isChecked()) {
+                //screen_on in Settings table
+                if (bind.screenOnCheck.isChecked()) {
                     getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    ShoppingViewModel.updateSettings(new Settings("screen_on",true));
                 } else {
                     getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    ShoppingViewModel.updateSettings(new Settings("screen_on",false));
+                }
+            }
+        });
+
+        bind.removeCategoriesCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //remove_categories in settings table
+                if (bind.removeCategoriesCheck.isChecked()) {
+                    ShoppingViewModel.updateSettings(
+                            new Settings("remove_categories", true));
+                } else {
+                    ShoppingViewModel.updateSettings(
+                            new Settings("remove_categories", false));
                 }
             }
         });

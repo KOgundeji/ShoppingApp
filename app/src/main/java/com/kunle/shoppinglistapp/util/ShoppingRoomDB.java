@@ -1,6 +1,7 @@
 package com.kunle.shoppinglistapp.util;
 
 import android.content.Context;
+import android.content.res.Configuration;
 
 
 import androidx.annotation.NonNull;
@@ -15,10 +16,12 @@ import com.kunle.shoppinglistapp.data.FoodDao;
 import com.kunle.shoppinglistapp.data.GroceryListDao;
 import com.kunle.shoppinglistapp.data.MealDao;
 import com.kunle.shoppinglistapp.data.MealWithIngredientsDao;
+import com.kunle.shoppinglistapp.data.SettingsDao;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.MealFoodCrossRef;
+import com.kunle.shoppinglistapp.models.Settings;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -26,7 +29,7 @@ import java.util.concurrent.Executors;
 
 //This is creating the actual RoomDatabase, which is comprised of the Entities, DAO, and SQLite to form our main database
 
-@Database(entities = {Food.class, Meal.class, MealFoodCrossRef.class, GroceryList.class}, version = 1, exportSchema = false)
+@Database(entities = {Food.class, Meal.class, MealFoodCrossRef.class, GroceryList.class, Settings.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class ShoppingRoomDB extends RoomDatabase {
 
@@ -34,6 +37,7 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
     public abstract MealDao mealDao();
     public abstract MealWithIngredientsDao mealWithIngredientsDao();
     public abstract GroceryListDao groceryListDao();
+    public abstract SettingsDao settingsDao();
 
     public static final int NUMBER_OF_THREADS = 4; //not sure why we chose this #
 
@@ -49,8 +53,8 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     ShoppingRoomDB.class, "shopping_database")
-//                            .addCallback(sRoomDatabaseCallback) //may just delete this part
-//                            .allowMainThreadQueries()
+                            .addCallback(sRoomDatabaseCallback)
+                            .allowMainThreadQueries()
 //                            .fallbackToDestructiveMigration()
 //                            .addMigrations(MIGRATION)
                             .build();
@@ -67,23 +71,24 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
 //        }
 //    };
 
-//    //I think the only reason this is here is to create something when the database first runs
-//    private static final RoomDatabase.Callback sRoomDatabaseCallback =
-//            new RoomDatabase.Callback() {
-//                @Override
-//                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-//                    super.onCreate(db);
-//                    databaseWriteExecutor.execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            FoodDao foodDao = INSTANCE.foodDao();
-//                            foodDao.deleteAll(); //to start fresh
-//
-//                            Food food = new Food();
-//                            foodDao.insert(food);
-//                        }
-//                    });
-//                }
-//
-//            };
+//    this is here is to create something when the database first runs
+    private static final RoomDatabase.Callback sRoomDatabaseCallback =
+            new RoomDatabase.Callback() {
+                @Override
+                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                    super.onCreate(db);
+                    databaseWriteExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            SettingsDao settingsDao = INSTANCE.settingsDao();
+                            settingsDao.deleteAllSettings(); //to start fresh
+
+                            settingsDao.insertSettings(new Settings("screen_on",false));
+                            settingsDao.insertSettings(new Settings("remove_categories",false));
+
+                        }
+                    });
+                }
+
+            };
 }

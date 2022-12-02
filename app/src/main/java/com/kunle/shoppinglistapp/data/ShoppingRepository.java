@@ -1,17 +1,15 @@
 package com.kunle.shoppinglistapp.data;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
+import com.kunle.shoppinglistapp.models.Settings;
 import com.kunle.shoppinglistapp.util.ShoppingRoomDB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //this is a helper class. It creates a central repository to fetch DB data. All the data you need is here.
@@ -22,10 +20,12 @@ public class ShoppingRepository {
     private FoodDao foodDao;
     private MealWithIngredientsDao mealWithIngredientsDao;
     private GroceryListDao groceryDao;
+    private SettingsDao settingsDao;
     private LiveData<List<MealWithIngredients>> allMealsWithIngredients;
     private LiveData<List<Meal>> allMeals;
     private LiveData<List<Food>> allFood;
     private LiveData<List<GroceryList>> allGroceries;
+    private LiveData<List<Settings>> allSettings;
 
     public ShoppingRepository(Application application) {
         ShoppingRoomDB db = ShoppingRoomDB.getDatabase(application);
@@ -33,11 +33,13 @@ public class ShoppingRepository {
         foodDao = db.foodDao();
         mealWithIngredientsDao = db.mealWithIngredientsDao();
         groceryDao = db.groceryListDao();
+        settingsDao = db.settingsDao();
 
         allMealsWithIngredients = mealWithIngredientsDao.getAllMeals();
         allMeals = mealDao.getAllMeals();
         allFood = foodDao.getAllFood();
         allGroceries = groceryDao.getAllGroceries();
+        allSettings = settingsDao.getAllSettings();
     }
 
     public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
@@ -56,7 +58,20 @@ public class ShoppingRepository {
         return allGroceries;
     }
 
-//    CRUD operations ----------------------->
+    public LiveData<List<Settings>> getAllSettings() {
+        return allSettings;
+    }
+
+    public boolean checkSettingsExists(String name) {
+            return settingsDao.checkSettingsExists(name);
+    }
+
+    public boolean checkSetting(String name) {
+        return settingsDao.checkSetting(name);
+    }
+
+
+    //    CRUD operations ----------------------->
     public void insertMeal(Meal meal) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealDao.insertMeal(meal));
     }
@@ -94,7 +109,7 @@ public class ShoppingRepository {
     }
 
     public void updateGroceries(GroceryList item) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.insertGroceryItem(item));
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.updateGroceryItem(item));
     }
 
     public void deleteGroceries(GroceryList item) {
@@ -104,6 +119,27 @@ public class ShoppingRepository {
     public void deleteAllGroceries() {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.deleteAllGroceries());
     }
+
+    public void insertSetting(Settings settings) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> {
+            settingsDao.insertSettings(settings);
+        });
+    }
+
+    public void updateSetting(Settings settings) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.updateSettings(settings));
+    }
+
+    public void deleteSetting(Settings settings) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.deleteSettings(settings));
+    }
+
+    public void deleteAllSettings() {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.deleteAllSettings());
+    }
+
+
+
 
 
 

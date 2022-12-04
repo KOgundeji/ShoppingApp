@@ -9,26 +9,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
-
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.kunle.shoppinglistapp.data.SettingsDao;
 import com.kunle.shoppinglistapp.databinding.ActivityMainBinding;
-import com.kunle.shoppinglistapp.models.Food;
+import com.kunle.shoppinglistapp.models.Settings;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding bind;
     private ShoppingViewModel viewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +33,38 @@ public class MainActivity extends AppCompatActivity {
 //        File databaseDir = new File(getApplicationContext().getApplicationInfo().dataDir + "/databases");
 //        new File(databaseDir,"shopping_database.db").delete();
         super.onCreate(savedInstanceState);
+
         bind = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(bind.getRoot());
+
         viewModel = new ShoppingViewModel(this.getApplication());
 
-        if (viewModel.checkSetting("screen_on")) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        final int currentNightMode = getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE, 1));
+        } else if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
+            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE, 0));
         } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
+        ShoppingViewModel.insertSettings(new Settings(Settings.SCREEN_ON,0));
+        ShoppingViewModel.insertSettings(new Settings(Settings.NO_CATEGORIES,0));
+
+        viewModel.checkSetting(Settings.SCREEN_ON).observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer == 1) {
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                } else {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+            }
+        });
 
         changeFragment(new GroceryListFragment());
         setTitle("Grocery List");
-
-
-
-
-
 
         bind.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

@@ -6,17 +6,17 @@ import androidx.room.Relation;
 
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
-import com.kunle.shoppinglistapp.models.MealFoodCrossRef;
+import com.kunle.shoppinglistapp.models.MealFoodMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MealWithIngredients {
-    @Embedded public Meal meal;
+    @Embedded
+    public Meal meal;
     @Relation(
             parentColumn = "mealId",
             entityColumn = "foodId",
-            associateBy = @Junction(MealFoodCrossRef.class)
+            associateBy = @Junction(MealFoodMap.class)
     )
 
     public List<Food> foodList;

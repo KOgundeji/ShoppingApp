@@ -1,7 +1,6 @@
 package com.kunle.shoppinglistapp.util;
 
 import android.content.Context;
-import android.content.res.Configuration;
 
 
 import androidx.annotation.NonNull;
@@ -20,16 +19,17 @@ import com.kunle.shoppinglistapp.data.SettingsDao;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
-import com.kunle.shoppinglistapp.models.MealFoodCrossRef;
+import com.kunle.shoppinglistapp.models.MealFoodMap;
 import com.kunle.shoppinglistapp.models.Settings;
+import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
-import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //This is creating the actual RoomDatabase, which is comprised of the Entities, DAO, and SQLite to form our main database
 
-@Database(entities = {Food.class, Meal.class, MealFoodCrossRef.class, GroceryList.class, Settings.class}, version = 1, exportSchema = false)
+@Database(entities = {Food.class, Meal.class, MealFoodMap.class, GroceryList.class, Settings.class},
+        version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class ShoppingRoomDB extends RoomDatabase {
 
@@ -39,7 +39,7 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
     public abstract GroceryListDao groceryListDao();
     public abstract SettingsDao settingsDao();
 
-    public static final int NUMBER_OF_THREADS = 4; //not sure why we chose this #
+    public static final int NUMBER_OF_THREADS = 4;
 
     private static volatile ShoppingRoomDB INSTANCE;
     public static final ExecutorService databaseWriteExecutor =
@@ -54,9 +54,9 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     ShoppingRoomDB.class, "shopping_database")
                             .addCallback(sRoomDatabaseCallback)
-                            .allowMainThreadQueries()
-//                            .fallbackToDestructiveMigration()
-//                            .addMigrations(MIGRATION)
+//                            .allowMainThreadQueries()
+                            .fallbackToDestructiveMigration()
+                            .addMigrations(MIGRATION)
                             .build();
                 }
             }
@@ -64,12 +64,12 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
         return INSTANCE;
     }
 
-//    static final Migration MIGRATION = new Migration(1,2) {
-//        @Override
-//        public void migrate(@NonNull SupportSQLiteDatabase database) {
-//
-//        }
-//    };
+    static final Migration MIGRATION = new Migration(1,2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+//            database.execSQL("ALTER TABLE MealFoodCrossRef RENAME TO MealFoodMap");
+        }
+    };
 
 //    this is here is to create something when the database first runs
     private static final RoomDatabase.Callback sRoomDatabaseCallback =
@@ -81,10 +81,20 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
                         @Override
                         public void run() {
                             SettingsDao settingsDao = INSTANCE.settingsDao();
+                            GroceryListDao groceryListDao = INSTANCE.groceryListDao();
                             settingsDao.deleteAllSettings(); //to start fresh
+                            groceryListDao.deleteAllGroceries();
 
-                            settingsDao.insertSettings(new Settings("screen_on",false));
-                            settingsDao.insertSettings(new Settings("remove_categories",false));
+                            settingsDao.insertSettings(new Settings("screen_on",0));
+                            settingsDao.insertSettings(new Settings("remove_categories",0));
+
+                            ShoppingViewModel.insertGrocery(new GroceryList("Oranges", 4, "bunches", "Fruit"));
+                            ShoppingViewModel.insertGrocery(new GroceryList("Pineapple", 3, "", "Fruit"));
+                            ShoppingViewModel.insertGrocery(new GroceryList("Eggs", 1, "dozen", "Dairy"));
+                            ShoppingViewModel.insertGrocery(new GroceryList("Cheese", 50, "grams", "Dairy"));
+                            ShoppingViewModel.insertGrocery(new GroceryList("Pasta", 2, "boxes", "Bread/Grains"));
+                            ShoppingViewModel.insertGrocery(new GroceryList("Tissues", 1, "box", "For the Home"));
+                            ShoppingViewModel.insertGrocery(new GroceryList("Potatoes", 3, "", "Produce"));
 
                         }
                     });

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_create_ingredient"
+        android:layout_marginTop="30dp"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="@color/text_color"
+        app:hintTextColor="@color/DM_darkish_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_new_ingredient_for_meal"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+
+            android:hint="Ingredient" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_create_ingredient"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="@color/text_color"
+        app:hintTextColor="@color/DM_darkish_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_new_measurement_for_meal"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Measurement"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/margin_start_create_ingredient"
+        android:hint="Select Category"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="@color/text_color"
+        app:hintTextColor="@color/DM_darkish_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout2">
+
+        <AutoCompleteTextView
+            android:id="@+id/add_new_category_for_meal"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/white"
+        android:layout_marginStart="@dimen/margin_start_create_ingredient"
+        app:boxStrokeColor="@color/text_color"
+        app:hintTextColor="@color/DM_darkish_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_new_quantity_for_meal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:hint="Quantity" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@id/layout4">
+
+    </Space>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,13 +8,17 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "settings")
 public class Settings {
 
+    public static final String DARK_MODE = "dark_mode";
+    public static final String SCREEN_ON = "screen_on";
+    public static final String NO_CATEGORIES = "remove_categories";
+
     @PrimaryKey
     @NonNull
     private String settingsName;
     @ColumnInfo
-    private boolean value;
+    private int value;
 
-    public Settings(@NonNull String settingsName, boolean value) {
+    public Settings(@NonNull String settingsName, int value) {
         this.settingsName = settingsName;
         this.value = value;
     }
@@ -27,11 +31,11 @@ public class Settings {
         this.settingsName = settingsName;
     }
 
-    public boolean isValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(boolean value) {
+    public void setValue(int value) {
         this.value = value;
     }
 }

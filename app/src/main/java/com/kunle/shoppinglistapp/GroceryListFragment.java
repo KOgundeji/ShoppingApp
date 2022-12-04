@@ -3,6 +3,8 @@ package com.kunle.shoppinglistapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 
 import com.kunle.shoppinglistapp.adapters.ItemAdapter;
 import com.kunle.shoppinglistapp.databinding.FragmentGroceryListBinding;
@@ -21,6 +24,8 @@ import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.FoodCategory;
 import com.kunle.shoppinglistapp.adapters.CategoryAdapter;
+import com.kunle.shoppinglistapp.models.MealFoodMap;
+import com.kunle.shoppinglistapp.models.Settings;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
@@ -39,6 +44,7 @@ public class GroceryListFragment extends Fragment {
     private ArrayList<Food> foodList;
     private ArrayList<Meal> mealList;
     private FragmentGroceryListBinding bind;
+    private int noCategories = 0;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -74,7 +80,7 @@ public class GroceryListFragment extends Fragment {
                              Bundle savedInstanceState) {
 //        bind = DataBindingUtil.inflate(inflater,R.layout.fragment_grocery_list,container,false);
         bind = FragmentGroceryListBinding.inflate(inflater, container, false);
-        bind.setLifecycleOwner(this);
+//        bind.setLifecycleOwner(this);
         recyclerCategories = new ArrayList<>();
         categoryMap = new HashMap<>();
         categoryList = new ArrayList<>();
@@ -83,14 +89,19 @@ public class GroceryListFragment extends Fragment {
         setListeners();
         viewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())
                 .create(ShoppingViewModel.class);
-        setExample();
-        setAdapter(seperateFoodintoCategories(viewModel.getAllGroceries().getValue()));
+//        setExample();
 
+        viewModel.checkSetting(Settings.NO_CATEGORIES).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                noCategories = integer;
+            }
+        });
 
         viewModel.getAllGroceries().observe(requireActivity(), new Observer<List<GroceryList>>() {
             @Override
             public void onChanged(List<GroceryList> groceries) {
-                if (viewModel.checkSetting("remove_category")) {
+                if (noCategories == 1) {
                     setAdapter(oneCategoryGroceryList(groceries));
                 } else {
                     setAdapter(seperateFoodintoCategories(groceries));
@@ -101,13 +112,11 @@ public class GroceryListFragment extends Fragment {
         return bind.getRoot();
     }
 
-
     private ArrayList<FoodCategory> seperateFoodintoCategories(List<GroceryList> groceryList) {
 
         for (int i = 0; i < groceryList.size(); i++) {
             GroceryList item = groceryList.get(i);
             String category = item.getCategory();
-            Log.d("Category", "cat: " + category);
             if (categoryMap.get(category) != null) {
                 ArrayList<GroceryList> itemList = categoryMap.get(category);
                 itemList.add(item);
@@ -129,7 +138,7 @@ public class GroceryListFragment extends Fragment {
 
     private ArrayList<FoodCategory> oneCategoryGroceryList(List<GroceryList> groceryList) {
         ArrayList<GroceryList> groceryArray = new ArrayList<>(groceryList);
-        FoodCategory cat = new FoodCategory("Grocery List",groceryArray);
+        FoodCategory cat = new FoodCategory("Grocery List", groceryArray);
         recyclerCategories.add(cat);
 
         return recyclerCategories;
@@ -148,25 +157,63 @@ public class GroceryListFragment extends Fragment {
 
 
     private void setAdapter(ArrayList<FoodCategory> categories) {
+//        resetAdapter();
         categoryAdapter = new CategoryAdapter(this.getContext(), categories);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
         bind.outerRecycler.setLayoutManager(manager);
-        bind.outerRecycler.setAdapter(categoryAdapter);
+        bind.outerRecycler.swapAdapter(categoryAdapter, false);
     }
+
+//    private void resetAdapter() {
+//        FoodCategory foodCategory = new FoodCategory(null,null);
+//        ArrayList<FoodCategory> list = new ArrayList<>();
+//        list.add(foodCategory);
+//        categoryAdapter = new CategoryAdapter(this.getContext(),list);
+//        RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
+//        bind.outerRecycler.setLayoutManager(manager);
+//        bind.outerRecycler.setAdapter(categoryAdapter);
+//    }
 
 
     private void setExample() {
-//        viewModel.deleteAllFood();
-//        GroceryList gL = new GroceryList("Oranges", 4, "bunches", "Fruit");
-//        gL.setFoodId(2);
-//        ShoppingViewModel.deleteGrocery(gL);
-        ShoppingViewModel.insertGrocery(new GroceryList("Oranges", 4, "bunches", "Fruit"));
-        ShoppingViewModel.insertGrocery(new GroceryList("Pineapple", 3, "", "Fruit"));
-        ShoppingViewModel.insertGrocery(new GroceryList("Eggs", 1, "dozen", "Dairy"));
-        ShoppingViewModel.insertGrocery(new GroceryList("Cheese", 50, "grams", "Dairy"));
-        ShoppingViewModel.insertGrocery(new GroceryList("Pasta", 2, "boxes", "Bread/Grains"));
-        ShoppingViewModel.insertGrocery(new GroceryList("Tissues", 1, "box", "For the Home"));
-        ShoppingViewModel.insertGrocery(new GroceryList("Potatoes", 3, "", "Produce"));
+        viewModel.deleteAllFood();
+
+        Food oranges = new Food("Oranges", 4, "bunches", "Fruit");
+        Food pineapple = new Food("Pineapple", 3, "", "Fruit");
+        Food eggs = new Food("Eggs", 1, "dozen", "Dairy");
+        Food cheese = new Food("Cheese", 50, "grams", "Dairy");
+        Food pasta = new Food("Pasta", 2, "boxes", "Bread/Grains");
+        Food tissues = new Food("Tissues", 1, "box", "For the Home");
+        Food potatoes = new Food("Potatoes", 3, "", "Produce");
+        ShoppingViewModel.insertFood(oranges);
+        ShoppingViewModel.insertFood(pineapple);
+        ShoppingViewModel.insertFood(eggs);
+        ShoppingViewModel.insertFood(cheese);
+        ShoppingViewModel.insertFood(pasta);
+        ShoppingViewModel.insertFood(tissues);
+        ShoppingViewModel.insertFood(potatoes);
+
+
+        Meal fruit_salad = new Meal("Fruit Salad");
+        Meal omelette = new Meal("Omelette");
+        Meal irish_pasta = new Meal("Irish Pasta");
+        ShoppingViewModel.insertMeal(fruit_salad);
+        ShoppingViewModel.insertMeal(omelette);
+        ShoppingViewModel.insertMeal(irish_pasta);
+
+        MealFoodMap fruit_salad_map1 = new MealFoodMap(fruit_salad.getMealId(), oranges.getFoodId());
+        MealFoodMap fruit_salad_map2 = new MealFoodMap(fruit_salad.getMealId(), pineapple.getFoodId());
+        MealFoodMap omelette1 = new MealFoodMap(omelette.getMealId(), eggs.getFoodId());
+        MealFoodMap omelette2 = new MealFoodMap(omelette.getMealId(), cheese.getFoodId());
+        MealFoodMap omelette3 = new MealFoodMap(omelette.getMealId(), pasta.getFoodId());
+        ShoppingViewModel.insertPair(fruit_salad_map1);
+        ShoppingViewModel.insertPair(fruit_salad_map2);
+        ShoppingViewModel.insertPair(omelette1);
+        ShoppingViewModel.insertPair(omelette2);
+        ShoppingViewModel.insertPair(omelette3);
+
+
+
     }
 
     private void init_categoryList(ArrayList<String> categoryList) {

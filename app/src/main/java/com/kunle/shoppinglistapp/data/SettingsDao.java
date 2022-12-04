@@ -25,10 +25,10 @@ public interface SettingsDao {
     void deleteSettings(Settings settings);
 
     @Query("SELECT EXISTS(SELECT * FROM settings WHERE settingsName = :name)")
-    boolean checkSettingsExists(String name);
+    LiveData<Integer> checkSettingsExists(String name);
 
     @Query("SELECT value FROM settings WHERE settingsName = :name Limit 1")
-    boolean checkSetting(String name);
+    LiveData<Integer> checkSetting(String name);
 
     @Query("DELETE FROM settings")
     void deleteAllSettings();

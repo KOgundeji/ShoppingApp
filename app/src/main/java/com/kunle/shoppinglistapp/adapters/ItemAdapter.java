@@ -39,13 +39,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context)
-                .inflate(R.layout.inner_cardview,parent,false);
+                .inflate(R.layout.inner_cardview, parent, false);
         return new ItemViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        int textColor = ContextCompat.getColor(context,R.color.text_color);
+        int textColor = ContextCompat.getColor(context, R.color.text_color);
         String name = groceryList.get(position).getName();
         String quantity = String.valueOf(groceryList.get(position).getQuantity());
         String measurement = groceryList.get(position).getMeasurement();
@@ -59,11 +59,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         SpannableString second_part = new SpannableString(parenthesis);
         second_part.setSpan(new ForegroundColorSpan(Color.GRAY),
-                0,parenthesis.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        second_part.setSpan(new AbsoluteSizeSpan(12,true),
-                0,parenthesis.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                0, parenthesis.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        second_part.setSpan(new AbsoluteSizeSpan(12, true),
+                0, parenthesis.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
-        CharSequence finalText = TextUtils.concat(first_part," ",second_part);
+        CharSequence finalText = TextUtils.concat(first_part, " ", second_part);
 
         holder.item.setText(finalText);
     }
@@ -73,7 +73,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return groceryList.size();
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder{
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView item;
         private final CheckBox checkBox;
@@ -93,7 +93,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 @Override
                 public void onClick(View view) {
                     ShoppingViewModel.deleteGrocery(groceryList.get(getAdapterPosition()));
-                    Log.d("OnClickTest", "ID: " + groceryList.get(getAdapterPosition()).getFoodId());
                 }
             });
 

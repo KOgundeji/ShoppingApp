@@ -30,10 +30,10 @@ public interface GroceryListDao {
     @Delete
     void deleteGroceryItem(GroceryList listItem);
 
-    @Query("DELETE FROM FOOD_TABLE")
+    @Query("DELETE FROM temp_grocery_list")
     void deleteAllGroceries();
 
-    @Query("SELECT * FROM FOOD_TABLE")
+    @Query("SELECT * FROM temp_grocery_list")
     LiveData<List<GroceryList>> getAllGroceries();
 
 }

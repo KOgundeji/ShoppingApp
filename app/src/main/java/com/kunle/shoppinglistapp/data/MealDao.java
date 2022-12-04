@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.TypeConverters;
 import androidx.room.Update;
 
+import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.util.Converters;
 
@@ -29,6 +30,9 @@ public interface MealDao {
 
     @Query("DELETE FROM MEAL_TABLE")
     void deleteAllMeals();
+
+    @Query("SELECT * FROM meal_table WHERE mealId = :mealId")
+    Meal getMeal(Integer mealId);
 
     @Query("SELECT * FROM MEAL_TABLE")
     LiveData<List<Meal>> getAllMeals();

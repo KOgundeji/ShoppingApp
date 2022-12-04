@@ -25,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/meal_add"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:background="@color/category_background"
@@ -35,6 +36,7 @@
                 android:textColor="@color/written_text_color" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/meal_delete"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginStart="10dp"

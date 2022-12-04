@@ -1,6 +1,7 @@
 package com.kunle.shoppinglistapp.models;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -33,6 +34,7 @@ public class ShoppingViewModel extends AndroidViewModel {
         allFood = repository.getAllFood();
         allGroceries = repository.getAllGroceries();
         allSettings = repository.getAllSettings();
+        Log.d("HereTest", "Got to ViewModel");
     }
 
 
@@ -70,11 +72,11 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteAllSettings();
     }
 
-    public boolean checkSettingsExist(String name) {
+    public LiveData<Integer> checkSettingsExist(String name) {
         return repository.checkSettingsExists(name);
     }
 
-    public boolean checkSetting(String name) {
+    public LiveData<Integer> checkSetting(String name) {
         return repository.checkSetting(name);
     }
 
@@ -90,6 +92,10 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteMeal(meal);
     }
 
+    public static void getMeal(Integer id) {
+        repository.getMeal(id);
+    }
+
 
     public static void insertFood(Food food) {
         repository.insertFood(food);
@@ -101,6 +107,10 @@ public class ShoppingViewModel extends AndroidViewModel {
 
     public static void deleteFood(Food food) {
         repository.deleteFood(food);
+    }
+
+    public static void getFood(Integer id) {
+        repository.getFood(id);
     }
 
 
@@ -128,6 +138,18 @@ public class ShoppingViewModel extends AndroidViewModel {
 
     public static void deleteSettings(Settings settings) {
         repository.deleteSetting(settings);
+    }
+
+    public static void insertPair(MealFoodMap crossRef) {
+        repository.insertPair(crossRef);
+    }
+
+    public static void updatePair(MealFoodMap crossRef) {
+        repository.updatePair(crossRef);
+    }
+
+    public static void deletePair(MealFoodMap crossRef) {
+        repository.deletePair(crossRef);
     }
 
 }

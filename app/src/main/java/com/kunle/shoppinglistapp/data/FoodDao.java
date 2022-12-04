@@ -29,10 +29,13 @@ public interface FoodDao {
     @Delete
     void deleteFood(Food food);
 
-    @Query("DELETE FROM FOOD_TABLE")
+    @Query("DELETE FROM food_table")
     void deleteAllFood();
 
-    @Query("SELECT * FROM FOOD_TABLE")
+    @Query("SELECT * FROM food_table WHERE foodId = :foodId")
+    Food getFood(Integer foodId);
+
+    @Query("SELECT * FROM food_table")
     LiveData<List<Food>> getAllFood();
 
 }

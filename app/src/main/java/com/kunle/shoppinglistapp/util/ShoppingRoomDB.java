@@ -56,7 +56,7 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
                             .addCallback(sRoomDatabaseCallback)
 //                            .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
-                            .addMigrations(MIGRATION)
+//                            .addMigrations(MIGRATION)
                             .build();
                 }
             }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    android:background="@color/inflater_background">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout1"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_start_create_ingredient"
         android:layout_marginTop="30dp"
-        app:boxBackgroundColor="@color/white"
+        app:boxBackgroundColor="@color/item_background"
         app:boxStrokeColor="@color/text_color"
         app:hintTextColor="@color/DM_darkish_gray"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,16 +28,38 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout2"
+        android:id="@+id/layout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/item_background"
         android:layout_marginStart="@dimen/margin_start_create_ingredient"
-        app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/text_color"
         app:hintTextColor="@color/DM_darkish_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_new_quantity_for_meal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:hint="Quantity" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_create_ingredient"
+        app:boxBackgroundColor="@color/item_background"
+        app:boxStrokeColor="@color/text_color"
+        app:hintTextColor="@color/DM_darkish_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout4">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/add_new_measurement_for_meal"
@@ -55,10 +77,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:layout_marginStart="@dimen/margin_start_create_ingredient"
         android:hint="Select Category"
-        app:boxBackgroundColor="@color/white"
+        app:boxBackgroundColor="@color/item_background"
         app:boxStrokeColor="@color/text_color"
         app:hintTextColor="@color/DM_darkish_gray"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,33 +96,10 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/white"
-        android:layout_marginStart="@dimen/margin_start_create_ingredient"
-        app:boxStrokeColor="@color/text_color"
-        app:hintTextColor="@color/DM_darkish_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout3">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/add_new_quantity_for_meal"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="10dp"
-            android:hint="Quantity" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        app:layout_constraintTop_toBottomOf="@id/layout4">
+        app:layout_constraintTop_toBottomOf="@id/layout3">
 
     </Space>
 

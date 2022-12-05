@@ -22,6 +22,8 @@ import com.kunle.shoppinglistapp.databinding.ActivityMainBinding;
 import com.kunle.shoppinglistapp.models.Settings;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding bind;

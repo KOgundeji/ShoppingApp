@@ -21,6 +21,8 @@ public class Food {
     private String category;
     @ColumnInfo(name = "name")
     private String name;
+    @ColumnInfo(name = "temp_group_num")
+    private int temp_group_num;
 
 
     @Ignore
@@ -45,7 +47,6 @@ public class Food {
         this.measurement = measurement;
         this.category = category;
     }
-
 
     public long getFoodId() {
         return foodId;
@@ -85,5 +86,13 @@ public class Food {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getTemp_group_num() {
+        return temp_group_num;
+    }
+
+    public void setTemp_group_num(int temp_group_num) {
+        this.temp_group_num = temp_group_num;
     }
 }

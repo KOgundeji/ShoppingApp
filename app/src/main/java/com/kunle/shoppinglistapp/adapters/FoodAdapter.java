@@ -7,7 +7,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.Food;
-import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
 
@@ -29,16 +27,18 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
 
     private final Context context;
     private ArrayList<Food> foodList;
+    private boolean visible = false;
+    public ArrayList<Integer> adapter_delete_list;
 
     public FoodAdapter(Context context, ArrayList<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
+        adapter_delete_list = new ArrayList<>();
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("AdapterTest", "Create ViewHolder: check");
         View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.inner_cardview, parent, false);
         return new ItemViewHolder(itemView);
@@ -46,8 +46,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        Log.d("AdapterTest", "onBind for FoodAdapter: check");
         int textColor = ContextCompat.getColor(context, R.color.text_color);
+
+        if (visible) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkBox.setVisibility(View.GONE);
+        }
+
         String name = foodList.get(position).getName();
         String quantity = String.valueOf(foodList.get(position).getQuantity());
         String measurement = foodList.get(position).getMeasurement();
@@ -75,6 +81,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
         return foodList.size();
     }
 
+    public void setVisibility(boolean visible) {
+        this.visible = visible;
+    }
+
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView item;
@@ -86,6 +96,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
             item = itemView.findViewById(R.id.shoppingList_item);
             checkBox = itemView.findViewById(R.id.checkBox);
             clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
+            adapter_delete_list.add(0);
 
 
 //            item.setOnLongClickListener();
@@ -94,20 +105,21 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ShoppingViewModel.deleteFood(foodList.get(getAdapterPosition()));
+                    if (checkBox.isChecked()) {
+                        adapter_delete_list.set(getLayoutPosition(), 1);
+                    } else if (!checkBox.isChecked()) {
+                        adapter_delete_list.set(getLayoutPosition(), 0);
+                    }
+//                    notifyDataSetChanged();
                 }
             });
 
             clickable_pencil.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    edit(view);
                 }
             });
 
-        }
-
-        private void edit(View view) {
         }
     }
 }

@@ -11,12 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.adapters.FoodAdapter;
-import com.kunle.shoppinglistapp.adapters.ItemAdapter;
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.databinding.FragmentMealsBinding;
 import com.kunle.shoppinglistapp.models.Food;
@@ -37,6 +35,7 @@ import com.kunle.shoppinglistapp.util.SwipeController;
 import com.kunle.shoppinglistapp.util.SwipeControllerActions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MealsFragment extends Fragment {
@@ -84,7 +83,7 @@ public class MealsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         bind = FragmentMealsBinding.inflate(inflater, container, false);
-        setupRecyclerView();
+//        setupRecyclerView();
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
                 .create(ShoppingViewModel.class);
@@ -112,7 +111,6 @@ public class MealsFragment extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
         add_meal_recycler.setLayoutManager(manager);
         add_meal_recycler.setAdapter(foodAdapter);
-        Log.d("AdapterTest", "Secondary Adapter: check");
     }
 
     private void setupRecyclerView() {
@@ -144,7 +142,7 @@ public class MealsFragment extends Fragment {
             public void onClick(View view) {
 //                final int random_int = new Random().nextInt();
 
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 LayoutInflater inflater = getLayoutInflater();
                 View new_view = inflater.inflate(R.layout.add_new_meal, null);
 
@@ -154,21 +152,27 @@ public class MealsFragment extends Fragment {
                 ImageView delete = new_view.findViewById(R.id.add_meal_ingredient_delete);
                 ImageView save = new_view.findViewById(R.id.add_meal_ingredient_save);
                 ImageView cancel = new_view.findViewById(R.id.add_meal_ingredient_cancel);
+                ImageView final_delete = new_view.findViewById(R.id.trash_can);
+                ImageView final_cancel = new_view.findViewById(R.id.trash_can_cancel);
+                LinearLayout button_bar = new_view.findViewById(R.id.add_meal_button_bar);
+                LinearLayout final_delete_layout = new_view.findViewById(R.id.trash_can_layout);
 
-                temp_food_list.add(new Food("Tacos"));
-                temp_food_list.add(new Food("Cheese"));
-                temp_food_list.add(new Food("Whatever"));
+                temp_food_list.add(new Food("Tacos",2,"","For the Home"));
+                temp_food_list.add(new Food("Cheese",2,"","For the Home"));
+                temp_food_list.add(new Food("Whatever",3,"","For the Home"));
+
+                builder.setView(new_view);
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
                 live_food.observe(requireActivity(), new Observer<ArrayList<Food>>() {
                     @Override
                     public void onChanged(ArrayList<Food> foods) {
-                        Log.d("AdapterTest", "LiveFood: check");
                         setSecondaryAdapter(new_view, foods);
                     }
                 });
 
-                builder.setView(new_view);
-                builder.create().show();
+
 
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -207,9 +211,6 @@ public class MealsFragment extends Fragment {
 
                                 temp_food_list.add(new_food);
                                 live_food.setValue(temp_food_list);
-//
-//                                new_food.setTemp_group_num(random_int);
-//                                ShoppingViewModel.insertFood(new_food);
                             }
                         });
                         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -227,6 +228,10 @@ public class MealsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //figure out which ingredients they want to delete
+                        button_bar.setVisibility(View.GONE);
+                        final_delete_layout.setVisibility(View.VISIBLE);
+                        foodAdapter.setVisibility(true);
+                        foodAdapter.notifyDataSetChanged();
 
                     }
                 });
@@ -257,7 +262,46 @@ public class MealsFragment extends Fragment {
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //cancel meal. Save nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                final_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ArrayList<Integer> delete_list = new ArrayList<>(foodAdapter.adapter_delete_list);
+                        Collections.reverse(delete_list);
+                        for (int i:delete_list) {
+                            if (i == 1) {
+                                temp_food_list.remove(i);
+                                delete_list.remove(i);
+                            }
+                            foodAdapter.adapter_delete_list = delete_list;
+                        }
+
+                        button_bar.setVisibility(View.VISIBLE);
+                        final_delete_layout.setVisibility(View.GONE);
+                        foodAdapter.setVisibility(false);
+                        foodAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                final_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        for (Food i:temp_food_list) {
+                            Log.d("FoodListTest", "Food: " + i.getName());
+                        }
+
+                        for (int i:foodAdapter.adapter_delete_list) {
+                            Log.d("AdapterListTest", "List#: " + i);
+                        }
+
+
+                        button_bar.setVisibility(View.VISIBLE);
+                        final_delete_layout.setVisibility(View.GONE);
+                        foodAdapter.setVisibility(false);
+                        foodAdapter.notifyDataSetChanged();
                     }
                 });
 

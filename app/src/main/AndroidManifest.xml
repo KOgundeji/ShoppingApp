@@ -13,12 +13,9 @@
         android:theme="@style/Theme.ShoppingListApp"
         tools:targetApi="31">
         <activity
-            android:name=".SettingsFragment"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.App.SplashScreen">
+            android:theme="@style/Theme.ShoppingListApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

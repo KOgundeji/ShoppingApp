@@ -34,7 +34,6 @@ public class ShoppingViewModel extends AndroidViewModel {
         allFood = repository.getAllFood();
         allGroceries = repository.getAllGroceries();
         allSettings = repository.getAllSettings();
-        Log.d("HereTest", "Got to ViewModel");
     }
 
 

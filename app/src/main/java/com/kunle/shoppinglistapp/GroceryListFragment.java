@@ -106,6 +106,7 @@ public class GroceryListFragment extends Fragment {
                 } else {
                     setAdapter(seperateFoodintoCategories(groceries));
                 }
+
             }
         });
 
@@ -162,6 +163,7 @@ public class GroceryListFragment extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
         bind.outerRecycler.setLayoutManager(manager);
         bind.outerRecycler.swapAdapter(categoryAdapter, false);
+        categoryAdapter.notifyDataSetChanged();
     }
 
 //    private void resetAdapter() {

@@ -35,7 +35,6 @@ import com.kunle.shoppinglistapp.util.SwipeController;
 import com.kunle.shoppinglistapp.util.SwipeControllerActions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MealsFragment extends Fragment {
@@ -157,9 +156,9 @@ public class MealsFragment extends Fragment {
                 LinearLayout button_bar = new_view.findViewById(R.id.add_meal_button_bar);
                 LinearLayout final_delete_layout = new_view.findViewById(R.id.trash_can_layout);
 
-                temp_food_list.add(new Food("Tacos",2,"","For the Home"));
-                temp_food_list.add(new Food("Cheese",2,"","For the Home"));
-                temp_food_list.add(new Food("Whatever",3,"","For the Home"));
+                temp_food_list.add(new Food("Tacos", 2, "", "For the Home"));
+                temp_food_list.add(new Food("Cheese", 2, "", "For the Home"));
+                temp_food_list.add(new Food("Whatever", 3, "", "For the Home"));
 
                 builder.setView(new_view);
                 AlertDialog dialog = builder.create();
@@ -168,10 +167,12 @@ public class MealsFragment extends Fragment {
                 live_food.observe(requireActivity(), new Observer<ArrayList<Food>>() {
                     @Override
                     public void onChanged(ArrayList<Food> foods) {
+                        for (Food i : foods) {
+                            Log.d("AdapterListTest", "FoodList1: " + i.getName());
+                        }
                         setSecondaryAdapter(new_view, foods);
                     }
                 });
-
 
 
                 add.setOnClickListener(new View.OnClickListener() {
@@ -244,8 +245,7 @@ public class MealsFragment extends Fragment {
                             Meal new_meal = new Meal(entered_meal_name);
 
                             mealWithIngredients.meal = new_meal; //this is actually unnecessary
-//                            new_meal.setTemp_group_num(random_int);
-//                            ShoppingViewModel.insertMeal(new_meal);
+
                         } else {
                             AlertDialog.Builder meal_name_error = new AlertDialog.Builder(requireContext());
                             meal_name_error.setTitle("Please enter a valid meal name")
@@ -269,34 +269,32 @@ public class MealsFragment extends Fragment {
                 final_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ArrayList<Integer> delete_list = new ArrayList<>(foodAdapter.adapter_delete_list);
-                        Collections.reverse(delete_list);
-                        for (int i:delete_list) {
-                            if (i == 1) {
-                                temp_food_list.remove(i);
-                                delete_list.remove(i);
+                        //deletes from the back to the front.
+                        //Prevents shift to the left when early items are deleted
+                        for (int count = (foodAdapter.getDelete_list().size() - 1); count >= 0; count--) {
+                            if (foodAdapter.getDelete_list().get(count) == 1) {
+                                Log.d("AdapterListTest", "count at delete: " + count);
+                                temp_food_list.remove(count);
                             }
-                            foodAdapter.adapter_delete_list = delete_list;
                         }
+                        live_food.setValue(temp_food_list);
 
                         button_bar.setVisibility(View.VISIBLE);
                         final_delete_layout.setVisibility(View.GONE);
                         foodAdapter.setVisibility(false);
-                        foodAdapter.notifyDataSetChanged();
                     }
                 });
 
                 final_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        for (Food i:temp_food_list) {
+                        for (Food i : temp_food_list) {
                             Log.d("FoodListTest", "Food: " + i.getName());
                         }
-
-                        for (int i:foodAdapter.adapter_delete_list) {
+                        Log.d("AdapterListTest", "List Size: " + foodAdapter.getDelete_list().size());
+                        for (int i : foodAdapter.getDelete_list()) {
                             Log.d("AdapterListTest", "List#: " + i);
                         }
-
 
                         button_bar.setVisibility(View.VISIBLE);
                         final_delete_layout.setVisibility(View.GONE);
@@ -306,7 +304,7 @@ public class MealsFragment extends Fragment {
                 });
 
 
-                ShoppingViewModel.insertMeal(new Meal("Chicken Pot Pie"));
+//                ShoppingViewModel.insertMeal(new Meal("Chicken Pot Pie"));
             }
         });
     }

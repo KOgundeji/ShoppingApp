@@ -22,18 +22,19 @@ import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.Food;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder> {
 
     private final Context context;
     private ArrayList<Food> foodList;
     private boolean visible = false;
-    public ArrayList<Integer> adapter_delete_list;
+    private ArrayList<Integer> delete_list;
 
     public FoodAdapter(Context context, ArrayList<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
-        adapter_delete_list = new ArrayList<>();
+        delete_list = new ArrayList<>(Collections.nCopies(foodList.size(),0));
     }
 
     @NonNull
@@ -85,6 +86,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
         this.visible = visible;
     }
 
+    public ArrayList<Integer> getDelete_list() {
+        return delete_list;
+    }
+
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView item;
@@ -96,7 +101,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
             item = itemView.findViewById(R.id.shoppingList_item);
             checkBox = itemView.findViewById(R.id.checkBox);
             clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
-            adapter_delete_list.add(0);
+
 
 
 //            item.setOnLongClickListener();
@@ -106,9 +111,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
                 @Override
                 public void onClick(View view) {
                     if (checkBox.isChecked()) {
-                        adapter_delete_list.set(getLayoutPosition(), 1);
+                        delete_list.set(getAdapterPosition(), 1);
                     } else if (!checkBox.isChecked()) {
-                        adapter_delete_list.set(getLayoutPosition(), 0);
+                        delete_list.set(getAdapterPosition(), 0);
                     }
 //                    notifyDataSetChanged();
                 }

@@ -39,8 +39,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.category.setText(category.getCategoryName());
 
         ItemAdapter itemAdapter = new ItemAdapter(context,category.getItemList());
-        holder.innerRecycler.setLayoutManager(new LinearLayoutManager(context));
         holder.innerRecycler.setAdapter(itemAdapter);
+        holder.innerRecycler.setLayoutManager(new LinearLayoutManager(context));
     }
 
     @Override

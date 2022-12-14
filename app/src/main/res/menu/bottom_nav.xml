@@ -2,28 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-        <item
-            android:id="@+id/nav_grocery_list"
-            android:icon="@drawable/list"
-            android:enabled="true"
-            android:title="@string/grocery_list" />
+    <item
+        android:id="@+id/nav_grocery_list"
+        android:enabled="true"
+        android:icon="@drawable/list"
+        android:title="@string/grocery_list" />
 
-        <item
-            android:id="@+id/nav_meals"
-            android:icon="@drawable/turkey_icon_pic"
-            android:enabled="true"
-            android:title="@string/meals" />
+    <item
+        android:id="@+id/nav_meals"
+        android:enabled="true"
+        android:icon="@drawable/turkey_icon_pic"
+        android:title="@string/meals" />
 
-        <item
-            android:id="@+id/nav_plan"
-            android:icon="@drawable/calendar"
-            android:enabled="true"
-            android:title="@string/meal_planning" />
+    <item
+        android:id="@+id/nav_plan"
+        android:enabled="true"
+        android:icon="@drawable/calendar"
+        android:title="@string/meal_planning" />
 
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/settings"
-            android:enabled="true"
-            android:title="@string/settings" />
+    <item
+        android:id="@+id/nav_settings"
+        android:enabled="true"
+        android:icon="@drawable/settings"
+        android:title="@string/settings" />
 
 </menu>

@@ -1,7 +1,6 @@
 package com.kunle.shoppinglistapp.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.FoodCategory;
-import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
-    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
     private final Context context;
-    private final List<FoodCategory> categoryandItemList;
+    private final List<FoodCategory> categoryWithFoods;
 
-    public CategoryAdapter(Context context, List<FoodCategory> categoryandItemList) {
+    public CategoryAdapter(Context context, List<FoodCategory> categoryWithFoods) {
         this.context = context;
-        this.categoryandItemList = categoryandItemList;
+        this.categoryWithFoods = categoryWithFoods;
     }
 
     @NonNull
@@ -39,22 +35,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.CategoryViewHolder holder, int position) {
-        FoodCategory category = categoryandItemList.get(position);
+        FoodCategory category = categoryWithFoods.get(position);
         holder.category.setText(category.getCategoryName());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setInitialPrefetchItemCount(category.getItemList().size());
-
         ItemAdapter itemAdapter = new ItemAdapter(context,category.getItemList());
         holder.innerRecycler.setHasFixedSize(true);
         holder.innerRecycler.setLayoutManager(layoutManager);
         holder.innerRecycler.setAdapter(itemAdapter);
-        holder.innerRecycler.setRecycledViewPool(viewPool);
     }
 
     @Override
     public int getItemCount() {
-        return categoryandItemList.size();
+        return categoryWithFoods.size();
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {

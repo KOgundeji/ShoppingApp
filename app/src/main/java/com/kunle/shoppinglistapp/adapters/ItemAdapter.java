@@ -7,7 +7,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +27,11 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
     private final Context context;
-    private final List<GroceryList> groceryList;
+    private final List<GroceryList> foodPerCategory;
 
-    public ItemAdapter(Context context, List<GroceryList> itemListforEachCategory) {
+    public ItemAdapter(Context context, List<GroceryList> foodPerCategory) {
         this.context = context;
-        this.groceryList = itemListforEachCategory;
+        this.foodPerCategory = foodPerCategory;
     }
 
     @NonNull
@@ -46,9 +45,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         int textColor = ContextCompat.getColor(context, R.color.text_color);
-        String name = groceryList.get(position).getName();
-        String quantity = String.valueOf(groceryList.get(position).getQuantity());
-        String measurement = groceryList.get(position).getMeasurement();
+        String name = foodPerCategory.get(position).getName();
+        String quantity = String.valueOf(foodPerCategory.get(position).getQuantity());
+        String measurement = foodPerCategory.get(position).getMeasurement();
         String parenthesis;
         if (measurement.equals("")) {
             parenthesis = "(" + quantity + ")";
@@ -70,7 +69,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public int getItemCount() {
-        return groceryList.size();
+        return foodPerCategory.size();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -92,7 +91,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ShoppingViewModel.deleteGrocery(groceryList.get(getAdapterPosition()));
+                    ShoppingViewModel.deleteGrocery(foodPerCategory.get(getAdapterPosition()));
                 }
             });
 

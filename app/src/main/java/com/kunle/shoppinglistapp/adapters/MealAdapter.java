@@ -17,16 +17,20 @@ import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
 
     private final Context context;
     private final List<Meal> mealList;
+    private boolean visible = false;
+    private List<Meal> delete_list;
 
     public MealAdapter(Context context, List<Meal> mealList) {
         this.context = context;
         this.mealList = mealList;
+        delete_list = new ArrayList<>();
     }
 
     @NonNull
@@ -39,6 +43,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+        if (visible) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkBox.setVisibility(View.GONE);
+        }
+
         String name = mealList.get(position).getName();
         holder.item.setText(name);
     }
@@ -46,6 +56,14 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     @Override
     public int getItemCount() {
         return mealList.size();
+    }
+
+    public void setVisibility(boolean visible) {
+        this.visible = visible;
+    }
+
+    public List<Meal> getDelete_list() {
+        return delete_list;
     }
 
     public class MealViewHolder extends RecyclerView.ViewHolder {
@@ -64,7 +82,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ShoppingViewModel.deleteMeal(mealList.get(getAdapterPosition()));
+                    if (checkBox.isChecked()) {
+                        delete_list.add(mealList.get(getAdapterPosition()));
+                    } else if (!checkBox.isChecked()) {
+                        delete_list.remove(mealList.get(getAdapterPosition()));
+                    }
                 }
             });
 

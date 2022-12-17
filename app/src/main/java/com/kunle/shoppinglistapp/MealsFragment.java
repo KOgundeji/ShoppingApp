@@ -288,14 +288,6 @@ public class MealsFragment extends Fragment {
                 final_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        for (Food i : temp_food_list) {
-                            Log.d("FoodListTest", "Food: " + i.getName());
-                        }
-                        Log.d("AdapterListTest", "List Size: " + foodAdapter.getDelete_list().size());
-                        for (int i : foodAdapter.getDelete_list()) {
-                            Log.d("AdapterListTest", "List#: " + i);
-                        }
-
                         button_bar.setVisibility(View.VISIBLE);
                         final_delete_layout.setVisibility(View.GONE);
                         foodAdapter.setVisibility(false);
@@ -307,9 +299,41 @@ public class MealsFragment extends Fragment {
 //                ShoppingViewModel.insertMeal(new Meal("Chicken Pot Pie"));
             }
         });
+
+        bind.mealDelete.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //figure out which meals they want to delete
+                bind.mealsRegularLinearLayout.setVisibility(View.GONE);
+                bind.mealsDeleteLayout.setVisibility(View.VISIBLE);
+                mealAdapter.setVisibility(true);
+                mealAdapter.notifyDataSetChanged();
+            }
+        });
+
+        bind.mealsTrashCan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (Meal meal: mealAdapter.getDelete_list()) {
+                        ShoppingViewModel.deleteMeal(meal);
+                    }
+
+                bind.mealsRegularLinearLayout.setVisibility(View.VISIBLE);
+                bind.mealsDeleteLayout.setVisibility(View.GONE);
+                mealAdapter.setVisibility(false);
+            }
+        });
+
+        bind.mealsDeleteCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bind.mealsRegularLinearLayout.setVisibility(View.VISIBLE);
+                bind.mealsDeleteLayout.setVisibility(View.GONE);
+                mealAdapter.setVisibility(false);
+                mealAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
-    public void onMealOptionSelect() {
-
-    }
 }

@@ -27,7 +27,7 @@ import java.util.Collections;
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder> {
 
     private final Context context;
-    private ArrayList<Food> foodList;
+    private final ArrayList<Food> foodList;
     private boolean visible = false;
     private ArrayList<Integer> delete_list;
 

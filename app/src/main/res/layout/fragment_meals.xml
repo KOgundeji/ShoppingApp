@@ -13,7 +13,7 @@
         android:paddingEnd="5dp">
 
         <LinearLayout
-            android:id="@+id/button_linearLayout"
+            android:id="@+id/meals_regular_linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -24,28 +24,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <ImageView
                 android:id="@+id/meal_add"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:background="@color/category_background"
-                android:onClick="onMealOptionSelect"
-                android:text="@string/add"
-                android:textAllCaps="false"
-                android:textSize="@dimen/button_text_size"
-                android:textColor="@color/written_text_color" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/add_circle"
+                app:tint="@color/add_icon" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Space
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" />
+
+            <ImageView
                 android:id="@+id/meal_delete"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginStart="10dp"
-                android:background="@color/category_background"
-                android:onClick="onMealOptionSelect"
-                android:text="@string/delete"
-                android:textSize="@dimen/button_text_size"
-                android:textAllCaps="false"
-                android:textColor="@color/written_text_color" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/remove_circle"
+                app:tint="@color/add_icon" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/meals_delete_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/meals_trash_can"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/trash_can"
+                app:tint="@color/add_icon" />
+
+            <Space
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/meals_delete_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cancel"
+                app:tint="@color/add_icon" />
 
         </LinearLayout>
 
@@ -53,12 +82,12 @@
             android:id="@+id/meal_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="80dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_linearLayout" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

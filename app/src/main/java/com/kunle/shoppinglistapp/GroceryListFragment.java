@@ -81,8 +81,8 @@ public class GroceryListFragment extends Fragment {
         return bind.getRoot();
     }
 
-    private ArrayList<FoodCategory> seperateFoodintoCategories(List<GroceryList> groceryList) {
-        ArrayList<FoodCategory> recyclerCategories = new ArrayList<>();
+    private List<FoodCategory> seperateFoodintoCategories(List<GroceryList> groceryList) {
+        List<FoodCategory> recyclerCategories = new ArrayList<>();
         Map<String, ArrayList<GroceryList>> categoryMap = new HashMap<>();
 
         for (int i = 0; i < groceryList.size(); i++) {
@@ -107,9 +107,10 @@ public class GroceryListFragment extends Fragment {
         return recyclerCategories;
     }
 
-    private ArrayList<FoodCategory> oneCategoryGroceryList(List<GroceryList> groceryList) {
-        ArrayList<FoodCategory> recyclerCategories = new ArrayList<>();
+    private List<FoodCategory> oneCategoryGroceryList(List<GroceryList> groceryList) {
+        List<FoodCategory> recyclerCategories = new ArrayList<>();
         ArrayList<GroceryList> groceryArray = new ArrayList<>(groceryList);
+
         FoodCategory cat = new FoodCategory("Grocery List", groceryArray);
         recyclerCategories.add(cat);
 
@@ -144,6 +145,7 @@ public class GroceryListFragment extends Fragment {
         ShoppingViewModel.insertFood(tissues);
         ShoppingViewModel.insertFood(potatoes);
 
+        viewModel.deleteAllGroceries();
         GroceryList oranges2 = new GroceryList("Oranges", 4, "bunches", "Fruit");
         GroceryList pineapple2 = new GroceryList("Pineapple", 3, "", "Fruit");
         GroceryList eggs2 = new GroceryList("Eggs", 1, "dozen", "Dairy");
@@ -160,12 +162,12 @@ public class GroceryListFragment extends Fragment {
         ShoppingViewModel.insertGrocery(potatoes2);
 
 
-//        Meal fruit_salad = new Meal("Fruit Salad");
-//        Meal omelette = new Meal("Omelette");
-//        Meal irish_pasta = new Meal("Irish Pasta");
-//        ShoppingViewModel.insertMeal(fruit_salad);
-//        ShoppingViewModel.insertMeal(omelette);
-//        ShoppingViewModel.insertMeal(irish_pasta);
+        Meal fruit_salad = new Meal("Fruit Salad");
+        Meal omelette = new Meal("Omelette");
+        Meal irish_pasta = new Meal("Irish Pasta");
+        ShoppingViewModel.insertMeal(fruit_salad);
+        ShoppingViewModel.insertMeal(omelette);
+        ShoppingViewModel.insertMeal(irish_pasta);
 //
 //        MealFoodMap fruit_salad_map1 = new MealFoodMap(fruit_salad.getMealId(), oranges.getFoodId());
 //        MealFoodMap fruit_salad_map2 = new MealFoodMap(fruit_salad.getMealId(), pineapple.getFoodId());

@@ -79,6 +79,10 @@ public class ShoppingViewModel extends AndroidViewModel {
         return repository.checkSetting(name);
     }
 
+    public List<GroceryList> getFilteredGroceries(String search) {
+        return repository.getFilteredGroceries(search);
+    }
+
     public static void insertMeal(Meal meal) {
         repository.insertMeal(meal);
     }

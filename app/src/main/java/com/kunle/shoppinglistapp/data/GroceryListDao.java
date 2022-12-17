@@ -36,4 +36,7 @@ public interface GroceryListDao {
     @Query("SELECT * FROM temp_grocery_list")
     LiveData<List<GroceryList>> getAllGroceries();
 
+    @Query("SELECT * FROM temp_grocery_list WHERE name LIKE :search LIMIT 5")
+    List<GroceryList> getFilteredGroceries(String search);
+
 }

@@ -8,10 +8,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.kunle.shoppinglistapp.databinding.FragmentGroceryListBinding;
 import com.kunle.shoppinglistapp.models.Food;
@@ -26,9 +32,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GroceryListFragment extends Fragment {
-    //    private AutoCompleteTextView add_item;
     private ShoppingViewModel viewModel;
     private CategoryAdapter categoryAdapter;
     private ArrayList<String> categoryList;
@@ -50,6 +57,7 @@ public class GroceryListFragment extends Fragment {
         init_categoryList(categoryList);
 
         setListeners();
+
         viewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())
                 .create(ShoppingViewModel.class);
 //        setExample();
@@ -60,7 +68,6 @@ public class GroceryListFragment extends Fragment {
                 noCategories = integer;
             }
         });
-
 
         viewModel.getAllGroceries().observe(requireActivity(), new Observer<List<GroceryList>>() {
             @Override
@@ -75,8 +82,12 @@ public class GroceryListFragment extends Fragment {
                 bind.outerRecycler.setHasFixedSize(true);
                 bind.outerRecycler.setLayoutManager(manager);
                 bind.outerRecycler.setAdapter(categoryAdapter);
+
+                setAutoComplete(groceries);
             }
         });
+
+
 
         return bind.getRoot();
     }
@@ -125,6 +136,22 @@ public class GroceryListFragment extends Fragment {
                 ShoppingViewModel.insertGrocery(temp);
             }
         });
+
+    }
+
+    private void setAutoComplete(List<GroceryList> groceries) {
+        //this should actually be pulling from list of all FOODS, not Groceries
+            List<String> filteredNameList = new ArrayList<>();
+            for (GroceryList item : groceries) {
+                filteredNameList.add(item.getName());
+            }
+
+            String[] filteredNameArray = new String[filteredNameList.size()];
+            filteredNameArray = filteredNameList.toArray(filteredNameArray);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                    (getContext(), android.R.layout.simple_list_item_1, filteredNameArray);
+            bind.addItemMeal.setAdapter(adapter);
     }
 
     private void setExample() {

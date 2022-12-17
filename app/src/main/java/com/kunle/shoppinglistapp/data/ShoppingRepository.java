@@ -75,6 +75,10 @@ public class ShoppingRepository {
         return settingsDao.checkSetting(name);
     }
 
+    public List<GroceryList> getFilteredGroceries (String search) {
+        return groceryDao.getFilteredGroceries(search);
+    }
+
     public Meal getMeal (Integer id) {
         return mealDao.getMeal(id);
     }
@@ -82,7 +86,6 @@ public class ShoppingRepository {
     public Food getFood (Integer id) {
         return foodDao.getFood(id);
     }
-
 
 
     //    CRUD operations ----------------------->

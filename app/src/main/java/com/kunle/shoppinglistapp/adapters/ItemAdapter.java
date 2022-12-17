@@ -23,14 +23,14 @@ import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
     private final Context context;
-    private ArrayList<GroceryList> groceryList;
+    private final List<GroceryList> groceryList;
 
-    public ItemAdapter(Context context, ArrayList<GroceryList> itemListforEachCategory) {
+    public ItemAdapter(Context context, List<GroceryList> itemListforEachCategory) {
         this.context = context;
         this.groceryList = itemListforEachCategory;
     }
@@ -38,7 +38,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context)
+        View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.inner_cardview, parent, false);
         return new ItemViewHolder(itemView);
     }

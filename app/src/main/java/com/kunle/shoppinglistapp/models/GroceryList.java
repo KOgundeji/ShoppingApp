@@ -41,6 +41,12 @@ public class GroceryList {
         this(name,quantity,"","Meals included above");
     }
 
+    @Ignore
+    public GroceryList(String name, String category) {
+        this(name);
+        this.category = category;
+    }
+
     public GroceryList(String name, int quantity, String measurement, String category) {
         this(name);
         this.quantity = quantity;

@@ -13,16 +13,9 @@ public class Food {
     private long foodId;
 
     @ColumnInfo(name = "quantity")
-    private int quantity;
-
-    @ColumnInfo(name = "measurement")
-    private String measurement;
-    @ColumnInfo(name = "category")
-    private String category;
+    private String quantity;
     @ColumnInfo(name = "name")
     private String name;
-    @ColumnInfo(name = "temp_group_num")
-    private int temp_group_num;
 
 
     @Ignore
@@ -35,17 +28,24 @@ public class Food {
         this.name = name;
     }
 
-    //this is for whole Meals that are being included in the main grocery list
-    @Ignore
-    public Food(String name, int quantity) {
-        this(name,quantity,"","Meals included above");
-    }
-
-    public Food(String name, int quantity, String measurement, String category) {
+    public Food(String name, String quantity) {
         this(name);
         this.quantity = quantity;
-        this.measurement = measurement;
-        this.category = category;
+    }
+
+
+
+    public static Food parseFood(GroceryList grocery){
+        Food converted = new Food();
+
+        if (grocery.getName() != null) {
+            converted.setName(grocery.getName());
+        }
+        if (grocery.getQuantity() != null) {
+            converted.setQuantity(grocery.getQuantity());
+        }
+
+        return converted;
     }
 
     public long getFoodId() {
@@ -56,29 +56,14 @@ public class Food {
         this.foodId = foodId;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 
-    public String getMeasurement() {
-        return measurement;
-    }
-
-    public void setMeasurement(String measurement) {
-        this.measurement = measurement;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public String getName() {
         return name;
@@ -88,11 +73,4 @@ public class Food {
         this.name = name;
     }
 
-    public int getTemp_group_num() {
-        return temp_group_num;
-    }
-
-    public void setTemp_group_num(int temp_group_num) {
-        this.temp_group_num = temp_group_num;
-    }
 }

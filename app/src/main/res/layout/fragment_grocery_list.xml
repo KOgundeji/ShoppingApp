@@ -7,8 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        >
+        android:background="@color/background">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -16,23 +15,37 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/start_border"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <AutoCompleteTextView
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/add_item_meal"
-                android:layout_width="250dp"
+                android:layout_width="175dp"
                 android:layout_height="50dp"
-                android:hint="@string/add_item_meal"
                 android:completionThreshold="1"
+                android:hint="@string/add_item_meal"
+                android:maxLines="1"
                 android:textColor="@color/written_text_color"
                 android:textSize="@dimen/add_item_text_size" />
 
             <Space
-                android:layout_width="15dp"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/add_item_quantity_meal"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:hint="How Many?"
+                android:maxLines="1"
+                android:textColor="@color/written_text_color"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="10dp"
                 android:layout_height="wrap_content" />
 
             <ImageView
@@ -46,22 +59,27 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/start_border"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:background="@color/category_background"
+            android:id="@+id/empty_notification_Grocery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:text="No items on your Grocery List yet!"
+            android:textColor="@color/empty_notification_color"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            android:textSize="16sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/outerRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="0dp"
             android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/start_border"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,9 +14,6 @@ public class Meal {
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "temp_group_num")
-    private int temp_group_num;
-
     @Ignore
     public Meal() {
     }
@@ -39,13 +36,5 @@ public class Meal {
 
     public void setMealId(long mealId) {
         this.mealId = mealId;
-    }
-
-    public int getTemp_group_num() {
-        return temp_group_num;
-    }
-
-    public void setTemp_group_num(int temp_group_num) {
-        this.temp_group_num = temp_group_num;
     }
 }

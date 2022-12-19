@@ -15,12 +15,7 @@ public class GroceryList {
     private long foodId;
 
     @ColumnInfo(name = "quantity")
-    private int quantity;
-
-    @ColumnInfo(name = "measurement")
-    private String measurement;
-    @ColumnInfo(name = "category")
-    private String category;
+    private String quantity;
     @ColumnInfo(name = "name")
     private String name;
 
@@ -37,23 +32,22 @@ public class GroceryList {
 
     //this is for whole Meals that are being included in the main grocery list
     @Ignore
-    public GroceryList(String name, int quantity) {
-        this(name,quantity,"","Meals included above");
-    }
-
-    @Ignore
-    public GroceryList(String name, String category) {
-        this(name);
-        this.category = category;
-    }
-
-    public GroceryList(String name, int quantity, String measurement, String category) {
+    public GroceryList(String name, String quantity) {
         this(name);
         this.quantity = quantity;
-        this.measurement = measurement;
-        this.category = category;
     }
 
+    public static GroceryList parseGroceryList(Food food){
+        GroceryList converted = new GroceryList();
+
+        if (food.getName() != null) {
+            converted.setName(food.getName());
+        }
+        if (food.getQuantity() != null) {
+            converted.setQuantity(food.getQuantity());
+        }
+        return converted;
+    }
 
     public long getFoodId() {
         return foodId;
@@ -63,28 +57,12 @@ public class GroceryList {
         this.foodId = foodId;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
-    }
-
-    public String getMeasurement() {
-        return measurement;
-    }
-
-    public void setMeasurement(String measurement) {
-        this.measurement = measurement;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getName() {

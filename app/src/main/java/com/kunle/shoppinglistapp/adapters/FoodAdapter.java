@@ -56,14 +56,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
         }
 
         String name = foodList.get(position).getName();
-        String quantity = String.valueOf(foodList.get(position).getQuantity());
-        String measurement = foodList.get(position).getMeasurement();
-        String parenthesis;
-        if (measurement.equals("")) {
-            parenthesis = "(" + quantity + ")";
-        } else {
-            parenthesis = "(" + quantity + " " + measurement + ")";
-        }
+        String quantity = foodList.get(position).getQuantity();
+        String parenthesis = "(" + quantity + ")";
+
         SpannableString first_part = new SpannableString(name);
 
         SpannableString second_part = new SpannableString(parenthesis);

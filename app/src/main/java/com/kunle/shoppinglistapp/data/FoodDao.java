@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Dao
-@TypeConverters({Converters.class})
 public interface FoodDao {
     //takes care of CRUD operations (Create, Read, Update, Delete)
 

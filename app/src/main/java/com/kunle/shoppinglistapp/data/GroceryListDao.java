@@ -21,7 +21,7 @@ import java.util.List;
 public interface GroceryListDao {
     //takes care of CRUD operations (Create, Read, Update, Delete)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertGroceryItem(GroceryList listItem);
 
     @Update
@@ -35,8 +35,5 @@ public interface GroceryListDao {
 
     @Query("SELECT * FROM temp_grocery_list")
     LiveData<List<GroceryList>> getAllGroceries();
-
-    @Query("SELECT * FROM temp_grocery_list WHERE name LIKE :search LIMIT 5")
-    List<GroceryList> getFilteredGroceries(String search);
 
 }

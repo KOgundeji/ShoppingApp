@@ -35,5 +35,6 @@
     <color name="add_icon">@color/base_orange</color>
     <color name="pencil_icon">@color/orange_shade</color>
     <color name="inflater_background">@color/light_gray</color>
+    <color name="empty_notification_color">@color/orange_shade</color>
 
 </resources>

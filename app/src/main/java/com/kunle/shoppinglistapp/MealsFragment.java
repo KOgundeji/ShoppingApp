@@ -46,37 +46,9 @@ public class MealsFragment extends Fragment {
     private MealAdapter mealAdapter;
     private FoodAdapter foodAdapter;
     private RecyclerView add_meal_recycler;
-    private String[] category_items = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
+    private final String[] category_items = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
             "Pet Supplies", "Baking/Spices", "Bread/Grains", "Dairy", "Frozen Food", "Canned Goods", "For the Home",
             "Toiletries"};
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
-    public MealsFragment() {
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static MealsFragment newInstance(String param1, String param2) {
-        MealsFragment fragment = new MealsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,6 +62,11 @@ public class MealsFragment extends Fragment {
         viewModel.getAllMeals().observe(requireActivity(), new Observer<List<Meal>>() {
             @Override
             public void onChanged(List<Meal> meals) {
+                if (meals.size() > 0) {
+                    bind.emptyNotificationMeals.setVisibility(View.GONE);
+                } else {
+                    bind.emptyNotificationMeals.setVisibility(View.VISIBLE);
+                }
                 setMainAdapter(meals);
             }
         });
@@ -139,7 +116,6 @@ public class MealsFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-//                final int random_int = new Random().nextInt();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 LayoutInflater inflater = getLayoutInflater();
@@ -150,15 +126,15 @@ public class MealsFragment extends Fragment {
                 ImageView add = new_view.findViewById(R.id.add_meal_ingredient_add);
                 ImageView delete = new_view.findViewById(R.id.add_meal_ingredient_delete);
                 ImageView save = new_view.findViewById(R.id.add_meal_ingredient_save);
-                ImageView cancel = new_view.findViewById(R.id.add_meal_ingredient_cancel);
+                ImageView cancel = new_view.findViewById(R.id.add_meal_ingredient_back);
                 ImageView final_delete = new_view.findViewById(R.id.trash_can);
                 ImageView final_cancel = new_view.findViewById(R.id.trash_can_cancel);
                 LinearLayout button_bar = new_view.findViewById(R.id.add_meal_button_bar);
                 LinearLayout final_delete_layout = new_view.findViewById(R.id.trash_can_layout);
 
-                temp_food_list.add(new Food("Tacos", 2, "", "For the Home"));
-                temp_food_list.add(new Food("Cheese", 2, "", "For the Home"));
-                temp_food_list.add(new Food("Whatever", 3, "", "For the Home"));
+                temp_food_list.add(new Food("Tacos", "2", "For the Home"));
+                temp_food_list.add(new Food("Cheese", "2", "For the Home"));
+                temp_food_list.add(new Food("Whatever", "3", "For the Home"));
 
                 builder.setView(new_view);
                 AlertDialog dialog = builder.create();
@@ -183,14 +159,13 @@ public class MealsFragment extends Fragment {
                         View new_view = inflater.inflate(R.layout.add_ingredients, null);
 
                         TextInputEditText ingredient = new_view.findViewById(R.id.add_new_ingredient_for_meal);
-                        TextInputEditText measurement = new_view.findViewById(R.id.add_new_measurement_for_meal);
                         TextInputEditText quantity = new_view.findViewById(R.id.add_new_quantity_for_meal);
                         AutoCompleteTextView dropdown = new_view.findViewById(R.id.add_new_category_for_meal);
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.category_list_items, category_items);
                         dropdown.setAdapter(adapter);
 
-                        final String[] selectedItem = {"N/A"};
+                        final String[] selectedItem = {"Uncategorized"};
 
                         dropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -206,8 +181,7 @@ public class MealsFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Food new_food = new Food(String.valueOf(ingredient.getText()),
-                                        Integer.parseInt(String.valueOf(quantity.getText())),
-                                        String.valueOf(measurement.getText()),
+                                        String.valueOf(quantity.getText()),
                                         selectedItem[0]);
 
                                 temp_food_list.add(new_food);
@@ -315,9 +289,9 @@ public class MealsFragment extends Fragment {
         bind.mealsTrashCan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (Meal meal: mealAdapter.getDelete_list()) {
-                        ShoppingViewModel.deleteMeal(meal);
-                    }
+                for (Meal meal : mealAdapter.getDelete_list()) {
+                    ShoppingViewModel.deleteMeal(meal);
+                }
 
                 bind.mealsRegularLinearLayout.setVisibility(View.VISIBLE);
                 bind.mealsDeleteLayout.setVisibility(View.GONE);

@@ -24,6 +24,7 @@ public class ShoppingViewModel extends AndroidViewModel {
     private final LiveData<List<Food>> allFood;
     private final LiveData<List<GroceryList>> allGroceries;
     private final LiveData<List<Settings>> allSettings;
+    private final LiveData<List<Category>> allCategories;
 
 
     public ShoppingViewModel(@NonNull Application application) {
@@ -34,6 +35,7 @@ public class ShoppingViewModel extends AndroidViewModel {
         allFood = repository.getAllFood();
         allGroceries = repository.getAllGroceries();
         allSettings = repository.getAllSettings();
+        allCategories = repository.getAllCategories();
     }
 
 
@@ -59,6 +61,10 @@ public class ShoppingViewModel extends AndroidViewModel {
         return allSettings;
     }
 
+    public LiveData<List<Category>> getAllCategories() {
+        return allCategories;
+    }
+
     public void deleteAllFood() {
         repository.deleteAllFood();
     }
@@ -71,6 +77,10 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteAllSettings();
     }
 
+    public void deleteAllCategories() {
+        repository.deleteAllCategories();
+    }
+
     public LiveData<Integer> checkSettingsExist(String name) {
         return repository.checkSettingsExists(name);
     }
@@ -79,9 +89,6 @@ public class ShoppingViewModel extends AndroidViewModel {
         return repository.checkSetting(name);
     }
 
-    public List<GroceryList> getFilteredGroceries(String search) {
-        return repository.getFilteredGroceries(search);
-    }
 
     public static void insertMeal(Meal meal) {
         repository.insertMeal(meal);
@@ -112,8 +119,8 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteFood(food);
     }
 
-    public static void getFood(Integer id) {
-        repository.getFood(id);
+    public static Food getFood(Integer id) {
+        return repository.getFood(id);
     }
 
 
@@ -131,6 +138,23 @@ public class ShoppingViewModel extends AndroidViewModel {
     }
 
 
+    public static void insertCategory(Category category) {
+        repository.insertCategory(category);
+    }
+
+    public static void updateCategory(Category category) {
+        repository.updateCategory(category);
+    }
+
+    public static void deleteCategory(Category category) {
+        repository.deleteCategory(category);
+    }
+
+    public static String getCategory(String name) {
+        return repository.getCategory(name);
+    }
+
+
     public static void insertSettings(Settings settings) {
         repository.insertSetting(settings);
     }
@@ -142,6 +166,8 @@ public class ShoppingViewModel extends AndroidViewModel {
     public static void deleteSettings(Settings settings) {
         repository.deleteSetting(settings);
     }
+
+
 
     public static void insertPair(MealFoodMap crossRef) {
         repository.insertPair(crossRef);

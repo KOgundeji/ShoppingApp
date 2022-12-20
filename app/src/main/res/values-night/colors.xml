@@ -17,8 +17,8 @@
     <color name="item_background">@color/DM_darkish_gray</color>
     <color name="text_color">@color/DM_base_orange</color>
     <color name="hint_color">@color/DM_orange_tint_light</color>
-    <color name="written_text_color">@color/DM_orange_tint_light</color>
-    <color name="category_text_color">@color/DM_orange_tint_light</color>
+    <color name="written_text_color">@color/light_gray</color>
+    <color name="category_text_color">@color/light_gray</color>
     <color name="checkbox_resting">@color/DM_orange_tint_light</color>
     <color name="checkbox_checked">@color/DM_orange_tint_light</color>
     <color name="add_icon">@color/DM_base_orange</color>

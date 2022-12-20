@@ -27,14 +27,17 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.adapters.FoodAdapter;
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.databinding.FragmentMealsBinding;
+import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.adapters.MealAdapter;
+import com.kunle.shoppinglistapp.models.MealFoodMap;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 import com.kunle.shoppinglistapp.util.SwipeController;
 import com.kunle.shoppinglistapp.util.SwipeControllerActions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MealsFragment extends Fragment {
@@ -48,28 +51,19 @@ public class MealsFragment extends Fragment {
     private RecyclerView add_meal_recycler;
     private final String[] category_items = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
             "Pet Supplies", "Baking/Spices", "Bread/Grains", "Dairy", "Frozen Food", "Canned Goods", "For the Home",
-            "Toiletries"};
+            "Toiletries", "Uncategorized"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         bind = FragmentMealsBinding.inflate(inflater, container, false);
+        Arrays.sort(category_items);
 //        setupRecyclerView();
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
                 .create(ShoppingViewModel.class);
 
-        viewModel.getAllMeals().observe(requireActivity(), new Observer<List<Meal>>() {
-            @Override
-            public void onChanged(List<Meal> meals) {
-                if (meals.size() > 0) {
-                    bind.emptyNotificationMeals.setVisibility(View.GONE);
-                } else {
-                    bind.emptyNotificationMeals.setVisibility(View.VISIBLE);
-                }
-                setMainAdapter(meals);
-            }
-        });
+
 
         setActionListenersandObservers();
         return bind.getRoot();
@@ -109,8 +103,36 @@ public class MealsFragment extends Fragment {
     }
 
     private void setActionListenersandObservers() {
+
+        viewModel.getAllMeals().observe(requireActivity(), new Observer<List<Meal>>() {
+            @Override
+            public void onChanged(List<Meal> meals) {
+                if (meals.size() > 0) {
+                    bind.emptyNotificationMeals.setVisibility(View.GONE);
+                } else {
+                    bind.emptyNotificationMeals.setVisibility(View.VISIBLE);
+                }
+                setMainAdapter(meals);
+            }
+        });
+
+        viewModel.getAllMealsWithIngredients().observe(requireActivity(), new Observer<List<MealWithIngredients>>() {
+            @Override
+            public void onChanged(List<MealWithIngredients> mealWithIngredients) {
+
+
+                for (MealWithIngredients item:mealWithIngredients) {
+                    Log.d("BigMealTest", item.meal.getName());
+                    for (Food food:item.foodList) {
+                        Log.d("BigMealTest", "food: " + food.getName());
+                    }
+                }
+            }
+        });
+
         bind.mealAdd.setOnClickListener(new View.OnClickListener() {
             ArrayList<Food> temp_food_list = new ArrayList<>();
+            ArrayList<Category> temp_category_list = new ArrayList<>();
             MutableLiveData<ArrayList<Food>> live_food = new MutableLiveData<>(temp_food_list);
             MealWithIngredients mealWithIngredients = new MealWithIngredients();
 
@@ -132,9 +154,9 @@ public class MealsFragment extends Fragment {
                 LinearLayout button_bar = new_view.findViewById(R.id.add_meal_button_bar);
                 LinearLayout final_delete_layout = new_view.findViewById(R.id.trash_can_layout);
 
-                temp_food_list.add(new Food("Tacos", "2", "For the Home"));
-                temp_food_list.add(new Food("Cheese", "2", "For the Home"));
-                temp_food_list.add(new Food("Whatever", "3", "For the Home"));
+                temp_food_list.add(new Food("Tacos", "2"));
+                temp_food_list.add(new Food("Cheese", "2"));
+                temp_food_list.add(new Food("Whatever", "3"));
 
                 builder.setView(new_view);
                 AlertDialog dialog = builder.create();
@@ -143,9 +165,6 @@ public class MealsFragment extends Fragment {
                 live_food.observe(requireActivity(), new Observer<ArrayList<Food>>() {
                     @Override
                     public void onChanged(ArrayList<Food> foods) {
-                        for (Food i : foods) {
-                            Log.d("AdapterListTest", "FoodList1: " + i.getName());
-                        }
                         setSecondaryAdapter(new_view, foods);
                     }
                 });
@@ -154,13 +173,15 @@ public class MealsFragment extends Fragment {
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         LayoutInflater inflater = getLayoutInflater();
                         View new_view = inflater.inflate(R.layout.add_ingredients, null);
 
                         TextInputEditText ingredient = new_view.findViewById(R.id.add_new_ingredient_for_meal);
                         TextInputEditText quantity = new_view.findViewById(R.id.add_new_quantity_for_meal);
                         AutoCompleteTextView dropdown = new_view.findViewById(R.id.add_new_category_for_meal);
+                        LinearLayout confirm = new_view.findViewById(R.id.grocery_edit_confirm);
+                        LinearLayout back = new_view.findViewById(R.id.grocery_edit_back);
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.category_list_items, category_items);
                         dropdown.setAdapter(adapter);
@@ -175,27 +196,31 @@ public class MealsFragment extends Fragment {
                         });
 
                         builder.setView(new_view);
+                        AlertDialog dialog = builder.create();
 
-
-                        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        confirm.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Food new_food = new Food(String.valueOf(ingredient.getText()),
-                                        String.valueOf(quantity.getText()),
-                                        selectedItem[0]);
+                            public void onClick(View view) {
+                                Food new_food = new Food(String.valueOf(ingredient.getText()).trim(),
+                                        String.valueOf(quantity.getText()).trim());
 
+                                Category category = new Category(new_food.getName(), selectedItem[0]);
+
+                                //might need to add a temp category?
+                                temp_category_list.add(category);
                                 temp_food_list.add(new_food);
                                 live_food.setValue(temp_food_list);
                             }
                         });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                        back.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                            public void onClick(View view) {
+                                dialog.dismiss();
                             }
                         });
 
-                        builder.create().show();
+                        dialog.show();
                     }
                 });
 
@@ -218,7 +243,19 @@ public class MealsFragment extends Fragment {
                         if (!entered_meal_name.isEmpty()) {
                             Meal new_meal = new Meal(entered_meal_name);
 
-                            mealWithIngredients.meal = new_meal; //this is actually unnecessary
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    long mealId = ShoppingViewModel.insertMeal(new_meal);
+                                    for (Food food : temp_food_list) {
+                                        long foodId = ShoppingViewModel.insertFood(food);
+                                        food.setFoodId(foodId);
+                                        ShoppingViewModel.insertPair(new MealFoodMap(mealId, foodId));
+                                    }
+                                }
+                            }).start();
+
+                            dialog.dismiss();
 
                         } else {
                             AlertDialog.Builder meal_name_error = new AlertDialog.Builder(requireContext());
@@ -247,7 +284,6 @@ public class MealsFragment extends Fragment {
                         //Prevents shift to the left when early items are deleted
                         for (int count = (foodAdapter.getDelete_list().size() - 1); count >= 0; count--) {
                             if (foodAdapter.getDelete_list().get(count) == 1) {
-                                Log.d("AdapterListTest", "count at delete: " + count);
                                 temp_food_list.remove(count);
                             }
                         }

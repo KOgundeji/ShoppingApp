@@ -1,5 +1,6 @@
 package com.kunle.shoppinglistapp.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -9,6 +10,7 @@ import androidx.room.PrimaryKey;
 public class Category {
 
     @PrimaryKey
+    @NonNull
     private String name;
 
     @ColumnInfo (name = "category")
@@ -18,7 +20,7 @@ public class Category {
     public Category() {
     }
 
-    public Category(String name, String category) {
+    public Category(@NonNull String name, String category) {
         this.name = name;
         this.category = category;
     }

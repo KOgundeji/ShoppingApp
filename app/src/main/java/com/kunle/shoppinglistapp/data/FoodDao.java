@@ -20,7 +20,7 @@ public interface FoodDao {
     //takes care of CRUD operations (Create, Read, Update, Delete)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertFood(Food food);
+    long insertFood(Food food);
 
     @Update
     void updateFood(Food food);

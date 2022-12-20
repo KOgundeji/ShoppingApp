@@ -90,8 +90,8 @@ public class ShoppingViewModel extends AndroidViewModel {
     }
 
 
-    public static void insertMeal(Meal meal) {
-        repository.insertMeal(meal);
+    public static Long insertMeal(Meal meal) {
+        return repository.insertMeal(meal);
     }
 
     public static void updateMeal(Meal meal) {
@@ -107,8 +107,8 @@ public class ShoppingViewModel extends AndroidViewModel {
     }
 
 
-    public static void insertFood(Food food) {
-        repository.insertFood(food);
+    public static Long insertFood(Food food) {
+        return repository.insertFood(food);
     }
 
     public static void updateFood(Food food) {
@@ -125,8 +125,8 @@ public class ShoppingViewModel extends AndroidViewModel {
 
 
 
-    public static void insertGrocery(GroceryList item) {
-        repository.insertGroceries(item);
+    public static Long insertGrocery(GroceryList item) {
+        return repository.insertGroceries(item);
     }
 
     public static void updateGrocery(GroceryList item) {
@@ -169,8 +169,8 @@ public class ShoppingViewModel extends AndroidViewModel {
 
 
 
-    public static void insertPair(MealFoodMap crossRef) {
-        repository.insertPair(crossRef);
+    public static Long insertPair(MealFoodMap crossRef) {
+        return repository.insertPair(crossRef);
     }
 
     public static void updatePair(MealFoodMap crossRef) {

@@ -17,6 +17,8 @@ public class Food {
     @ColumnInfo(name = "name")
     private String name;
 
+    private String category;
+
 
     @Ignore
     public Food() {
@@ -64,7 +66,6 @@ public class Food {
         this.quantity = quantity;
     }
 
-
     public String getName() {
         return name;
     }
@@ -73,4 +74,11 @@ public class Food {
         this.name = name;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

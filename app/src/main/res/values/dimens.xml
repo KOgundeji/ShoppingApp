@@ -15,5 +15,5 @@
     <dimen name="settings_distance_from_other_text">15dp</dimen>
     <dimen name="settings_text_margin_start">15dp</dimen>
     <dimen name="button_text_size">20sp</dimen>
-    <dimen name="margin_start_create_ingredient">35dp</dimen>
+    <dimen name="margin_start_create_ingredient">10dp</dimen>
 </resources>

@@ -18,7 +18,7 @@ import java.util.List;
 public interface MealWithIngredientsDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPair(MealFoodMap crossRef);
+    long insertPair(MealFoodMap crossRef);
 
     @Delete
     void deletePair(MealFoodMap crossRef);

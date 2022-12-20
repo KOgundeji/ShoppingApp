@@ -20,7 +20,7 @@ import java.util.List;
 @Dao
 public interface MealDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMeal(Meal meal);
+    long insertMeal(Meal meal);
 
     @Update
     void updateMeal(Meal meal);

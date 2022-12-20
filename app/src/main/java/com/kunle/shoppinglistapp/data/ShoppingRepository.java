@@ -4,7 +4,9 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
+import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.GroceryList;
@@ -84,23 +86,21 @@ public class ShoppingRepository {
         return settingsDao.checkSetting(name);
     }
 
-    public Meal getMeal (Integer id) {
+    public Meal getMeal(Integer id) {
         return mealDao.getMeal(id);
     }
 
-    public Food getFood (Integer id) {
+    public Food getFood(Integer id) {
         return foodDao.getFood(id);
     }
 
-    public String getCategory (String name) {
+    public String getCategory(String name) {
         return categoryDao.getCategory(name);
     }
 
     //    CRUD operations ----------------------->
-    public void insertMeal(Meal meal) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> {
-            mealDao.insertMeal(meal);
-        });
+    public long insertMeal(Meal meal) {
+        return mealDao.insertMeal(meal);
     }
 
     public void updateMeal(Meal meal) {
@@ -111,10 +111,8 @@ public class ShoppingRepository {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealDao.deleteMeal(meal));
     }
 
-    public void insertFood(Food food) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> {
-            foodDao.insertFood(food);
-        });
+    public long insertFood(Food food) {
+        return foodDao.insertFood(food);
     }
 
     public void updateFood(Food food) {
@@ -129,10 +127,8 @@ public class ShoppingRepository {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteAllFood());
     }
 
-    public void insertGroceries(GroceryList item) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> {
-            groceryDao.insertGroceryItem(item);
-        });
+    public long insertGroceries(GroceryList item) {
+        return groceryDao.insertGroceryItem(item);
     }
 
     public void updateGroceries(GroceryList item) {
@@ -165,8 +161,8 @@ public class ShoppingRepository {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.deleteAllSettings());
     }
 
-    public void insertPair(MealFoodMap crossRef) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.insertPair(crossRef));
+    public long insertPair(MealFoodMap crossRef) {
+        return mealWithIngredientsDao.insertPair(crossRef);
     }
 
     public void deletePair(MealFoodMap crossRef) {

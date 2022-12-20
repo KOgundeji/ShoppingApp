@@ -22,7 +22,7 @@ public interface GroceryListDao {
     //takes care of CRUD operations (Create, Read, Update, Delete)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertGroceryItem(GroceryList listItem);
+    long insertGroceryItem(GroceryList listItem);
 
     @Update
     void updateGroceryItem(GroceryList listItem);

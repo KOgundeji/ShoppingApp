@@ -19,6 +19,8 @@ public class GroceryList {
     @ColumnInfo(name = "name")
     private String name;
 
+    private String category;
+
 
     @Ignore
     public GroceryList() {
@@ -31,7 +33,6 @@ public class GroceryList {
     }
 
     //this is for whole Meals that are being included in the main grocery list
-    @Ignore
     public GroceryList(String name, String quantity) {
         this(name);
         this.quantity = quantity;
@@ -71,5 +72,13 @@ public class GroceryList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

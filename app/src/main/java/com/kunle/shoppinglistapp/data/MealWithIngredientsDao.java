@@ -27,7 +27,7 @@ public interface MealWithIngredientsDao {
     void updatePair(MealFoodMap crossRef);
 
     @Query("DELETE FROM MealFoodMap WHERE mealId = :mealID")
-    void deleteMealIngredients(Integer mealID);
+    void deleteMealIngredients(Long mealID);
 
     @Query("DELETE FROM MealFoodMap")
     void deleteAllMealsWithIngredients();

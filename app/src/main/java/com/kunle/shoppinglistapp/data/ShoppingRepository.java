@@ -1,21 +1,18 @@
 package com.kunle.shoppinglistapp.data;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.MealFoodMap;
 import com.kunle.shoppinglistapp.models.Settings;
-import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 import com.kunle.shoppinglistapp.util.ShoppingRoomDB;
 
+import java.util.Arrays;
 import java.util.List;
 
 //this is a helper class. It creates a central repository to fetch DB data. All the data you need is here.
@@ -34,6 +31,9 @@ public class ShoppingRepository {
     private LiveData<List<GroceryList>> allGroceries;
     private LiveData<List<Settings>> allSettings;
     private LiveData<List<Category>> allCategories;
+    private final String[] category_items = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
+            "Pet Supplies", "Baking/Spices", "Bread/Grains", "Dairy", "Frozen Food", "Canned Goods", "For the Home",
+            "Toiletries", "Uncategorized"};
 
     public ShoppingRepository(Application application) {
         ShoppingRoomDB db = ShoppingRoomDB.getDatabase(application);
@@ -42,7 +42,7 @@ public class ShoppingRepository {
         mealWithIngredientsDao = db.mealWithIngredientsDao();
         groceryDao = db.groceryListDao();
         settingsDao = db.settingsDao();
-        categoryDao = db.categoryDao();
+        categoryDao = db.foodCategoryDao();
 
         allMealsWithIngredients = mealWithIngredientsDao.getAllMeals();
         allMeals = mealDao.getAllMeals();
@@ -51,6 +51,11 @@ public class ShoppingRepository {
         allSettings = settingsDao.getAllSettings();
         allCategories = categoryDao.getAllCategories();
 
+        Arrays.sort(category_items);
+    }
+
+    public String[] getCategory_items() {
+        return category_items;
     }
 
 
@@ -168,6 +173,11 @@ public class ShoppingRepository {
     public void deletePair(MealFoodMap crossRef) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deletePair(crossRef));
     }
+
+    public void deleteMealWithIngredients (long mealId) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deleteMealIngredients(mealId));
+    }
+
 
     public void updatePair(MealFoodMap crossRef) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.updatePair(crossRef));

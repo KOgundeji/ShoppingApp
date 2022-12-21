@@ -20,4 +20,13 @@ public class MealWithIngredients {
     )
 
     public List<Food> foodList;
+
+    public Meal getMeal() {
+        return meal;
+    }
+
+    public List<Food> getFoodList() {
+        return foodList;
+    }
+
 }

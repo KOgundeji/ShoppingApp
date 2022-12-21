@@ -117,26 +117,26 @@ public class GroceryListFragment extends Fragment {
 
     private List<FoodCategory> seperateFoodintoCategories(List<GroceryList> groceryList) {
         List<FoodCategory> recyclerCategories = new ArrayList<>();
-        Map<String, ArrayList<GroceryList>> categoryMap = new HashMap<>();
+        Map<String, ArrayList<GroceryList>> temp_categoryMap = new HashMap<>();
 
         for (int i = 0; i < groceryList.size(); i++) {
 
             GroceryList item = groceryList.get(i);
-            String category = this.categoryMap.getOrDefault(item.getName(), "Uncategorized");
+            String category = categoryMap.getOrDefault(item.getName(), "Uncategorized");
 
-            if (categoryMap.get(category) != null) {
-                ArrayList<GroceryList> itemList = categoryMap.get(category);
+            if (temp_categoryMap.get(category) != null) {
+                ArrayList<GroceryList> itemList = temp_categoryMap.get(category);
                 itemList.add(item);
-                categoryMap.replace(category, itemList);
+                temp_categoryMap.replace(category, itemList);
             } else {
                 ArrayList<GroceryList> itemList = new ArrayList<>();
                 itemList.add(item);
-                categoryMap.put(category, itemList);
+                temp_categoryMap.put(category, itemList);
             }
         }
 
-        for (String category : categoryMap.keySet()) {
-            FoodCategory cat = new FoodCategory(category, categoryMap.get(category));
+        for (String category : temp_categoryMap.keySet()) {
+            FoodCategory cat = new FoodCategory(category, temp_categoryMap.get(category));
             recyclerCategories.add(cat);
         }
 
@@ -165,7 +165,7 @@ public class GroceryListFragment extends Fragment {
 
                 GroceryList tempGrocery = new GroceryList(
                         String.valueOf(bind.addItemMeal.getText()).trim()
-                        , String.valueOf(bind.addItemQuantityMeal.getText()).trim());
+                        ,String.valueOf(bind.addItemQuantityMeal.getText()).trim());
 
                 ShoppingViewModel.insertGrocery(tempGrocery);
                 ShoppingViewModel.insertFood(Food.parseFood(tempGrocery));

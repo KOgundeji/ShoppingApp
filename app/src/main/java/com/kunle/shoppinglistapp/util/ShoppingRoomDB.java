@@ -29,7 +29,8 @@ import java.util.concurrent.Executors;
 
 //This is creating the actual RoomDatabase, which is comprised of the Entities, DAO, and SQLite to form our main database
 
-@Database(entities = {Food.class, Meal.class, MealFoodMap.class, GroceryList.class, Settings.class, Category.class},
+@Database(entities = {Food.class, Meal.class, MealFoodMap.class,
+        GroceryList.class, Settings.class, Category.class},
         version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class ShoppingRoomDB extends RoomDatabase {
@@ -39,7 +40,7 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
     public abstract MealWithIngredientsDao mealWithIngredientsDao();
     public abstract GroceryListDao groceryListDao();
     public abstract SettingsDao settingsDao();
-    public abstract CategoryDao categoryDao();
+    public abstract CategoryDao foodCategoryDao();
 
     public static final int NUMBER_OF_THREADS = 4;
 

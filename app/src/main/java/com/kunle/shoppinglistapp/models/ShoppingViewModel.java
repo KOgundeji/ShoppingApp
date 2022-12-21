@@ -38,6 +38,9 @@ public class ShoppingViewModel extends AndroidViewModel {
         allCategories = repository.getAllCategories();
     }
 
+    public static String[] getCategoryItems() {
+        return repository.getCategory_items();
+    }
 
     //ALL QUERIES NEED AN OBJECT!!! Therefore they can't be static
 
@@ -80,6 +83,8 @@ public class ShoppingViewModel extends AndroidViewModel {
     public void deleteAllCategories() {
         repository.deleteAllCategories();
     }
+
+
 
     public LiveData<Integer> checkSettingsExist(String name) {
         return repository.checkSettingsExists(name);
@@ -179,6 +184,10 @@ public class ShoppingViewModel extends AndroidViewModel {
 
     public static void deletePair(MealFoodMap crossRef) {
         repository.deletePair(crossRef);
+    }
+
+    public static void deleteMealWithIngredients(long mealId) {
+        repository.deleteMealWithIngredients(mealId);
     }
 
 }

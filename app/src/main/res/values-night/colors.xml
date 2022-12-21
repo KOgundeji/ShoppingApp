@@ -22,6 +22,7 @@
     <color name="checkbox_resting">@color/DM_orange_tint_light</color>
     <color name="checkbox_checked">@color/DM_orange_tint_light</color>
     <color name="add_icon">@color/DM_base_orange</color>
+    <color name="inflated_add_icon">@color/black</color>
     <color name="pencil_icon">@color/black</color>
     <color name="inflater_background">@color/DM_dark_gray</color>
     <color name="empty_notification_color">@color/light_gray</color>

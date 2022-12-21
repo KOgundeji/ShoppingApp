@@ -20,21 +20,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.Food;
+import com.kunle.shoppinglistapp.models.MealFoodMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder> {
 
     private final Context context;
-    private final ArrayList<Food> foodList;
+    private final List<Food> foodList;
     private boolean visible = false;
-    private ArrayList<Integer> delete_list;
+    private final int deleteType;
+    private ArrayList<Integer> Int_Delete_list; //use to capture adapter position
+    private List<Long> Class_Delete_list; //used to capture rowID
 
-    public FoodAdapter(Context context, ArrayList<Food> foodList) {
+    public static final int CLASS_DELETE_LIST = 0;
+    public static final int INTEGER_DELETE_LIST = 1;
+
+    public FoodAdapter(Context context, List<Food> foodList, int deleteType) {
         this.context = context;
         this.foodList = foodList;
-        delete_list = new ArrayList<>(Collections.nCopies(foodList.size(),0));
+        this.deleteType = deleteType;
+        if (deleteType == 0) {
+            Class_Delete_list = new ArrayList<>();
+        } else {
+            Int_Delete_list = new ArrayList<>(Collections.nCopies(foodList.size(), 0));
+        }
     }
 
     @NonNull
@@ -81,8 +93,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
         this.visible = visible;
     }
 
-    public ArrayList<Integer> getDelete_list() {
-        return delete_list;
+    public ArrayList<Integer> getInt_Delete_list() {
+        return Int_Delete_list;
+    }
+
+    public List<Long> getClass_Delete_list() {
+        return Class_Delete_list;
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -98,7 +114,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
             clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
 
 
-
 //            item.setOnLongClickListener();
 
 
@@ -106,11 +121,18 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
                 @Override
                 public void onClick(View view) {
                     if (checkBox.isChecked()) {
-                        delete_list.set(getAdapterPosition(), 1);
+                        if (deleteType == 0) {
+                            Class_Delete_list.add(foodList.get(getAdapterPosition()).getFoodId());
+                        } else {
+                            Int_Delete_list.set(getAdapterPosition(), 1);
+                        }
                     } else if (!checkBox.isChecked()) {
-                        delete_list.set(getAdapterPosition(), 0);
+                        if (deleteType == 0) {
+                            Class_Delete_list.remove(foodList.get(getAdapterPosition()).getFoodId());
+                        } else {
+                            Int_Delete_list.set(getAdapterPosition(), 0);
+                        }
                     }
-//                    notifyDataSetChanged();
                 }
             });
 
@@ -119,7 +141,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
                 public void onClick(View view) {
                 }
             });
-
         }
     }
 }

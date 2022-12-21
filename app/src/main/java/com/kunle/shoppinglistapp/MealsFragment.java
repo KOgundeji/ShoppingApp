@@ -37,7 +37,6 @@ import com.kunle.shoppinglistapp.util.SwipeController;
 import com.kunle.shoppinglistapp.util.SwipeControllerActions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MealsFragment extends Fragment {
@@ -49,15 +48,12 @@ public class MealsFragment extends Fragment {
     private MealAdapter mealAdapter;
     private FoodAdapter foodAdapter;
     private RecyclerView add_meal_recycler;
-    private final String[] category_items = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
-            "Pet Supplies", "Baking/Spices", "Bread/Grains", "Dairy", "Frozen Food", "Canned Goods", "For the Home",
-            "Toiletries", "Uncategorized"};
+    private final String[] category_items = ShoppingViewModel.getCategoryItems();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         bind = FragmentMealsBinding.inflate(inflater, container, false);
-        Arrays.sort(category_items);
 //        setupRecyclerView();
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
@@ -69,7 +65,7 @@ public class MealsFragment extends Fragment {
         return bind.getRoot();
     }
 
-    private void setMainAdapter(List<Meal> mealList) {
+    private void setMainAdapter(List<MealWithIngredients> mealList) {
         mealAdapter = new MealAdapter(this.getContext(), mealList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
         bind.mealRecyclerView.setLayoutManager(manager);
@@ -77,7 +73,7 @@ public class MealsFragment extends Fragment {
     }
 
     private void setSecondaryAdapter(View view, ArrayList<Food> foodList) {
-        foodAdapter = new FoodAdapter(view.getContext(), foodList);
+        foodAdapter = new FoodAdapter(view.getContext(), foodList, FoodAdapter.INTEGER_DELETE_LIST);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
         add_meal_recycler.setLayoutManager(manager);
         add_meal_recycler.setAdapter(foodAdapter);
@@ -104,21 +100,15 @@ public class MealsFragment extends Fragment {
 
     private void setActionListenersandObservers() {
 
-        viewModel.getAllMeals().observe(requireActivity(), new Observer<List<Meal>>() {
+        viewModel.getAllMealsWithIngredients().observe(requireActivity(), new Observer<List<MealWithIngredients>>() {
             @Override
-            public void onChanged(List<Meal> meals) {
-                if (meals.size() > 0) {
+            public void onChanged(List<MealWithIngredients> mealWithIngredients) {
+                if (mealWithIngredients.size() > 0) {
                     bind.emptyNotificationMeals.setVisibility(View.GONE);
                 } else {
                     bind.emptyNotificationMeals.setVisibility(View.VISIBLE);
                 }
-                setMainAdapter(meals);
-            }
-        });
-
-        viewModel.getAllMealsWithIngredients().observe(requireActivity(), new Observer<List<MealWithIngredients>>() {
-            @Override
-            public void onChanged(List<MealWithIngredients> mealWithIngredients) {
+                setMainAdapter(mealWithIngredients);
 
 
                 for (MealWithIngredients item:mealWithIngredients) {
@@ -282,8 +272,8 @@ public class MealsFragment extends Fragment {
                     public void onClick(View view) {
                         //deletes from the back to the front.
                         //Prevents shift to the left when early items are deleted
-                        for (int count = (foodAdapter.getDelete_list().size() - 1); count >= 0; count--) {
-                            if (foodAdapter.getDelete_list().get(count) == 1) {
+                        for (int count = (foodAdapter.getInt_Delete_list().size() - 1); count >= 0; count--) {
+                            if (foodAdapter.getInt_Delete_list().get(count) == 1) {
                                 temp_food_list.remove(count);
                             }
                         }
@@ -304,9 +294,6 @@ public class MealsFragment extends Fragment {
                         foodAdapter.notifyDataSetChanged();
                     }
                 });
-
-
-//                ShoppingViewModel.insertMeal(new Meal("Chicken Pot Pie"));
             }
         });
 
@@ -325,8 +312,9 @@ public class MealsFragment extends Fragment {
         bind.mealsTrashCan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (Meal meal : mealAdapter.getDelete_list()) {
-                    ShoppingViewModel.deleteMeal(meal);
+                for (MealWithIngredients meal : mealAdapter.getDelete_list()) {
+                    long mealId = meal.getMeal().getMealId();
+                    ShoppingViewModel.deleteMealWithIngredients(mealId);
                 }
 
                 bind.mealsRegularLinearLayout.setVisibility(View.VISIBLE);

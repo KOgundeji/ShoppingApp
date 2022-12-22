@@ -94,8 +94,6 @@ public class GroceryListFragment extends Fragment {
                 bind.outerRecycler.setHasFixedSize(true);
                 bind.outerRecycler.setLayoutManager(manager);
                 bind.outerRecycler.setAdapter(categoryAdapter);
-
-
             }
         });
 

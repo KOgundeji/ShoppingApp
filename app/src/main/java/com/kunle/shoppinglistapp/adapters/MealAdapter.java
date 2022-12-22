@@ -14,6 +14,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +26,7 @@ import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
+import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.MealFoodMap;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
@@ -31,13 +36,22 @@ import java.util.List;
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
 
     private final Context context;
-    private final List<MealWithIngredients> mealList;
+    private final List<Meal> mealList;
     private boolean visible = false;
-    private List<MealWithIngredients> delete_list;
+    private List<Long> delete_list;
+    private LiveData<List<Food>> ingredient_observation;
+    private LifecycleOwner owner;
 
-    public MealAdapter(Context context, List<MealWithIngredients> mealList) {
+
+    public MealAdapter(Context context, List<Meal> mealList) {
         this.context = context;
         this.mealList = mealList;
+        delete_list = new ArrayList<>();
+    }
+
+    public MealAdapter(Context context, List<Meal> mealList, LifecycleOwner owner) {
+        this(context, mealList);
+        this.owner = owner;
         delete_list = new ArrayList<>();
     }
 
@@ -51,13 +65,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+
+
         if (visible) {
             holder.checkBox.setVisibility(View.VISIBLE);
         } else {
             holder.checkBox.setVisibility(View.GONE);
         }
 
-        String name = mealList.get(position).getMeal().getName();
+        String name = mealList.get(position).getName();
         holder.item.setText(name);
     }
 
@@ -70,7 +86,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         this.visible = visible;
     }
 
-    public List<MealWithIngredients> getDelete_list() {
+    public List<Long> getDelete_list() {
         return delete_list;
     }
 
@@ -79,6 +95,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         private final TextView item;
         private final CheckBox checkBox;
         private final ImageView clickable_pencil;
+        private List<Food> currentFoodList;
+        private FoodAdapter foodAdapter;
+        private long mealId;
 
 
         public MealViewHolder(@NonNull View itemView) {
@@ -91,9 +110,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 @Override
                 public void onClick(View view) {
                     if (checkBox.isChecked()) {
-                        delete_list.add(mealList.get(getAdapterPosition()));
+                        delete_list.add(mealList.get(getAdapterPosition()).getMealId());
                     } else if (!checkBox.isChecked()) {
-                        delete_list.remove(mealList.get(getAdapterPosition()));
+                        delete_list.remove(mealList.get(getAdapterPosition()).getMealId());
                     }
                 }
             });
@@ -101,8 +120,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             clickable_pencil.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    List<Food> currentFoodList = mealList.get(getAdapterPosition()).foodList;
-                    long mealId = mealList.get(getAdapterPosition()).getMeal().getMealId();
+
+                    int position = getAdapterPosition();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -118,16 +137,26 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     LinearLayout button_bar = new_view.findViewById(R.id.modify_meal_button_bar);
                     LinearLayout final_delete_layout = new_view.findViewById(R.id.modify_trash_can_layout);
 
-                    mealName.setText(mealList.get(getAdapterPosition()).getMeal().getName());
+                    mealName.setText(mealList.get(getAdapterPosition()).getName());
                     builder.setView(new_view);
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-                    FoodAdapter foodAdapter = new FoodAdapter(context, currentFoodList, FoodAdapter.CLASS_DELETE_LIST);
-                    mealIngredientsRecycler.setHasFixedSize(true);
-                    mealIngredientsRecycler.setLayoutManager(layoutManager);
-                    mealIngredientsRecycler.setAdapter(foodAdapter);
+
+                    ShoppingViewModel.getAllMealsWithIngredients().observe(owner, new Observer<List<MealWithIngredients>>() {
+                        @Override
+                        public void onChanged(List<MealWithIngredients> mealWithIngredients) {
+
+                            currentFoodList = mealWithIngredients.get(position).getFoodList();
+                            mealId = mealWithIngredients.get(position).getMeal().getMealId();
+
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                            foodAdapter = new FoodAdapter(context, currentFoodList, FoodAdapter.CLASS_DELETE_LIST);
+                            mealIngredientsRecycler.setHasFixedSize(true);
+                            mealIngredientsRecycler.setLayoutManager(layoutManager);
+                            mealIngredientsRecycler.setAdapter(foodAdapter);
+                        }
+                    });
 
                     add.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -221,6 +250,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                             button_bar.setVisibility(View.VISIBLE);
                             final_delete_layout.setVisibility(View.GONE);
                             foodAdapter.setVisibility(false);
+                            notifyDataSetChanged();
+
                         }
                     });
 
@@ -233,8 +264,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                             foodAdapter.notifyDataSetChanged();
                         }
                     });
+
                 }
+
+
             });
+
         }
     }
 }

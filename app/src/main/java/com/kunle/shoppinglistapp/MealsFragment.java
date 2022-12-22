@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -59,14 +60,12 @@ public class MealsFragment extends Fragment {
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
                 .create(ShoppingViewModel.class);
 
-
-
         setActionListenersandObservers();
         return bind.getRoot();
     }
 
-    private void setMainAdapter(List<MealWithIngredients> mealList) {
-        mealAdapter = new MealAdapter(this.getContext(), mealList);
+    private void setMainAdapter(List<Meal> mealList) {
+        mealAdapter = new MealAdapter(this.getContext(), mealList, requireActivity());
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
         bind.mealRecyclerView.setLayoutManager(manager);
         bind.mealRecyclerView.setAdapter(mealAdapter);
@@ -100,23 +99,15 @@ public class MealsFragment extends Fragment {
 
     private void setActionListenersandObservers() {
 
-        viewModel.getAllMealsWithIngredients().observe(requireActivity(), new Observer<List<MealWithIngredients>>() {
+        viewModel.getAllMeals().observe(requireActivity(), new Observer<List<Meal>>() {
             @Override
-            public void onChanged(List<MealWithIngredients> mealWithIngredients) {
-                if (mealWithIngredients.size() > 0) {
+            public void onChanged(List<Meal> meals) {
+                if (meals.size() > 0) {
                     bind.emptyNotificationMeals.setVisibility(View.GONE);
                 } else {
                     bind.emptyNotificationMeals.setVisibility(View.VISIBLE);
                 }
-                setMainAdapter(mealWithIngredients);
-
-
-                for (MealWithIngredients item:mealWithIngredients) {
-                    Log.d("BigMealTest", item.meal.getName());
-                    for (Food food:item.foodList) {
-                        Log.d("BigMealTest", "food: " + food.getName());
-                    }
-                }
+                setMainAdapter(meals);
             }
         });
 
@@ -312,8 +303,7 @@ public class MealsFragment extends Fragment {
         bind.mealsTrashCan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (MealWithIngredients meal : mealAdapter.getDelete_list()) {
-                    long mealId = meal.getMeal().getMealId();
+                for (Long mealId : mealAdapter.getDelete_list()) {
                     ShoppingViewModel.deleteMealWithIngredients(mealId);
                 }
 

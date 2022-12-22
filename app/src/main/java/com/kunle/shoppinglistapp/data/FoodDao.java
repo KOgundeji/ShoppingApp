@@ -32,7 +32,7 @@ public interface FoodDao {
     void deleteAllFood();
 
     @Query("SELECT * FROM food_table WHERE foodId = :foodId")
-    Food getFood(Integer foodId);
+    Food getFood(Long foodId);
 
     @Query("SELECT * FROM food_table")
     LiveData<List<Food>> getAllFood();

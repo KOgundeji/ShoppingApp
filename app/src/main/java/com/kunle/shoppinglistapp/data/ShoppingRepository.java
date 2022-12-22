@@ -63,6 +63,10 @@ public class ShoppingRepository {
         return allMealsWithIngredients;
     }
 
+    public MealWithIngredients getMealsFoodList(Long mealId) {
+        return mealWithIngredientsDao.getMealsFoodList(mealId);
+    }
+
     public LiveData<List<Meal>> getAllMeals() {
         return allMeals;
     }
@@ -91,11 +95,11 @@ public class ShoppingRepository {
         return settingsDao.checkSetting(name);
     }
 
-    public Meal getMeal(Integer id) {
+    public Meal getMeal(Long id) {
         return mealDao.getMeal(id);
     }
 
-    public Food getFood(Integer id) {
+    public Food getFood(Long id) {
         return foodDao.getFood(id);
     }
 

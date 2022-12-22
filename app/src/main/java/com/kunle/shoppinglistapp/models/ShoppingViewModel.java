@@ -44,8 +44,12 @@ public class ShoppingViewModel extends AndroidViewModel {
 
     //ALL QUERIES NEED AN OBJECT!!! Therefore they can't be static
 
-    public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
-        return allMealsWithIngredients;
+    public static LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
+        return repository.getAllMealsWithIngredients();
+    }
+
+    public static MealWithIngredients getMealsFoodList(Long mealId) {
+        return repository.getMealsFoodList(mealId);
     }
 
     public LiveData<List<Meal>> getAllMeals() {
@@ -107,7 +111,7 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteMeal(meal);
     }
 
-    public static void getMeal(Integer id) {
+    public static void getMeal(Long id) {
         repository.getMeal(id);
     }
 
@@ -124,7 +128,7 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deleteFood(food);
     }
 
-    public static Food getFood(Integer id) {
+    public static Food getFood(Long id) {
         return repository.getFood(id);
     }
 

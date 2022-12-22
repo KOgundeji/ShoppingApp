@@ -33,6 +33,10 @@ public interface MealWithIngredientsDao {
     void deleteAllMealsWithIngredients();
 
     @Transaction
+    @Query("SELECT * FROM meal_table WHERE mealId =:mealId")
+    MealWithIngredients getMealsFoodList(Long mealId);
+
+    @Transaction
     @Query("SELECT * FROM meal_table")
     LiveData<List<MealWithIngredients>> getAllMeals();
 

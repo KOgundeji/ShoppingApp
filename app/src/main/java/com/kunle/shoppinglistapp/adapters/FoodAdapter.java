@@ -31,20 +31,23 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ItemViewHolder
     private final Context context;
     private final List<Food> foodList;
     private boolean visible = false;
-    private final int deleteType;
+    private int deleteType;
     private ArrayList<Integer> Int_Delete_list; //use to capture adapter position
     private List<Long> Class_Delete_list; //used to capture rowID
 
     public static final int CLASS_DELETE_LIST = 0;
     public static final int INTEGER_DELETE_LIST = 1;
 
-    public FoodAdapter(Context context, List<Food> foodList, int deleteType) {
+    public FoodAdapter(Context context, List<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
+    }
+    public FoodAdapter(Context context, List<Food> foodList, int deleteType) {
+        this(context, foodList);
         this.deleteType = deleteType;
         if (deleteType == 0) {
             Class_Delete_list = new ArrayList<>();
-        } else {
+        } else if (deleteType == 1) {
             Int_Delete_list = new ArrayList<>(Collections.nCopies(foodList.size(), 0));
         }
     }

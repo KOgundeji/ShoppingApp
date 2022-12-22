@@ -32,7 +32,7 @@ public interface MealDao {
     void deleteAllMeals();
 
     @Query("SELECT * FROM meal_table WHERE mealId = :mealId")
-    Meal getMeal(Integer mealId);
+    Meal getMeal(Long mealId);
 
     @Query("SELECT * FROM MEAL_TABLE")
     LiveData<List<Meal>> getAllMeals();

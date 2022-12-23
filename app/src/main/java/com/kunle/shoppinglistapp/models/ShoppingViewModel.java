@@ -5,10 +5,13 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.data.ShoppingRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -22,6 +25,9 @@ public class ShoppingViewModel extends AndroidViewModel {
     private final LiveData<List<GroceryList>> allGroceries;
     private final LiveData<List<Settings>> allSettings;
     private final LiveData<List<Category>> allCategories;
+    public static ArrayList<Food> temp_food_list = new ArrayList<>();
+    public static HashMap<String,String> temp_category_map = new HashMap<>();
+    public static MutableLiveData<ArrayList<Food>> live_food = new MutableLiveData<>(temp_food_list);
 
 
     public ShoppingViewModel(@NonNull Application application) {
@@ -35,13 +41,11 @@ public class ShoppingViewModel extends AndroidViewModel {
         allCategories = repository.getAllCategories();
     }
 
-    public static String[] getCategoryItems() {
+    public static String[] getFoodCategories() {
         return repository.getFoodCategory();
     }
 
     //ALL QUERIES NEED AN OBJECT!!! Therefore they can't be static
-
-
 
     public static MealWithIngredients getMealsFoodList(Long mealId) {
         return repository.getSpecificMealsFoodList(mealId);

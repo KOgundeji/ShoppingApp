@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,7 +95,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         private final CheckBox checkBox;
         private final ImageView clickable_pencil;
         private List<Food> currentFoodList;
-        private FoodAdapter foodAdapter;
+        private EditFoodAdapter editFoodAdapter;
         private long mealId;
 
 
@@ -151,10 +150,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                             mealId = mealWithIngredients.get(position).getMeal().getMealId();
 
                             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-                            foodAdapter = new FoodAdapter(context, currentFoodList, FoodAdapter.CLASS_DELETE_LIST);
+                            editFoodAdapter = new EditFoodAdapter(context, currentFoodList);
                             mealIngredientsRecycler.setHasFixedSize(true);
                             mealIngredientsRecycler.setLayoutManager(layoutManager);
-                            mealIngredientsRecycler.setAdapter(foodAdapter);
+                            mealIngredientsRecycler.setAdapter(editFoodAdapter);
                         }
                     });
 
@@ -173,7 +172,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
                             ArrayAdapter<String> adapter =
                                     new ArrayAdapter<String>(context, R.layout.category_list_items,
-                                            ShoppingViewModel.getCategoryItems());
+                                            ShoppingViewModel.getFoodCategories());
                             dropdown.setAdapter(adapter);
 
                             final String[] selectedItem = {"Uncategorized"};
@@ -227,8 +226,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                             //shows new linear layout and lets that choose what to delete
                             button_bar.setVisibility(View.GONE);
                             final_delete_layout.setVisibility(View.VISIBLE);
-                            foodAdapter.setVisibility(true);
-                            foodAdapter.notifyDataSetChanged();
+                            editFoodAdapter.setVisibility(true);
+                            editFoodAdapter.notifyDataSetChanged();
 
                         }
                     });
@@ -243,13 +242,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     final_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            for (long foodId : foodAdapter.getClass_Delete_list()) {
+                            for (long foodId : editFoodAdapter.getClass_Delete_list()) {
                                 ShoppingViewModel.deletePair(new MealFoodMap(mealId, foodId));
                             }
 
                             button_bar.setVisibility(View.VISIBLE);
                             final_delete_layout.setVisibility(View.GONE);
-                            foodAdapter.setVisibility(false);
+                            editFoodAdapter.setVisibility(false);
                             notifyDataSetChanged();
 
                         }
@@ -260,16 +259,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                         public void onClick(View view) {
                             button_bar.setVisibility(View.VISIBLE);
                             final_delete_layout.setVisibility(View.GONE);
-                            foodAdapter.setVisibility(false);
-                            foodAdapter.notifyDataSetChanged();
+                            editFoodAdapter.setVisibility(false);
+                            editFoodAdapter.notifyDataSetChanged();
                         }
                     });
-
                 }
-
-
             });
-
         }
     }
 }

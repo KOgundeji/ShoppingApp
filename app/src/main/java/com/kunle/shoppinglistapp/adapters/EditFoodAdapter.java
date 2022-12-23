@@ -26,25 +26,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.models.Category;
+import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
+public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemViewHolder> {
+    //this is the Adapter used for Database entries and removals
+    //it is ONLY used when editing MealsWithIngredients on the MealsFragment.
+    //this edit is only accessed in the MealAdapter
 
     private final Context context;
-    private final List<GroceryList> foodPerCategory;
+    private final List<Food> foodList;
+    private boolean visible = false;
+    private List<Long> Class_Delete_list; //used to capture rowID
 
-    public ItemAdapter(Context context, List<GroceryList> foodPerCategory) {
+    public EditFoodAdapter(Context context, List<Food> foodList) {
         this.context = context;
-        this.foodPerCategory = foodPerCategory;
+        this.foodList = foodList;
+        Class_Delete_list = new ArrayList<>();
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+        View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.inner_cardview, parent, false);
         return new ItemViewHolder(itemView);
     }
@@ -52,8 +61,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         int textColor = ContextCompat.getColor(context, R.color.text_color);
-        String name = foodPerCategory.get(position).getName();
-        String quantity = foodPerCategory.get(position).getQuantity();
+
+        if (visible) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkBox.setVisibility(View.GONE);
+        }
+
+        String name = foodList.get(position).getName();
+        String quantity = foodList.get(position).getQuantity();
         String parenthesis = "(" + quantity + ")";
 
         SpannableString first_part = new SpannableString(name);
@@ -61,7 +77,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         SpannableString second_part = new SpannableString(parenthesis);
         second_part.setSpan(new ForegroundColorSpan(Color.GRAY),
                 0, parenthesis.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        second_part.setSpan(new AbsoluteSizeSpan(14, true),
+        second_part.setSpan(new AbsoluteSizeSpan(12, true),
                 0, parenthesis.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         CharSequence finalText = TextUtils.concat(first_part, " ", second_part);
@@ -71,7 +87,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public int getItemCount() {
-        return foodPerCategory.size();
+        return foodList.size();
+    }
+
+    public void setVisibility(boolean visible) {
+        this.visible = visible;
+    }
+
+    public List<Long> getClass_Delete_list() {
+        return Class_Delete_list;
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -87,13 +111,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
 
 
-//            item.setOnLongClickListener();
-
-
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ShoppingViewModel.deleteGrocery(foodPerCategory.get(getAdapterPosition()));
+                    if (checkBox.isChecked()) {
+                        Class_Delete_list.add(foodList.get(getAdapterPosition()).getFoodId());
+                    } else if (!checkBox.isChecked()) {
+                        Class_Delete_list.remove(foodList.get(getAdapterPosition()).getFoodId());
+                    }
                 }
             });
 
@@ -118,12 +143,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            category[0] = ShoppingViewModel.getCategory(foodPerCategory.get(getAdapterPosition()).getName());
+                            category[0] = ShoppingViewModel.getCategory(foodList.get(getAdapterPosition()).getName());
                         }
                     }).start();
 
-                    String uploaded_name = foodPerCategory.get(getAdapterPosition()).getName();
-                    String uploaded_quantity = foodPerCategory.get(getAdapterPosition()).getQuantity();
+                    String uploaded_name = foodList.get(getAdapterPosition()).getName();
+                    String uploaded_quantity = foodList.get(getAdapterPosition()).getQuantity();
                     name.setText(uploaded_name);
                     quantity.setText(uploaded_quantity);
 
@@ -149,11 +174,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                             String updated_quantity = String.valueOf(quantity.getText()).trim();
 
                             GroceryList updatedGrocery = new GroceryList(updated_name, updated_quantity);
-                            updatedGrocery.setFoodId(foodPerCategory.get(getAdapterPosition()).getFoodId());
+                            updatedGrocery.setFoodId(foodList.get(getAdapterPosition()).getFoodId());
                             ShoppingViewModel.updateGrocery(updatedGrocery);
 
-                            ShoppingViewModel.deleteCategory(new Category(uploaded_name,category[0]));
-                            ShoppingViewModel.insertCategory(new Category(updated_name,selectedItem[0]));
+                            ShoppingViewModel.deleteCategory(new Category(uploaded_name, category[0]));
+                            ShoppingViewModel.insertCategory(new Category(updated_name, selectedItem[0]));
+
+                            dialog.dismiss();
                         }
                     });
 
@@ -164,12 +191,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         }
                     });
 
-
                 }
             });
-
         }
-
-
     }
 }

@@ -31,7 +31,7 @@ public class ShoppingRepository {
     private LiveData<List<GroceryList>> allGroceries;
     private LiveData<List<Settings>> allSettings;
     private LiveData<List<Category>> allCategories;
-    private final String[] category_items = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
+    private final String[] categoryNames = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
             "Pet Supplies", "Baking/Spices", "Bread/Grains", "Dairy", "Frozen Food", "Canned Goods", "For the Home",
             "Toiletries", "Uncategorized"};
 
@@ -44,31 +44,24 @@ public class ShoppingRepository {
         settingsDao = db.settingsDao();
         categoryDao = db.foodCategoryDao();
 
-        allMealsWithIngredients = mealWithIngredientsDao.getAllMeals();
+        allMealsWithIngredients = mealWithIngredientsDao.getAllMealsWithIngredients();
         allMeals = mealDao.getAllMeals();
         allFood = foodDao.getAllFood();
         allGroceries = groceryDao.getAllGroceries();
         allSettings = settingsDao.getAllSettings();
         allCategories = categoryDao.getAllCategories();
 
-        Arrays.sort(category_items);
+        Arrays.sort(categoryNames);
     }
 
-    public String[] getCategory_items() {
-        return category_items;
+    public String[] getFoodCategory() {
+        return categoryNames;
     }
 
+    //    LiveData methods ----------------------->
 
-    public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
-        return allMealsWithIngredients;
-    }
-
-    public MealWithIngredients getMealsFoodList(Long mealId) {
-        return mealWithIngredientsDao.getMealsFoodList(mealId);
-    }
-
-    public LiveData<List<Meal>> getAllMeals() {
-        return allMeals;
+    public LiveData<List<Category>> getAllCategories() {
+        return allCategories;
     }
 
     public LiveData<List<Food>> getAllFood() {
@@ -79,12 +72,16 @@ public class ShoppingRepository {
         return allGroceries;
     }
 
-    public LiveData<List<Settings>> getAllSettings() {
-        return allSettings;
+    public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
+        return allMealsWithIngredients;
     }
 
-    public LiveData<List<Category>> getAllCategories() {
-        return allCategories;
+    public LiveData<List<Meal>> getAllMeals() {
+        return allMeals;
+    }
+
+    public LiveData<List<Settings>> getAllSettings() {
+        return allSettings;
     }
 
     public LiveData<Integer> checkSettingsExists(String name) {
@@ -95,97 +92,25 @@ public class ShoppingRepository {
         return settingsDao.checkSetting(name);
     }
 
-    public Meal getMeal(Long id) {
-        return mealDao.getMeal(id);
+    //    Methods that have parameters and return classes (ie methods that have return specific instances)
+
+    public String getCategory(String name) {
+        return categoryDao.getCategory(name);
     }
 
     public Food getFood(Long id) {
         return foodDao.getFood(id);
     }
 
-    public String getCategory(String name) {
-        return categoryDao.getCategory(name);
+    public Meal getMeal(Long id) {
+        return mealDao.getMeal(id);
     }
 
-    //    CRUD operations ----------------------->
-    public long insertMeal(Meal meal) {
-        return mealDao.insertMeal(meal);
+    public MealWithIngredients getSpecificMealsFoodList(Long mealId) {
+        return mealWithIngredientsDao.getSpecificMealWithIngredients(mealId);
     }
 
-    public void updateMeal(Meal meal) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealDao.updateMeal(meal));
-    }
-
-    public void deleteMeal(Meal meal) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealDao.deleteMeal(meal));
-    }
-
-    public long insertFood(Food food) {
-        return foodDao.insertFood(food);
-    }
-
-    public void updateFood(Food food) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.updateFood(food));
-    }
-
-    public void deleteFood(Food food) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteFood(food));
-    }
-
-    public void deleteAllFood() {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteAllFood());
-    }
-
-    public long insertGroceries(GroceryList item) {
-        return groceryDao.insertGroceryItem(item);
-    }
-
-    public void updateGroceries(GroceryList item) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.updateGroceryItem(item));
-    }
-
-    public void deleteGroceries(GroceryList item) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.deleteGroceryItem(item));
-    }
-
-    public void deleteAllGroceries() {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.deleteAllGroceries());
-    }
-
-    public void insertSetting(Settings settings) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> {
-            settingsDao.insertSettings(settings);
-        });
-    }
-
-    public void updateSetting(Settings settings) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.updateSettings(settings));
-    }
-
-    public void deleteSetting(Settings settings) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.deleteSettings(settings));
-    }
-
-    public void deleteAllSettings() {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.deleteAllSettings());
-    }
-
-    public long insertPair(MealFoodMap crossRef) {
-        return mealWithIngredientsDao.insertPair(crossRef);
-    }
-
-    public void deletePair(MealFoodMap crossRef) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deletePair(crossRef));
-    }
-
-    public void deleteMealWithIngredients (long mealId) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deleteMealIngredients(mealId));
-    }
-
-
-    public void updatePair(MealFoodMap crossRef) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.updatePair(crossRef));
-    }
+    //    Regular CRUD operations ----------------------->
 
     public void insertCategory(Category category) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> {
@@ -193,16 +118,108 @@ public class ShoppingRepository {
         });
     }
 
-    public void updateCategory(Category category) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> categoryDao.updateCategory(category));
+    public long insertFood(Food food) {
+        return foodDao.insertFood(food);
     }
+
+    public long insertGroceries(GroceryList item) {
+        return groceryDao.insertGroceryItem(item);
+    }
+
+    public long insertMeal(Meal meal) {
+        return mealDao.insertMeal(meal);
+    }
+
+    public long insertPair(MealFoodMap crossRef) {
+        return mealWithIngredientsDao.insertPair(crossRef);
+    }
+
+    public void insertSetting(Settings settings) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.insertSettings(settings));
+    }
+
+
+
 
     public void deleteCategory(Category category) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> categoryDao.deleteCategory(category));
     }
 
+    public void deleteGroceries(GroceryList item) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.deleteGroceryItem(item));
+    }
+
+    public void deleteFood(Food food) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteFood(food));
+    }
+
+    public void deleteMeal(Meal meal) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealDao.deleteMeal(meal));
+    }
+
+    public void deletePair(MealFoodMap crossRef) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deletePair(crossRef));
+    }
+
+    public void deleteMealWithIngredients (long mealId) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deleteSpecificMealIngredients(mealId));
+    }
+
+    public void deleteSetting(Settings settings) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.deleteSettings(settings));
+    }
+
+
+
+
     public void deleteAllCategories() {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> categoryDao.deleteAllCategories());
     }
 
+    public void deleteAllFood() {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteAllFood());
+    }
+
+    public void deleteAllGroceries() {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.deleteAllGroceries());
+    }
+
+    public void deleteAllMeals() {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealDao.deleteAllMeals());
+    }
+
+    public void deleteAllMealsWithIngredients() {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deleteAllMealWithIngredients());
+    }
+
+    public void deleteAllSettings() {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.deleteAllSettings());
+    }
+
+
+
+
+    public void updateCategory(Category category) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> categoryDao.updateCategory(category));
+    }
+
+    public void updateFood(Food food) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.updateFood(food));
+    }
+
+    public void updateGroceries(GroceryList item) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.updateGroceryItem(item));
+    }
+
+    public void updateMeal(Meal meal) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealDao.updateMeal(meal));
+    }
+
+    public void updatePair(MealFoodMap crossRef) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.updatePair(crossRef));
+    }
+
+    public void updateSetting(Settings settings) {
+        ShoppingRoomDB.databaseWriteExecutor.execute(() -> settingsDao.updateSettings(settings));
+    }
 }

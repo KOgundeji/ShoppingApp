@@ -18,20 +18,20 @@ public interface SettingsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSettings(Settings settings);
 
+    @Delete
+    void deleteSettings(Settings settings);
+
     @Update(onConflict = OnConflictStrategy.IGNORE)
     void updateSettings(Settings settings);
 
-    @Delete
-    void deleteSettings(Settings settings);
+    @Query("DELETE FROM settings")
+    void deleteAllSettings();
 
     @Query("SELECT EXISTS(SELECT * FROM settings WHERE settingsName = :name)")
     LiveData<Integer> checkSettingsExists(String name);
 
     @Query("SELECT value FROM settings WHERE settingsName = :name Limit 1")
     LiveData<Integer> checkSetting(String name);
-
-    @Query("DELETE FROM settings")
-    void deleteAllSettings();
 
     @Query("SELECT * FROM settings")
     LiveData<List<Settings>> getAllSettings();

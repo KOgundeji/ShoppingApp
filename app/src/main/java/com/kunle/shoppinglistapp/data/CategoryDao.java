@@ -18,11 +18,11 @@ public interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCategory(Category category);
 
-    @Update
-    void updateCategory(Category category);
-
     @Delete
     void deleteCategory(Category category);
+
+    @Update
+    void updateCategory(Category category);
 
     @Query("DELETE FROM category_table")
     void deleteAllCategories();
@@ -32,4 +32,6 @@ public interface CategoryDao {
 
     @Query("SELECT * FROM category_table")
     LiveData<List<Category>> getAllCategories();
+
+
 }

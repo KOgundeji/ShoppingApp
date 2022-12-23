@@ -27,17 +27,17 @@ public interface MealWithIngredientsDao {
     void updatePair(MealFoodMap crossRef);
 
     @Query("DELETE FROM MealFoodMap WHERE mealId = :mealID")
-    void deleteMealIngredients(Long mealID);
+    void deleteSpecificMealIngredients(Long mealID);
 
     @Query("DELETE FROM MealFoodMap")
-    void deleteAllMealsWithIngredients();
+    void deleteAllMealWithIngredients();
 
     @Transaction
     @Query("SELECT * FROM meal_table WHERE mealId =:mealId")
-    MealWithIngredients getMealsFoodList(Long mealId);
+    MealWithIngredients getSpecificMealWithIngredients(Long mealId);
 
     @Transaction
     @Query("SELECT * FROM meal_table")
-    LiveData<List<MealWithIngredients>> getAllMeals();
+    LiveData<List<MealWithIngredients>> getAllMealsWithIngredients();
 
 }

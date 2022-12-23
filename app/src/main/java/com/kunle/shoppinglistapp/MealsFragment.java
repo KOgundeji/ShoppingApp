@@ -305,6 +305,9 @@ public class MealsFragment extends Fragment {
             public void onClick(View view) {
                 for (Long mealId : mealAdapter.getDelete_list()) {
                     ShoppingViewModel.deleteMealWithIngredients(mealId);
+                    Meal temp_meal = new Meal("");
+                    temp_meal.setMealId(mealId);
+                    ShoppingViewModel.deleteMeal(temp_meal);
                 }
 
                 bind.mealsRegularLinearLayout.setVisibility(View.VISIBLE);

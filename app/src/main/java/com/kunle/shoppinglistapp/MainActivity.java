@@ -24,6 +24,7 @@ import com.kunle.shoppinglistapp.models.Settings;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.io.File;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,16 +47,15 @@ public class MainActivity extends AppCompatActivity {
                 & Configuration.UI_MODE_NIGHT_MASK;
 
         if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE, 1));
+            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE,1));
         } else if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
-            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE, 0));
-        } else {
+            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE,1));
         }
 
         ShoppingViewModel.insertSettings(new Settings(Settings.SCREEN_ON,0));
         ShoppingViewModel.insertSettings(new Settings(Settings.NO_CATEGORIES,0));
 
-        viewModel.checkSetting(Settings.SCREEN_ON).observe(this, new Observer<Integer>() {
+        viewModel.checkSettingsExist(Settings.SCREEN_ON).observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 if (integer == 1) {

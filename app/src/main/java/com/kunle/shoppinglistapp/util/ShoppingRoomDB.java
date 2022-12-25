@@ -30,9 +30,8 @@ import java.util.concurrent.Executors;
 //This is creating the actual RoomDatabase, which is comprised of the Entities, DAO, and SQLite to form our main database
 
 @Database(entities = {Food.class, Meal.class, MealFoodMap.class,
-        GroceryList.class, Settings.class, Category.class},
+                GroceryList.class, Settings.class, Category.class},
         version = 1, exportSchema = false)
-@TypeConverters({Converters.class})
 public abstract class ShoppingRoomDB extends RoomDatabase {
 
     public abstract FoodDao foodDao();
@@ -70,7 +69,7 @@ public abstract class ShoppingRoomDB extends RoomDatabase {
     static final Migration MIGRATION = new Migration(1,2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-//            database.execSQL("ALTER TABLE MealFoodCrossRef RENAME TO MealFoodMap");
+            database.execSQL("ALTER TABLE food_table RENAME name TO foodName");
         }
     };
 

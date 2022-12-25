@@ -7,6 +7,8 @@ public class FoodCategory {
     //helper class NOT in database.
     //Used the Nested Recycler View "Category Adapter" to organize Grocery items by category
 
+    //looking back, a hashmap could've done the exact same this as this POJO
+
     private final String categoryName;
     private final List<GroceryList> itemList;
 

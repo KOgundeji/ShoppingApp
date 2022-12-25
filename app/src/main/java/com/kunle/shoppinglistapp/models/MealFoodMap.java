@@ -1,5 +1,6 @@
 package com.kunle.shoppinglistapp.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -7,7 +8,9 @@ import androidx.room.Ignore;
 @Entity(primaryKeys = {"mealId", "foodId"})
 public class MealFoodMap {
     @ColumnInfo(index = true)
+    @NonNull
     public long mealId;
+    @NonNull
     public long foodId;
 
     @Ignore

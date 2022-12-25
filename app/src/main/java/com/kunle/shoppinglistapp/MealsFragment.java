@@ -25,8 +25,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.adapters.AddFoodAdapter;
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.databinding.FragmentMealsBinding;
-import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
+import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.adapters.MealAdapter;
 import com.kunle.shoppinglistapp.models.MealFoodMap;
@@ -41,15 +41,11 @@ public class MealsFragment extends Fragment {
 
     private FragmentMealsBinding bind;
     private ShoppingViewModel viewModel;
-    private ArrayList<Food> foodList;
-    private ArrayList<Meal> mealList;
     private MealAdapter mealAdapter;
     private AddFoodAdapter addFoodAdapter;
     private RecyclerView add_meal_recycler;
     private final String[] category_items = ShoppingViewModel.getFoodCategories();
-//    public ArrayList<Food> temp_food_list;
-//    public ArrayList<Category> temp_category_list;
-//    public MutableLiveData<ArrayList<Food>> live_food;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,21 +95,17 @@ public class MealsFragment extends Fragment {
 
     private void setActionListenersandObservers() {
 
-        viewModel.getAllMeals().observe(requireActivity(), new Observer<List<Meal>>() {
+        ShoppingViewModel.mainMealsList.observe(requireActivity(), new Observer<List<Meal>>() {
             @Override
             public void onChanged(List<Meal> meals) {
                 if (meals.size() > 0) {
                     bind.emptyNotificationMeals.setVisibility(View.GONE);
+                    setMainAdapter(meals);
                 } else {
                     bind.emptyNotificationMeals.setVisibility(View.VISIBLE);
                 }
-                setMainAdapter(meals);
             }
         });
-
-//        temp_food_list = new ArrayList<>();
-//        temp_category_list = new ArrayList<>();
-//        live_food = new MutableLiveData<>(temp_food_list);
 
         bind.mealAdd.setOnClickListener(new View.OnClickListener() {
             MealWithIngredients mealWithIngredients = new MealWithIngredients();
@@ -189,7 +181,7 @@ public class MealsFragment extends Fragment {
                                 Food new_food = new Food(String.valueOf(ingredient.getText()).trim(),
                                         String.valueOf(quantity.getText()).trim());
 
-                                ShoppingViewModel.temp_category_map.put(new_food.getName(),selectedItem[0]);
+                                ShoppingViewModel.temp_category_map.put(new_food.getName(), selectedItem[0]);
                                 ShoppingViewModel.temp_food_list.add(new_food);
                                 ShoppingViewModel.live_food.setValue(ShoppingViewModel.temp_food_list);
                             }
@@ -231,7 +223,6 @@ public class MealsFragment extends Fragment {
                                     long mealId = ShoppingViewModel.insertMeal(new_meal);
                                     for (Food food : ShoppingViewModel.temp_food_list) {
                                         long foodId = ShoppingViewModel.insertFood(food);
-                                        food.setFoodId(foodId);
                                         ShoppingViewModel.insertPair(new MealFoodMap(mealId, foodId));
                                     }
                                 }
@@ -304,11 +295,9 @@ public class MealsFragment extends Fragment {
         bind.mealsTrashCan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (Long mealId : mealAdapter.getDelete_list()) {
-                    ShoppingViewModel.deleteMealWithIngredients(mealId);
-                    Meal temp_meal = new Meal("");
-                    temp_meal.setMealId(mealId);
-                    ShoppingViewModel.deleteMeal(temp_meal);
+                for (Meal meal : mealAdapter.getDelete_list()) {
+                    ShoppingViewModel.deleteMealWithIngredients(meal.getMealId());
+                    ShoppingViewModel.deleteMeal(meal);
                 }
 
                 bind.mealsRegularLinearLayout.setVisibility(View.VISIBLE);

@@ -1,5 +1,6 @@
 package com.kunle.shoppinglistapp.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -10,35 +11,32 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "temp_grocery_list")
 public class GroceryList {
 
-    //automatically created, don't need to declare it
-    @PrimaryKey(autoGenerate = true)
-    private long foodId;
+    @PrimaryKey
+    private long groceryId;
 
-    @ColumnInfo(name = "quantity")
-    private String quantity;
+    @NonNull
     @ColumnInfo(name = "name")
     private String name;
-
-    private String category;
-
+    @ColumnInfo(name = "quantity")
+    private String quantity;
 
     @Ignore
     public GroceryList() {
     }
 
     @Ignore
-    public GroceryList(String name) {
+    public GroceryList(@NonNull String name) {
         this();
         this.name = name;
     }
 
-    //this is for whole Meals that are being included in the main grocery list
-    public GroceryList(String name, String quantity) {
+    public GroceryList(@NonNull String name, String quantity) {
         this(name);
         this.quantity = quantity;
     }
 
-    public static GroceryList parseGroceryList(Food food){
+
+    public static GroceryList parseGroceryList(Food food) {
         GroceryList converted = new GroceryList();
 
         if (food.getName() != null) {
@@ -47,15 +45,25 @@ public class GroceryList {
         if (food.getQuantity() != null) {
             converted.setQuantity(food.getQuantity());
         }
+
         return converted;
     }
 
-    public long getFoodId() {
-        return foodId;
+    public long getGroceryId() {
+        return groceryId;
     }
 
-    public void setFoodId(long foodId) {
-        this.foodId = foodId;
+    public void setGroceryId(long groceryId) {
+        this.groceryId = groceryId;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
     }
 
     public String getQuantity() {
@@ -64,21 +72,5 @@ public class GroceryList {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

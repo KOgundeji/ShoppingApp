@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
 import com.kunle.shoppinglistapp.data.ShoppingRepository;
+import com.kunle.shoppinglistapp.util.ShoppingRoomDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,26 +20,27 @@ import java.util.List;
 public class ShoppingViewModel extends AndroidViewModel {
 
     private static ShoppingRepository repository;
-    private final LiveData<List<MealWithIngredients>> allMealsWithIngredients;
-    private final LiveData<List<Meal>> allMeals;
-    private final LiveData<List<Food>> allFood;
-    private final LiveData<List<GroceryList>> allGroceries;
-    private final LiveData<List<Settings>> allSettings;
-    private final LiveData<List<Category>> allCategories;
     public static ArrayList<Food> temp_food_list = new ArrayList<>();
-    public static HashMap<String,String> temp_category_map = new HashMap<>();
+    public static HashMap<String, String> temp_category_map = new HashMap<>();
     public static MutableLiveData<ArrayList<Food>> live_food = new MutableLiveData<>(temp_food_list);
 
+    public static LiveData<List<GroceryList>> mainGroceryList;
+    public static LiveData<List<Food>> mainFoodList;
+    public static LiveData<List<Meal>> mainMealsList;
+    public static LiveData<List<MealWithIngredients>> mainMealsWithIngredientsList;
+    public static List<MealFoodMap> mainMealFoodMapList;
+    public static HashMap<String, String> mainCategoryMap = new HashMap<>(); //this is just a global variable, doesn't get defined in viewModel
 
     public ShoppingViewModel(@NonNull Application application) {
         super(application);
         repository = new ShoppingRepository(application);
-        allMealsWithIngredients = repository.getAllMealsWithIngredients();
-        allMeals = repository.getAllMeals();
-        allFood = repository.getAllFood();
-        allGroceries = repository.getAllGroceries();
-        allSettings = repository.getAllSettings();
-        allCategories = repository.getAllCategories();
+
+        mainGroceryList = getAllGroceries();
+        mainFoodList = getAllFood();
+        mainMealsList = getAllMeals();
+        mainMealsWithIngredientsList = getAllMealsWithIngredients();
+        mainMealFoodMapList = new ArrayList<>();
+
     }
 
     public static String[] getFoodCategories() {
@@ -54,23 +56,27 @@ public class ShoppingViewModel extends AndroidViewModel {
     //    LiveData Methods ----------------------->
 
     public LiveData<List<Category>> getAllCategories() {
-        return allCategories;
+        return repository.getAllCategories();
     }
 
     public LiveData<List<Food>> getAllFood() {
-        return allFood;
+        return repository.getAllFood();
     }
 
     public LiveData<List<GroceryList>> getAllGroceries() {
-        return allGroceries;
+        return repository.getAllGroceries();
     }
 
     public LiveData<List<Meal>> getAllMeals() {
-        return allMeals;
+        return repository.getAllMeals();
     }
 
-    public static LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
+    public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
         return repository.getAllMealsWithIngredients();
+    }
+
+    public LiveData<List<Settings>> getAllSettings() {
+        return repository.getAllSettings();
     }
 
     public LiveData<Integer> checkSettingsExist(String name) {
@@ -81,9 +87,7 @@ public class ShoppingViewModel extends AndroidViewModel {
         return repository.checkSetting(name);
     }
 
-    public LiveData<List<Settings>> getAllSettings() {
-        return allSettings;
-    }
+
 
     //    Regular CRUD operations ----------------------->
 
@@ -112,7 +116,6 @@ public class ShoppingViewModel extends AndroidViewModel {
     }
 
 
-
     public static void deleteCategory(Category category) {
         repository.deleteCategory(category);
     }
@@ -133,14 +136,13 @@ public class ShoppingViewModel extends AndroidViewModel {
         repository.deletePair(crossRef);
     }
 
-    public static void deleteMealWithIngredients(long mealId) {
+    public static void deleteMealWithIngredients(Long mealId) {
         repository.deleteMealWithIngredients(mealId);
     }
 
     public static void deleteSettings(Settings settings) {
         repository.deleteSetting(settings);
     }
-
 
 
     public static void updateCategory(Category category) {
@@ -168,7 +170,6 @@ public class ShoppingViewModel extends AndroidViewModel {
     }
 
 
-
     public void deleteAllCategories() {
         repository.deleteAllCategories();
     }
@@ -194,17 +195,16 @@ public class ShoppingViewModel extends AndroidViewModel {
     }
 
 
-
     public static String getCategory(String name) {
         return repository.getCategory(name);
     }
 
-    public static Food getFood(Long id) {
-        return repository.getFood(id);
+    public static Food getFood(String name) {
+        return repository.getFood(name);
     }
 
-    public static void getMeal(Long id) {
-        repository.getMeal(id);
+    public static void getMeal(String name) {
+        repository.getMeal(name);
     }
 
 }

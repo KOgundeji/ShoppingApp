@@ -19,18 +19,12 @@ import java.util.List;
 //Its not absolutely necessary, you could fetch the data within the Activity, but organizationally,this is easier.
 
 public class ShoppingRepository {
-    private MealDao mealDao;
-    private FoodDao foodDao;
-    private MealWithIngredientsDao mealWithIngredientsDao;
-    private GroceryListDao groceryDao;
-    private SettingsDao settingsDao;
-    private CategoryDao categoryDao;
-    private LiveData<List<MealWithIngredients>> allMealsWithIngredients;
-    private LiveData<List<Meal>> allMeals;
-    private LiveData<List<Food>> allFood;
-    private LiveData<List<GroceryList>> allGroceries;
-    private LiveData<List<Settings>> allSettings;
-    private LiveData<List<Category>> allCategories;
+    private final MealDao mealDao;
+    private final FoodDao foodDao;
+    private final MealWithIngredientsDao mealWithIngredientsDao;
+    private final GroceryListDao groceryDao;
+    private final SettingsDao settingsDao;
+    private final CategoryDao categoryDao;
     private final String[] categoryNames = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
             "Pet Supplies", "Baking/Spices", "Bread/Grains", "Dairy", "Frozen Food", "Canned Goods", "For the Home",
             "Toiletries", "Uncategorized"};
@@ -44,13 +38,6 @@ public class ShoppingRepository {
         settingsDao = db.settingsDao();
         categoryDao = db.foodCategoryDao();
 
-        allMealsWithIngredients = mealWithIngredientsDao.getAllMealsWithIngredients();
-        allMeals = mealDao.getAllMeals();
-        allFood = foodDao.getAllFood();
-        allGroceries = groceryDao.getAllGroceries();
-        allSettings = settingsDao.getAllSettings();
-        allCategories = categoryDao.getAllCategories();
-
         Arrays.sort(categoryNames);
     }
 
@@ -61,27 +48,27 @@ public class ShoppingRepository {
     //    LiveData methods ----------------------->
 
     public LiveData<List<Category>> getAllCategories() {
-        return allCategories;
+        return categoryDao.getAllCategories();
     }
 
     public LiveData<List<Food>> getAllFood() {
-        return allFood;
+        return foodDao.getAllFood();
     }
 
     public LiveData<List<GroceryList>> getAllGroceries() {
-        return allGroceries;
+        return groceryDao.getAllGroceries();
     }
 
     public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
-        return allMealsWithIngredients;
+        return mealWithIngredientsDao.getAllMealsWithIngredients();
     }
 
     public LiveData<List<Meal>> getAllMeals() {
-        return allMeals;
+        return mealDao.getAllMeals();
     }
 
     public LiveData<List<Settings>> getAllSettings() {
-        return allSettings;
+        return settingsDao.getAllSettings();
     }
 
     public LiveData<Integer> checkSettingsExists(String name) {
@@ -98,12 +85,12 @@ public class ShoppingRepository {
         return categoryDao.getCategory(name);
     }
 
-    public Food getFood(Long id) {
-        return foodDao.getFood(id);
+    public Food getFood(String name) {
+        return foodDao.getFood(name);
     }
 
-    public Meal getMeal(Long id) {
-        return mealDao.getMeal(id);
+    public Meal getMeal(String name) {
+        return mealDao.getMeal(name);
     }
 
     public MealWithIngredients getSpecificMealsFoodList(Long mealId) {
@@ -161,7 +148,7 @@ public class ShoppingRepository {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deletePair(crossRef));
     }
 
-    public void deleteMealWithIngredients (long mealId) {
+    public void deleteMealWithIngredients (Long mealId) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> mealWithIngredientsDao.deleteSpecificMealIngredients(mealId));
     }
 

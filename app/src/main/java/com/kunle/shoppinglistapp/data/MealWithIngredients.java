@@ -29,4 +29,7 @@ public class MealWithIngredients {
         return foodList;
     }
 
+    public void setFoodList(List<Food> foodList) {
+        this.foodList = foodList;
+    }
 }

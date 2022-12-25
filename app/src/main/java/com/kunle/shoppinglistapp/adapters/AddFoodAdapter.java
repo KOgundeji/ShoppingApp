@@ -42,12 +42,15 @@ public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemView
     private final List<Food> foodList;
     private boolean visible = false;
     private ArrayList<Integer> Int_Delete_list; //use to capture adapter position
+    private List<Food> foodDeleteList;
 
     public AddFoodAdapter(Context context, List<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
         Int_Delete_list = new ArrayList<>(Collections.nCopies(foodList.size(), 0));
+        foodDeleteList = new ArrayList<>();
     }
+
 
     @NonNull
     @Override
@@ -97,6 +100,10 @@ public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemView
         return Int_Delete_list;
     }
 
+    public List<Food> getFoodDeleteList() {
+        return foodDeleteList;
+    }
+
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView item;
@@ -112,10 +119,15 @@ public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemView
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    if (checkBox.isChecked()) {
+//                        Int_Delete_list.set(getAdapterPosition(), 1);
+//                    } else if (!checkBox.isChecked()) {
+//                        Int_Delete_list.set(getAdapterPosition(), 0);
+//                    }
                     if (checkBox.isChecked()) {
-                        Int_Delete_list.set(getAdapterPosition(), 1);
-                    } else if (!checkBox.isChecked()) {
-                        Int_Delete_list.set(getAdapterPosition(), 0);
+                        foodDeleteList.add(foodList.get(getAdapterPosition()));
+                    } else if(!checkBox.isChecked()) {
+                        foodDeleteList.remove(foodList.get(getAdapterPosition()));
                     }
                 }
             });

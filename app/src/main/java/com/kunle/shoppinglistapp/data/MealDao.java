@@ -26,8 +26,8 @@ public interface MealDao {
     @Query("DELETE FROM MEAL_TABLE")
     void deleteAllMeals();
 
-    @Query("SELECT * FROM meal_table WHERE mealId = :mealId")
-    Meal getMeal(Long mealId);
+    @Query("SELECT * FROM meal_table WHERE name = :name")
+    Meal getMeal(String name);
 
     @Query("SELECT * FROM MEAL_TABLE")
     LiveData<List<Meal>> getAllMeals();

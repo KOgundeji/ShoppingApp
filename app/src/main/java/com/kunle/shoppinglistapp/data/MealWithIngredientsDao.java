@@ -26,14 +26,14 @@ public interface MealWithIngredientsDao {
     @Update
     void updatePair(MealFoodMap crossRef);
 
-    @Query("DELETE FROM MealFoodMap WHERE mealId = :mealID")
-    void deleteSpecificMealIngredients(Long mealID);
+    @Query("DELETE FROM MealFoodMap WHERE mealId = :mealId")
+    void deleteSpecificMealIngredients(Long mealId);
 
     @Query("DELETE FROM MealFoodMap")
     void deleteAllMealWithIngredients();
 
     @Transaction
-    @Query("SELECT * FROM meal_table WHERE mealId =:mealId")
+    @Query("SELECT * FROM meal_table WHERE mealId = :mealId")
     MealWithIngredients getSpecificMealWithIngredients(Long mealId);
 
     @Transaction

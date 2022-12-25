@@ -15,7 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,10 +37,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private final Context context;
     private final List<Meal> mealList;
     private boolean visible = false;
-    private List<Long> delete_list;
-    private LiveData<List<Food>> ingredient_observation;
+    private List<Meal> delete_list;
     private LifecycleOwner owner;
-
 
     public MealAdapter(Context context, List<Meal> mealList) {
         this.context = context;
@@ -64,8 +62,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-
-
         if (visible) {
             holder.checkBox.setVisibility(View.VISIBLE);
         } else {
@@ -85,7 +81,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         this.visible = visible;
     }
 
-    public List<Long> getDelete_list() {
+    public List<Meal> getDelete_list() {
         return delete_list;
     }
 
@@ -96,6 +92,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         private final ImageView clickable_pencil;
         private List<Food> currentFoodList;
         private EditFoodAdapter editFoodAdapter;
+        private String meal_name;
         private long mealId;
 
 
@@ -109,9 +106,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 @Override
                 public void onClick(View view) {
                     if (checkBox.isChecked()) {
-                        delete_list.add(mealList.get(getAdapterPosition()).getMealId());
+                        delete_list.add(mealList.get(getAdapterPosition()));
                     } else if (!checkBox.isChecked()) {
-                        delete_list.remove(mealList.get(getAdapterPosition()).getMealId());
+                        delete_list.remove(mealList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -141,11 +138,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
-
-                    ShoppingViewModel.getAllMealsWithIngredients().observe(owner, new Observer<List<MealWithIngredients>>() {
+                    ShoppingViewModel.mainMealsWithIngredientsList.observe(owner, new Observer<List<MealWithIngredients>>() {
                         @Override
                         public void onChanged(List<MealWithIngredients> mealWithIngredients) {
-
                             currentFoodList = mealWithIngredients.get(position).getFoodList();
                             mealId = mealWithIngredients.get(position).getMeal().getMealId();
 
@@ -156,6 +151,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                             mealIngredientsRecycler.setAdapter(editFoodAdapter);
                         }
                     });
+
 
                     add.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -197,11 +193,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                                             Food new_food = new Food(String.valueOf(ingredient.getText()).trim(),
                                                     String.valueOf(quantity.getText()).trim());
 
-                                            Category category = new Category(new_food.getName(), selectedItem[0]);
+                                            currentFoodList.add(new_food);
 
-                                            ShoppingViewModel.insertCategory(category);
+                                            ShoppingViewModel.insertCategory(new Category(new_food.getName(), selectedItem[0]));
                                             long foodId = ShoppingViewModel.insertFood(new_food);
-                                            ShoppingViewModel.insertPair(new MealFoodMap(mealId, foodId));
+                                            ShoppingViewModel.insertPair(new MealFoodMap(mealId,foodId));
+
                                         }
                                     }).start();
 
@@ -242,8 +239,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     final_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            for (long foodId : editFoodAdapter.getClass_Delete_list()) {
-                                ShoppingViewModel.deletePair(new MealFoodMap(mealId, foodId));
+                            for (Long foodId : editFoodAdapter.getClass_Delete_list()) {
+                                ShoppingViewModel.deletePair(new MealFoodMap(mealId,foodId));
                             }
 
                             button_bar.setVisibility(View.VISIBLE);

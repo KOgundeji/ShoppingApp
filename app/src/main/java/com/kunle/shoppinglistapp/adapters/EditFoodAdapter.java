@@ -42,7 +42,7 @@ public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemVi
     private final Context context;
     private final List<Food> foodList;
     private boolean visible = false;
-    private List<Long> Class_Delete_list; //used to capture rowID
+    private List<Long> Class_Delete_list; //used to capture rowID to remove from MealFoodMap (which needs an Id)
 
     public EditFoodAdapter(Context context, List<Food> foodList) {
         this.context = context;
@@ -139,22 +139,16 @@ public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemVi
                     builder.setView(new_view);
                     AlertDialog dialog = builder.create();
 
-                    final String[] category = new String[1];
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            category[0] = ShoppingViewModel.getCategory(foodList.get(getAdapterPosition()).getName());
-                        }
-                    }).start();
-
                     String uploaded_name = foodList.get(getAdapterPosition()).getName();
                     String uploaded_quantity = foodList.get(getAdapterPosition()).getQuantity();
+                    String uploaded_category = ShoppingViewModel.mainCategoryMap.get(foodList.get(getAdapterPosition()).getName());
+
                     name.setText(uploaded_name);
                     quantity.setText(uploaded_quantity);
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.category_list_items, ShoppingViewModel.getFoodCategories());
                     dropdown.setAdapter(adapter);
-                    dropdown.setText(category[0]);
+                    dropdown.setText(uploaded_category);
 
                     final String[] selectedItem = {"Uncategorized"};
 
@@ -172,13 +166,11 @@ public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemVi
                         public void onClick(View view) {
                             String updated_name = String.valueOf(name.getText()).trim();
                             String updated_quantity = String.valueOf(quantity.getText()).trim();
-
                             GroceryList updatedGrocery = new GroceryList(updated_name, updated_quantity);
-                            updatedGrocery.setFoodId(foodList.get(getAdapterPosition()).getFoodId());
-                            ShoppingViewModel.updateGrocery(updatedGrocery);
 
-                            ShoppingViewModel.deleteCategory(new Category(uploaded_name, category[0]));
-                            ShoppingViewModel.insertCategory(new Category(updated_name, selectedItem[0]));
+                            ShoppingViewModel.insertGrocery(updatedGrocery);
+                            ShoppingViewModel.deleteCategory(new Category(uploaded_name,uploaded_category));
+                            ShoppingViewModel.insertCategory(new Category(updated_name,selectedItem[0]));
 
                             dialog.dismiss();
                         }

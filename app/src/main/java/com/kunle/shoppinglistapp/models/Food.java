@@ -1,5 +1,6 @@
 package com.kunle.shoppinglistapp.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -8,36 +9,32 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "food_table")
 public class Food {
 
-    //automatically created, don't need to declare it
     @PrimaryKey(autoGenerate = true)
     private long foodId;
 
-    @ColumnInfo(name = "quantity")
-    private String quantity;
+    @NonNull
     @ColumnInfo(name = "name")
     private String name;
-
-    private String category;
-
+    @ColumnInfo(name = "quantity")
+    private String quantity;
 
     @Ignore
     public Food() {
     }
 
     @Ignore
-    public Food(String name) {
-        this();
+    public Food(@NonNull String name) {
         this.name = name;
     }
 
-    public Food(String name, String quantity) {
+    public Food(@NonNull String name, String quantity) {
         this(name);
         this.quantity = quantity;
     }
 
 
 
-    public static Food parseFood(GroceryList grocery){
+    public static Food parseFood(GroceryList grocery) {
         Food converted = new Food();
 
         if (grocery.getName() != null) {
@@ -50,14 +47,6 @@ public class Food {
         return converted;
     }
 
-    public long getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(long foodId) {
-        this.foodId = foodId;
-    }
-
     public String getQuantity() {
         return quantity;
     }
@@ -66,19 +55,20 @@ public class Food {
         this.quantity = quantity;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public long getFoodId() {
+        return foodId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setFoodId(long foodId) {
+        this.foodId = foodId;
     }
 }

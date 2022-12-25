@@ -15,7 +15,7 @@ import java.util.List;
 public interface FoodDao {
     //takes care of CRUD operations (Create, Read, Update, Delete)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insertFood(Food food);
 
     @Delete
@@ -27,8 +27,8 @@ public interface FoodDao {
     @Query("DELETE FROM food_table")
     void deleteAllFood();
 
-    @Query("SELECT * FROM food_table WHERE foodId = :foodId")
-    Food getFood(Long foodId);
+    @Query("SELECT * FROM food_table WHERE name = :name")
+    Food getFood(String name);
 
     @Query("SELECT * FROM food_table")
     LiveData<List<Food>> getAllFood();

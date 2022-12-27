@@ -25,8 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.R;
-import com.kunle.shoppinglistapp.models.Category;
-import com.kunle.shoppinglistapp.models.GroceryList;
+import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.List;
@@ -34,9 +33,9 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
     private final Context context;
-    private final List<GroceryList> foodPerCategory;
+    private final List<Food> foodPerCategory;
 
-    public ItemAdapter(Context context, List<GroceryList> foodPerCategory) {
+    public ItemAdapter(Context context, List<Food> foodPerCategory) {
         this.context = context;
         this.foodPerCategory = foodPerCategory;
     }
@@ -54,6 +53,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         int textColor = ContextCompat.getColor(context, R.color.text_color);
         String name = foodPerCategory.get(position).getName();
         String quantity = foodPerCategory.get(position).getQuantity();
+
         String parenthesis = "(" + quantity + ")";
 
         SpannableString first_part = new SpannableString(name);
@@ -77,19 +77,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView item;
-        private final CheckBox checkBox;
-        private final ImageView clickable_pencil;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             item = itemView.findViewById(R.id.shoppingList_item);
-            checkBox = itemView.findViewById(R.id.checkBox);
-            clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
+            CheckBox checkBox = itemView.findViewById(R.id.checkBox);
+            ImageView clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
 
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ShoppingViewModel.deleteGrocery(foodPerCategory.get(getAdapterPosition()));
+                    Food updatedGrocery = foodPerCategory.get(getAdapterPosition());
+                    updatedGrocery.setInGroceryList(false);
+                    ShoppingViewModel.updateFood(updatedGrocery);
                 }
             });
 
@@ -112,16 +112,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
                     String uploaded_name = foodPerCategory.get(getAdapterPosition()).getName();
                     String uploaded_quantity = foodPerCategory.get(getAdapterPosition()).getQuantity();
-                    String uploaded_category = ShoppingViewModel.mainCategoryMap.get(foodPerCategory.get(getAdapterPosition()).getName());
+                    String uploaded_category = foodPerCategory.get(getAdapterPosition()).getCategory();
+                    boolean uploaded_inGroceryList = foodPerCategory.get(getAdapterPosition()).isInGroceryList();
+                    long uploaded_groceryId = foodPerCategory.get(getAdapterPosition()).getFoodId();
 
                     name.setText(uploaded_name);
                     quantity.setText(uploaded_quantity);
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.category_list_items, ShoppingViewModel.getFoodCategories());
                     dropdown.setAdapter(adapter);
-                    dropdown.setText(uploaded_category);
+                    dropdown.setText(uploaded_category,false);
 
-                    final String[] selectedItem = {"Uncategorized"};
+                    final String[] selectedItem = {uploaded_category};
 
                     dropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -137,11 +139,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         public void onClick(View view) {
                             String updated_name = String.valueOf(name.getText()).trim();
                             String updated_quantity = String.valueOf(quantity.getText()).trim();
-                            GroceryList updatedGrocery = new GroceryList(updated_name, updated_quantity);
+                            String updated_category = selectedItem[0];
 
-                            ShoppingViewModel.insertGrocery(updatedGrocery);
-                            ShoppingViewModel.deleteCategory(new Category(uploaded_name,uploaded_category));
-                            ShoppingViewModel.insertCategory(new Category(updated_name,selectedItem[0]));
+                            Food updatedGrocery = new Food(updated_name, updated_quantity,
+                                    updated_category,uploaded_inGroceryList);
+                            updatedGrocery.setFoodId(uploaded_groceryId);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShoppingViewModel.updateFood(updatedGrocery);
+                                }
+                            }).start();
 
                             dialog.dismiss();
                         }

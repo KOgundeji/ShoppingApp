@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding bind;
     private ShoppingViewModel viewModel;
+    private final Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

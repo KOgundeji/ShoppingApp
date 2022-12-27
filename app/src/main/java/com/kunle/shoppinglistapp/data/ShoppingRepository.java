@@ -4,9 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
-import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.MealFoodMap;
 import com.kunle.shoppinglistapp.models.Settings;
@@ -22,9 +20,7 @@ public class ShoppingRepository {
     private final MealDao mealDao;
     private final FoodDao foodDao;
     private final MealWithIngredientsDao mealWithIngredientsDao;
-    private final GroceryListDao groceryDao;
     private final SettingsDao settingsDao;
-    private final CategoryDao categoryDao;
     private final String[] categoryNames = {"Produce", "Fruit", "Meat/Fish", "Condiments", "Beverages", "Snacks",
             "Pet Supplies", "Baking/Spices", "Bread/Grains", "Dairy", "Frozen Food", "Canned Goods", "For the Home",
             "Toiletries", "Uncategorized"};
@@ -34,9 +30,7 @@ public class ShoppingRepository {
         mealDao = db.mealDao();
         foodDao = db.foodDao();
         mealWithIngredientsDao = db.mealWithIngredientsDao();
-        groceryDao = db.groceryListDao();
         settingsDao = db.settingsDao();
-        categoryDao = db.foodCategoryDao();
 
         Arrays.sort(categoryNames);
     }
@@ -47,16 +41,12 @@ public class ShoppingRepository {
 
     //    LiveData methods ----------------------->
 
-    public LiveData<List<Category>> getAllCategories() {
-        return categoryDao.getAllCategories();
-    }
-
     public LiveData<List<Food>> getAllFood() {
         return foodDao.getAllFood();
     }
 
-    public LiveData<List<GroceryList>> getAllGroceries() {
-        return groceryDao.getAllGroceries();
+    public LiveData<List<Food>> getAllGroceries() {
+        return foodDao.getAllGroceries();
     }
 
     public LiveData<List<MealWithIngredients>> getAllMealsWithIngredients() {
@@ -81,10 +71,6 @@ public class ShoppingRepository {
 
     //    Methods that have parameters and return classes (ie methods that have return specific instances)
 
-    public String getCategory(String name) {
-        return categoryDao.getCategory(name);
-    }
-
     public Food getFood(String name) {
         return foodDao.getFood(name);
     }
@@ -99,18 +85,8 @@ public class ShoppingRepository {
 
     //    Regular CRUD operations ----------------------->
 
-    public void insertCategory(Category category) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> {
-            categoryDao.insertCategory(category);
-        });
-    }
-
     public long insertFood(Food food) {
         return foodDao.insertFood(food);
-    }
-
-    public long insertGroceries(GroceryList item) {
-        return groceryDao.insertGroceryItem(item);
     }
 
     public long insertMeal(Meal meal) {
@@ -127,14 +103,6 @@ public class ShoppingRepository {
 
 
 
-
-    public void deleteCategory(Category category) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> categoryDao.deleteCategory(category));
-    }
-
-    public void deleteGroceries(GroceryList item) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.deleteGroceryItem(item));
-    }
 
     public void deleteFood(Food food) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteFood(food));
@@ -159,16 +127,9 @@ public class ShoppingRepository {
 
 
 
-    public void deleteAllCategories() {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> categoryDao.deleteAllCategories());
-    }
 
     public void deleteAllFood() {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.deleteAllFood());
-    }
-
-    public void deleteAllGroceries() {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.deleteAllGroceries());
     }
 
     public void deleteAllMeals() {
@@ -186,16 +147,8 @@ public class ShoppingRepository {
 
 
 
-    public void updateCategory(Category category) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> categoryDao.updateCategory(category));
-    }
-
     public void updateFood(Food food) {
         ShoppingRoomDB.databaseWriteExecutor.execute(() -> foodDao.updateFood(food));
-    }
-
-    public void updateGroceries(GroceryList item) {
-        ShoppingRoomDB.databaseWriteExecutor.execute(() -> groceryDao.updateGroceryItem(item));
     }
 
     public void updateMeal(Meal meal) {

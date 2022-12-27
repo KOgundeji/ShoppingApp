@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.R;
 import com.kunle.shoppinglistapp.data.MealWithIngredients;
-import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.Meal;
 import com.kunle.shoppinglistapp.models.MealFoodMap;
@@ -89,10 +87,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
         private final TextView item;
         private final CheckBox checkBox;
-        private final ImageView clickable_pencil;
         private List<Food> currentFoodList;
         private EditFoodAdapter editFoodAdapter;
-        private String meal_name;
         private long mealId;
 
 
@@ -100,7 +96,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             super(itemView);
             item = itemView.findViewById(R.id.shoppingList_item);
             checkBox = itemView.findViewById(R.id.checkBox);
-            clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
+            ImageView clickable_pencil = itemView.findViewById(R.id.shoppingList_edit);
 
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -187,18 +183,18 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                                 @Override
                                 public void onClick(View view) {
 
+                                    String created_name = String.valueOf(ingredient.getText()).trim();
+                                    String created_quantity = String.valueOf(quantity.getText()).trim();
+                                    String created_category = selectedItem[0];
+
+                                    Food new_food = new Food(created_name,created_quantity,
+                                            created_category,false);
+
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Food new_food = new Food(String.valueOf(ingredient.getText()).trim(),
-                                                    String.valueOf(quantity.getText()).trim());
-
-                                            currentFoodList.add(new_food);
-
-                                            ShoppingViewModel.insertCategory(new Category(new_food.getName(), selectedItem[0]));
                                             long foodId = ShoppingViewModel.insertFood(new_food);
                                             ShoppingViewModel.insertPair(new MealFoodMap(mealId,foodId));
-
                                         }
                                     }).start();
 
@@ -239,6 +235,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     final_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+
                             for (Long foodId : editFoodAdapter.getClass_Delete_list()) {
                                 ShoppingViewModel.deletePair(new MealFoodMap(mealId,foodId));
                             }

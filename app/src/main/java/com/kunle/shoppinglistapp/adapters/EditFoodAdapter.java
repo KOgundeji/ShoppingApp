@@ -25,13 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.R;
-import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
-import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemViewHolder> {
@@ -141,16 +138,18 @@ public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemVi
 
                     String uploaded_name = foodList.get(getAdapterPosition()).getName();
                     String uploaded_quantity = foodList.get(getAdapterPosition()).getQuantity();
-                    String uploaded_category = ShoppingViewModel.mainCategoryMap.get(foodList.get(getAdapterPosition()).getName());
+                    String uploaded_category = foodList.get(getAdapterPosition()).getCategory();
+                    boolean uploaded_inGroceryList = foodList.get(getAdapterPosition()).isInGroceryList();
+                    long uploaded_foodId = foodList.get(getAdapterPosition()).getFoodId();
 
                     name.setText(uploaded_name);
                     quantity.setText(uploaded_quantity);
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.category_list_items, ShoppingViewModel.getFoodCategories());
                     dropdown.setAdapter(adapter);
-                    dropdown.setText(uploaded_category);
+                    dropdown.setText(uploaded_category,false);
 
-                    final String[] selectedItem = {"Uncategorized"};
+                    final String[] selectedItem = {uploaded_category};
 
                     dropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -166,11 +165,18 @@ public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemVi
                         public void onClick(View view) {
                             String updated_name = String.valueOf(name.getText()).trim();
                             String updated_quantity = String.valueOf(quantity.getText()).trim();
-                            GroceryList updatedGrocery = new GroceryList(updated_name, updated_quantity);
+                            String updated_category = selectedItem[0];
 
-                            ShoppingViewModel.insertGrocery(updatedGrocery);
-                            ShoppingViewModel.deleteCategory(new Category(uploaded_name,uploaded_category));
-                            ShoppingViewModel.insertCategory(new Category(updated_name,selectedItem[0]));
+                            Food updatedFood = new Food(updated_name, updated_quantity,
+                                    updated_category, uploaded_inGroceryList);
+                            updatedFood.setFoodId(uploaded_foodId);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShoppingViewModel.updateFood(updatedFood);
+                                }
+                            }).start();
 
                             dialog.dismiss();
                         }
@@ -182,7 +188,6 @@ public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemVi
                             dialog.dismiss();
                         }
                     });
-
                 }
             });
         }

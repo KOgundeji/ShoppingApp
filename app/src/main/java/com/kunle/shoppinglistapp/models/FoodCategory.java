@@ -10,9 +10,9 @@ public class FoodCategory {
     //looking back, a hashmap could've done the exact same this as this POJO
 
     private final String categoryName;
-    private final List<GroceryList> itemList;
+    private final List<Food> itemList;
 
-    public FoodCategory(String categoryName, ArrayList<GroceryList> itemList) {
+    public FoodCategory(String categoryName, ArrayList<Food> itemList) {
         this.categoryName = categoryName;
         this.itemList = itemList;
     }
@@ -21,7 +21,7 @@ public class FoodCategory {
         return categoryName;
     }
 
-    public List<GroceryList> getItemList() {
+    public List<Food> getItemList() {
         return itemList;
     }
 }

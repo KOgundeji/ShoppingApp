@@ -12,39 +12,51 @@ public class Food {
     @PrimaryKey(autoGenerate = true)
     private long foodId;
 
-    @NonNull
     @ColumnInfo(name = "name")
     private String name;
     @ColumnInfo(name = "quantity")
     private String quantity;
+    @ColumnInfo(name = "category")
+    private String category;
+    @ColumnInfo(name = "grocery_list")
+    private boolean isInGroceryList;
 
     @Ignore
     public Food() {
     }
 
+    //this is for meals that are included in grocery list
     @Ignore
-    public Food(@NonNull String name) {
+    public Food(String name, String quantity) {
+        this(name,quantity,"Meals",true);
+    }
+
+    @Ignore
+    public Food(String name, String quantity, String category) {
         this.name = name;
-    }
-
-    public Food(@NonNull String name, String quantity) {
-        this(name);
         this.quantity = quantity;
+        this.category = category;
     }
 
+    public Food(String name, String quantity, String category, boolean isInGroceryList) {
+        this(name, quantity, category);
+        this.isInGroceryList = isInGroceryList;
+    }
 
+    public long getFoodId() {
+        return foodId;
+    }
 
-    public static Food parseFood(GroceryList grocery) {
-        Food converted = new Food();
+    public void setFoodId(long foodId) {
+        this.foodId = foodId;
+    }
 
-        if (grocery.getName() != null) {
-            converted.setName(grocery.getName());
-        }
-        if (grocery.getQuantity() != null) {
-            converted.setQuantity(grocery.getQuantity());
-        }
+    public String getName() {
+        return name;
+    }
 
-        return converted;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getQuantity() {
@@ -55,20 +67,19 @@ public class Food {
         this.quantity = quantity;
     }
 
-    @NonNull
-    public String getName() {
-        return name;
+    public String getCategory() {
+        return category;
     }
 
-    public void setName(@NonNull String name) {
-        this.name = name;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public long getFoodId() {
-        return foodId;
+    public boolean isInGroceryList() {
+        return isInGroceryList;
     }
 
-    public void setFoodId(long foodId) {
-        this.foodId = foodId;
+    public void setInGroceryList(boolean inGroceryList) {
+        isInGroceryList = inGroceryList;
     }
 }

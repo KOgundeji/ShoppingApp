@@ -27,8 +27,11 @@ public interface FoodDao {
     @Query("DELETE FROM food_table")
     void deleteAllFood();
 
-    @Query("SELECT * FROM food_table WHERE name = :name")
+    @Query("SELECT * FROM food_table WHERE name = :name LIMIT 1")
     Food getFood(String name);
+
+    @Query("SELECT * FROM food_table WHERE grocery_list")
+    LiveData<List<Food>> getAllGroceries();
 
     @Query("SELECT * FROM food_table")
     LiveData<List<Food>> getAllFood();

@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "meal_table")
 public class Meal {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private long mealId;
 
     @NonNull

@@ -25,9 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kunle.shoppinglistapp.R;
-import com.kunle.shoppinglistapp.models.Category;
 import com.kunle.shoppinglistapp.models.Food;
-import com.kunle.shoppinglistapp.models.GroceryList;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
@@ -153,15 +151,17 @@ public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemView
 
                     String uploaded_name = foodList.get(getAdapterPosition()).getName();
                     String uploaded_quantity = foodList.get(getAdapterPosition()).getQuantity();
-                    String uploaded_category = ShoppingViewModel.temp_category_map.get(uploaded_name);
+                    String uploaded_category = foodList.get(getAdapterPosition()).getCategory();
+                    boolean uploaded_inGroceryList = foodList.get(getAdapterPosition()).isInGroceryList();
+
                     name.setText(uploaded_name);
                     quantity.setText(uploaded_quantity);
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.category_list_items, ShoppingViewModel.getFoodCategories());
                     dropdown.setAdapter(adapter);
-                    dropdown.setText(uploaded_category);
+                    dropdown.setText(uploaded_category,false);
 
-                    final String[] selectedItem = {"Uncategorized"};
+                    final String[] selectedItem = {uploaded_category};
 
                     dropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -179,14 +179,11 @@ public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemView
                             String updated_quantity = String.valueOf(quantity.getText()).trim();
                             String updated_category = selectedItem[0];
 
-                            Food updatedFood = new Food(updated_name,updated_quantity);
+                            Food updatedFood = new Food(updated_name,updated_quantity,
+                                    updated_category,uploaded_inGroceryList);
 
                             ShoppingViewModel.temp_food_list.remove(foodList.get(position));
-                            ShoppingViewModel.temp_category_map.remove(uploaded_name);
-
                             ShoppingViewModel.temp_food_list.add(updatedFood);
-                            ShoppingViewModel.temp_category_map.put(updated_name,updated_category);
-
                             ShoppingViewModel.live_food.setValue(ShoppingViewModel.temp_food_list);
 
                             dialog.dismiss();

@@ -5,18 +5,18 @@
     android:layout_height="match_parent"
     android:background="@color/inflater_background">
 
-    <TextView
+    <EditText
         android:id="@+id/mealName"
         android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/written_text_color"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="28sp"/>
+        android:textSize="20sp"/>
 
     <LinearLayout
         android:id="@+id/modify_meal_button_bar"
@@ -95,12 +95,13 @@
         android:id="@+id/modify_meal_recycler"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modify_meal_button_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/modify_meal_button_bar"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

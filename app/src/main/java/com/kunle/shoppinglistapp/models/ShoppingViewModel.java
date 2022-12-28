@@ -3,6 +3,7 @@ package com.kunle.shoppinglistapp.models;
 import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;

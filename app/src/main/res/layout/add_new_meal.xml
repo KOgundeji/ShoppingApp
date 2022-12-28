@@ -13,7 +13,7 @@
         android:background="@color/item_background"
         android:gravity="center"
         android:hint="Enter name of meal"
-        android:textColor="@color/text_color"
+        android:textColor="@color/written_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -111,6 +111,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_meal_name" />
+        app:layout_constraintTop_toBottomOf="@+id/enter_meal_name"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,35 +7,39 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_start_create_ingredient"
         android:layout_marginTop="30dp"
+        android:completionThreshold="1"
         app:boxBackgroundColor="@color/item_background"
         app:boxStrokeColor="@color/text_color"
-        app:hintTextColor="@color/DM_darkish_gray"
+        app:hintTextColor="@color/hint_color"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/add_new_ingredient_for_meal"
             android:layout_width="270dp"
-            android:layout_height="wrap_content"
-
+            android:layout_height="55dp"
+            android:layout_gravity="start"
             android:hint="Ingredient" />
+
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout2"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_start_create_ingredient"
         app:boxBackgroundColor="@color/item_background"
         app:boxStrokeColor="@color/text_color"
-        app:hintTextColor="@color/DM_darkish_gray"
+        app:hintTextColor="@color/hint_color"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout1">
 
@@ -53,15 +57,16 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout3"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_start_create_ingredient"
         android:layout_marginTop="6dp"
         android:hint="@string/select_category"
         app:boxBackgroundColor="@color/item_background"
         app:boxStrokeColor="@color/text_color"
-        app:hintTextColor="@color/DM_darkish_gray"
+        app:hintTextColor="@color/hint_color"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout2">
 
@@ -76,8 +81,9 @@
 
     <Space
         android:id="@+id/bottom_space"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout3">
 
     </Space>
@@ -86,12 +92,10 @@
         android:id="@+id/meals_regular_linearLayout"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="@dimen/margin_start_create_ingredient"
-        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bottom_space">
 
@@ -144,5 +148,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="65dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout3">
+
+    </Space>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

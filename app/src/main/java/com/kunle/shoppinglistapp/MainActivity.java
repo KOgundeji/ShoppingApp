@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
             ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE,1));
         } else if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
-            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE,1));
+            ShoppingViewModel.insertSettings(new Settings(Settings.DARK_MODE,0));
         }
 
         ShoppingViewModel.insertSettings(new Settings(Settings.SCREEN_ON,0));

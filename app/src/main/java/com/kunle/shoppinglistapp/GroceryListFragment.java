@@ -27,11 +27,14 @@ import com.kunle.shoppinglistapp.models.Settings;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 
 public class GroceryListFragment extends Fragment {
@@ -149,14 +152,19 @@ public class GroceryListFragment extends Fragment {
                         Food newGrocery;
                         Food preExistingFood = ShoppingViewModel.getFood(created_name);
 
-                        if (Objects.nonNull(preExistingFood) && !preExistingFood.getCategory().equals("Uncategorized")) {
-                            String preexisting_category = preExistingFood.getCategory();
-                            newGrocery = new Food(created_name,created_quantity,preexisting_category,true);
+                        if (Objects.nonNull(preExistingFood)) {
+                            String preExisting_category = preExistingFood.getCategory();
+                            newGrocery = new Food(created_name, created_quantity, preExisting_category, true);
+                            if (preExistingFood.getQuantity().equals(created_quantity)) {
+                                newGrocery.setFoodId(preExistingFood.getFoodId());
+                                ShoppingViewModel.updateFood(newGrocery);
+                            } else {
+                                ShoppingViewModel.insertFood(newGrocery);
+                            }
                         } else {
-                            newGrocery = new Food(created_name,created_quantity,"Uncategorized",true);
+                            newGrocery = new Food(created_name, created_quantity, "Uncategorized", true);
+                            ShoppingViewModel.insertFood(newGrocery);
                         }
-
-                        ShoppingViewModel.insertFood(newGrocery);
                     }
                 }).start();
 

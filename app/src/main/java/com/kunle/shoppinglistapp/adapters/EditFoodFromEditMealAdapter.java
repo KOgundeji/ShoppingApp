@@ -31,7 +31,7 @@ import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemViewHolder> {
+public class EditFoodFromEditMealAdapter extends RecyclerView.Adapter<EditFoodFromEditMealAdapter.ItemViewHolder> {
     //this is the Adapter used for Database entries and removals
     //it is ONLY used when editing MealsWithIngredients on the MealsFragment.
     //this edit is only accessed in the MealAdapter
@@ -41,7 +41,7 @@ public class EditFoodAdapter extends RecyclerView.Adapter<EditFoodAdapter.ItemVi
     private boolean visible = false;
     private List<Long> Class_Delete_list; //used to capture rowID to remove from MealFoodMap (which needs an Id)
 
-    public EditFoodAdapter(Context context, List<Food> foodList) {
+    public EditFoodFromEditMealAdapter(Context context, List<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
         Class_Delete_list = new ArrayList<>();

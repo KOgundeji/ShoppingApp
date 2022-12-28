@@ -42,7 +42,6 @@ public class SettingsFragment extends Fragment {
                     bind.darkModeCheck.setChecked(true);
                 } else if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
                     bind.darkModeCheck.setChecked(false);
-                } else {
                 }
                 bind.darkModeCheck.jumpDrawablesToCurrentState();
             }
@@ -75,7 +74,6 @@ public class SettingsFragment extends Fragment {
                     bind.darkModeCheck.setChecked(false);
                 } else if (integer == 1) {
                     bind.darkModeCheck.setChecked(true);
-                } else {
                 }
                 bind.darkModeCheck.jumpDrawablesToCurrentState();
             }
@@ -102,7 +100,6 @@ public class SettingsFragment extends Fragment {
                     bind.screenOnCheck.setChecked(false);
                 } else if (integer == 1) {
                     bind.screenOnCheck.setChecked(true);
-                } else {
                 }
                 bind.screenOnCheck.jumpDrawablesToCurrentState();
             }

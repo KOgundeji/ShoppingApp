@@ -30,7 +30,7 @@ public interface SettingsDao {
     @Query("SELECT EXISTS(SELECT * FROM settings WHERE settingsName = :name)")
     LiveData<Integer> checkSettingsExists(String name);
 
-    @Query("SELECT value FROM settings WHERE settingsName = :name Limit 1")
+    @Query("SELECT value FROM settings WHERE settingsName = :name")
     LiveData<Integer> checkSetting(String name);
 
     @Query("SELECT * FROM settings")

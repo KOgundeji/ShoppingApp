@@ -29,23 +29,20 @@ import com.kunle.shoppinglistapp.models.Food;
 import com.kunle.shoppinglistapp.models.ShoppingViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemViewHolder> {
+public class EditFoodFromAddMealAdapter extends RecyclerView.Adapter<EditFoodFromAddMealAdapter.ItemViewHolder> {
     //this is the adapter used for the temp_food_list and NOT for database entries/removals
     //this is only access when creating a new Meal from the MealsFragment
 
     private final Context context;
     private final List<Food> foodList;
     private boolean visible = false;
-    private ArrayList<Integer> Int_Delete_list; //use to capture adapter position
     private List<Food> foodDeleteList;
 
-    public AddFoodAdapter(Context context, List<Food> foodList) {
+    public EditFoodFromAddMealAdapter(Context context, List<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
-        Int_Delete_list = new ArrayList<>(Collections.nCopies(foodList.size(), 0));
         foodDeleteList = new ArrayList<>();
     }
 
@@ -94,10 +91,6 @@ public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemView
         this.visible = visible;
     }
 
-    public ArrayList<Integer> getInt_Delete_list() {
-        return Int_Delete_list;
-    }
-
     public List<Food> getFoodDeleteList() {
         return foodDeleteList;
     }
@@ -117,11 +110,6 @@ public class AddFoodAdapter extends RecyclerView.Adapter<AddFoodAdapter.ItemView
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    if (checkBox.isChecked()) {
-//                        Int_Delete_list.set(getAdapterPosition(), 1);
-//                    } else if (!checkBox.isChecked()) {
-//                        Int_Delete_list.set(getAdapterPosition(), 0);
-//                    }
                     if (checkBox.isChecked()) {
                         foodDeleteList.add(foodList.get(getAdapterPosition()));
                     } else if(!checkBox.isChecked()) {
